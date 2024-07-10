@@ -1,152 +1,116 @@
-<h1><div align="center">Installation</div></h1>
+## Installation Guide
 
-<table>
-<tr>
-  <th>Original author	</th>
-  <th>@sajarindider</th>
-</tr>
-  <tr>
-    <td>Compatibility</td>
-    <td>OpenCV >= 3.4</td>
-  </tr>
-</table>
+### Overview
 
-`The following steps have been tested for MacOSX (Mavericks) but should work with other versions as well.`
+This guide helps you install and build OpenCV on macOS, specifically version 4.10.0. It assumes you have basic development tools and Python installed on your system.
 
-## Required Packages
+### Required Packages
 
-- CMake 3.9 or higher
-- Git
-- Python 2.7 or later and Numpy 1.5 or later
+- **CMake 3.9 or higher**
+- **Git**
+- **Python 2.7 or later and Numpy 1.5 or later**
 
-This tutorial will assume you have [Python](https://docs.python.org/3/using/mac.html), [Numpy](https://docs.scipy.org/doc/numpy-1.10.1/user/install.html) and [Git](https://www.atlassian.com/git/tutorials/install-git) installed on your machine.
+### Preliminary Steps
 
-`Note`:
-1. OSX comes with Python 2.7 by default, you will need to install `Python 3.8` if you want to use it specifically.
-2. If you XCode and XCode Command Line-Tools installed, you already have git installed on your machine.
-3. You also have to set XCode permissions
-
-### Steps to Resolve the Issue:
-
-1. **Agree to Xcode License**:
-   Open a Terminal window and run the following command to agree to the Xcode license agreements:
-
+1. **Xcode License Agreement**:
+   Ensure you have agreed to the Xcode license by running:
    ```bash
    sudo xcodebuild -license
    ```
+   This step is essential as Xcode tools require this agreement.
 
-   Follow the prompts to read and agree to the license terms.
-
-2. **Install Xcode Command Line Tools** (if not already installed):
-   You can install the Xcode command line tools by running:
-
+2. **Install Xcode Command Line Tools**:
+   If not already installed, run:
    ```bash
    xcode-select --install
    ```
+   These tools are necessary for compiling code and other development tasks.
 
-### Detailed Steps:
+### Installing CMake
 
-1. **Open Terminal**:
-   You can open the Terminal application from your Applications folder or by using Spotlight search.
+1. **Download CMake**:
+   - Go to the [CMake download page](https://cmake.org/download/).
+   - Download and install the `.dmg` package for macOS.
 
-2. **Agree to the Xcode License**:
-   In the Terminal, run the command to agree to the Xcode license:
+2. **Set Up CMake for Command Line Use**:
+   - Open the CMake application from your Applications folder.
+   - In the CMake app, navigate to `Tools` > `How to Install For Command Line Use`.
+   - Follow the instructions to create command line links.
 
+3. **Verify Installation**:
+   - Run `cmake --version` to ensure CMake is installed correctly.
+
+   Alternatively, you can install CMake using Homebrew:
    ```bash
-   sudo xcodebuild -license
+   brew install cmake
    ```
 
-   You will be prompted to enter your password. After that, read through the license agreement and follow the instructions to agree to it.
+### Getting OpenCV Source Code
 
-3. **Install Command Line Tools** (if needed):
-   If you haven't installed the Xcode command line tools, you can install them by running:
+1. **Stable Version**:
+   - Visit the OpenCV downloads page and download the source archive.
+   - Unpack the archive.
 
-   ```bash
-   xcode-select --install
-   ```
+2. **Cutting-edge Version**:
+   - Use Git to clone the latest OpenCV repository:
+     ```bash
+     cd ~/<my_working_directory>
+     git clone https://github.com/opencv/opencv.git
+     git clone https://github.com/opencv/opencv_contrib.git
+     ```
 
-   Follow the prompts to complete the installation.
+### Building OpenCV from Source Using CMake
 
-After completing these steps, try configuring and building OpenCV again using CMake.
+1. **Create a Build Directory**:
+   - Create a temporary directory to store the build files:
+     ```bash
+     mkdir build_opencv
+     cd build_opencv
+     ```
 
-## Installing CMake
-1. Find the version for your system and download CMake from their release's [page](https://cmake.org/download/)
-2. Install the dmg package and launch it from Applications. That will give you the UI app of CMake
-3. From the CMake app window, choose menu Tools --> How to Install For Command Line Use. Then, follow the instructions from the pop-up there.
-4. Install folder will be /usr/bin/ by default, submit it by choosing Install command line links.
-5. Test that it works by running
-```
-cmake --version
-```
-`Note`:
+2. **Configuring the Build**:
+   - Run CMake with optional parameters:
+     ```bash
+     cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv
+     ```
+   - Alternatively, use the CMake GUI:
+     - Set the OpenCV source path.
+     - Set the build path.
+     - Configure and generate the build files.
 
-You can use [Homebrew](https://brew.sh/) to install CMake with
-``` 
-brew install cmake
-```
-## Getting OpenCV Source Code
+3. **Common CMake Parameters**:
+   - `CMAKE_BUILD_TYPE=Release` or `Debug` (specify build type).
+   - `OPENCV_EXTRA_MODULES_PATH` (set path to extra modules from `opencv_contrib`).
+   - `BUILD_DOCS=ON` (build documentation if Doxygen is installed).
+   - `BUILD_EXAMPLES=ON` (build example programs).
 
-You can use the latest stable OpenCV version or you can grab the latest snapshot from our[Git repository](https://github.com/opencv/opencv).
+4. **Optional: Building Python Bindings**:
+   - Set Python parameters for Python 3:
+     ```bash
+     PYTHON3_EXECUTABLE=<path to python>
+     PYTHON3_INCLUDE_DIR=/usr/include/python<version>
+     PYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python<version>/dist-packages/numpy/core/include/
+     ```
+   - For Python 2, replace `PYTHON3_` with `PYTHON2_`.
 
-### Getting the Latest Stable OpenCV Version
-- Go to our downloads page.
-- Download the source archive and unpack it.
-### Getting the Cutting-edge OpenCV from the Git Repository
-Launch Git client and clone [OpenCV repository](https://github.com/opencv/opencv). If you need modules from [OpenCV contrib repository](https://github.com/opencv/opencv_contrib) then clone it as well.
+5. **Compile the Code**:
+   - Run the `make` command from the build directory, optionally specifying the number of parallel jobs:
+     ```bash
+     make -j7
+     ```
 
-For example
-```
-cd ~/<my_working_directory>
-git clone https://github.com/opencv/opencv.git
-git clone https://github.com/opencv/opencv_contrib.git
-```
-## Building OpenCV from Source Using CMake
-1. **Create a temporary directory**, which we denote as `build_opencv`, where you want to put the generated Makefiles, project files as well the object files and output binaries and enter there.
+6. **Using OpenCV in Your Projects**:
+   - In your CMake-based projects, use:
+     ```cmake
+     find_package(OpenCV)
+     ```
+   - Specify the path to the OpenCV build or install directory with `OpenCV_DIR`.
 
-For example
-```
-mkdir build_opencv
-cd build_opencv
-```
-`Note` :
+### Notes
 
-It is good practice to keep clean your source code directories. Create build directory outside of source tree.
-2.**Configuring**. Run `cmake [<some optional parameters>] <path to the OpenCV source directory>`
+- **Xcode and Git**: If Xcode and its command line tools are installed, Git is already available.
+- **Package Managers**: You can also use Homebrew or pip to install stable releases of OpenCV, but this guide focuses on building from source.
 
-For example
-```
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv
-```
-or cmake-gui
+---
 
-- set the OpenCV source code path to, e.g. `/home/user/opencv`
-- set the binary build path to your CMake build directory, e.g. `/home/user/build_opencv`
-- set optional parameters
-- run: "Configure"
-- run: "Generate"
-3. **Description of some parameters**
-- build type: `CMAKE_BUILD_TYPE=Release `(or `Debug`)
-- to build with modules from opencv_contrib set` OPENCV_EXTRA_MODULES_PATH` to `<path to opencv_contrib>/modules`
-- set `BUILD_DOCS=ON` for building documents (doxygen is required)
-- set `BUILD_EXAMPLES=ON` to build all examples
-4. **[optional] Building python**. Set the following python parameters:
-- `PYTHON3_EXECUTABLE = <path to python>`
-- `PYTHON3_INCLUDE_DIR = /usr/include/python<version>`
-- `PYTHON3_NUMPY_INCLUDE_DIRS = /usr/lib/python<version>/dist-packages/numpy/core/include/`
-
-`Note` :
-
-To specify Python2 versions, you can replace PYTHON3_ with PYTHON2_ in the above parameters.
-
-5. **Build** From build directory execute make, it is recommended to do this in several threads
-
-For example
-
-```
-make -j7 # runs 7 jobs in parallel
-```
-6. **To use OpenCV in your CMake-based projects through** `find_package(OpenCV)` specify `OpenCV_DIR=<path_to_build_or_install_directory>` variable.
-
-`Note` :
-
-You can also use a package manager like [Homebrew](https://brew.sh/) or [pip](https://pip.pypa.io/en/stable/) to install releases of OpenCV only (Not the cutting edge).
+By following these detailed steps, you can successfully install and build OpenCV on your macOS system.
