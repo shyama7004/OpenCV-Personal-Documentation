@@ -78,7 +78,7 @@ pip install pylint
    ```
 3. Run CMake to configure the project:
    ```bash
-   cmake -DBUILD_DOCS=ON ../opencv
+   cmake -DBUILD_DOCS=ON ..(Your file location upto opencv)/opencv
    ```
    or, if you have the `opencv_contrib` modules:
    ```bash
