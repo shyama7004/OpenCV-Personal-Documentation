@@ -46,16 +46,21 @@ To generate the OpenCV documentation using Doxygen, follow these detailed steps:
      cmake -DBUILD_DOCS=ON -DOPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules ../opencv
      ```
 
-4. **Run Make to Generate Documentation:**
+4. **Installing Doxygen:**
+   ```
+      brew install doxygen
+   ```
+   
+6. **Run Make to Generate Documentation:**
    - Use the `make` command to build the Doxygen documentation.
      ```bash
      make doxygen
      ```
 
-5. **Open the Generated Documentation:**
+7. **Open the Generated Documentation:**
    - The documentation will be generated in HTML format and can be found in the `doc/doxygen/html` directory. Open the `index.html` file in your web browser to view the documentation.
 
-6. **Test Your Python Code with Pylint:**
+8. **Test Your Python Code with Pylint:**
    - Run the following command to check your Python code:
      ```bash
      make check_pylint
