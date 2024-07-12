@@ -4,7 +4,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 
 # Table of Contents
 
-## [Introduction](https://github.com/shyama7004/OpenCV-Personal-Documentation/new/main/readme.md)
+## [Introduction](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Introduction.md)
 
 - Introduction to OpenCV
    - Other platforms
