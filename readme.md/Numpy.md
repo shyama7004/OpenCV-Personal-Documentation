@@ -7,6 +7,38 @@
 For more information about NumPy, visit [What is NumPy](https://numpy.org/). If you have comments or suggestions, please reach out!
 
 ---
+## Installation of NumPy
+
+`To install NumPy`, you can use pip, a package installer for Python. Open your command prompt or terminal and run the following command:
+
+```
+pip install numpy
+```
+This will download and install the latest version of NumPy from PyPI. If you're using a different version of Python, replace pip with pip3. 
+
+For example, if you're using Python 3, you would use:
+```
+pip3 install numpy
+```
+If you're using a Linux system and encounter issues with package location, you might need to specify the Python version in the command. For Python 3, this would look like:
+```
+sudo apt-get install python3-numpy
+```
+Remember to ensure that Python and pip are updated to their latest versions before installing NumPy.
+
+You can also use the `brew`commmand, for eaxmple:
+```
+brew install numpy
+```
+
+`To check if NumPy is installed`, you can run a Python script with the following command:
+
+```python
+
+import numpy
+print(numpy.__version__)
+````
+If the script runs without raising any errors and prints the version number, then NumPy is installed. If the script raises a ModuleNotFoundError, it means that NumPy is not installed or not accessible in your Python environment. In this case, you can follow the previous instructions to install NumPy.
 
 ### How to Import NumPy
 
