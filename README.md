@@ -6,6 +6,8 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 
 ## [Introduction](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Introduction.md)
 
+## OpenCV Tutorials
+
 - Introduction to OpenCV
    - Other platforms
       - [Installation in MacOS (Day-1)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Installation.md)
@@ -14,6 +16,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
    - Miscellaneous
       - [Writing documentation for OpenCV (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Writing%20documentation%20for%20OpenCV.md)
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
+      - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
 
 - The Core Functionality (core module) 
 - Image Processing (imgproc module) 
@@ -25,7 +28,49 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 - Graph API (gapi module) 
 - Other tutorials (ml, objdetect, photo, stitching, video) 
 - OpenCV iOS 
-- GPU-Accelerated Computer Vision (cuda module) 
+- GPU-Accelerated Computer Vision (cuda module)
+
+## OpenCV.js Tutorials
+- Introduction to OpenCV.js
+
+- GUI Features
+
+- Core Operations
+
+- Image Processing
+
+- Video Analysis
+
+- Object Detection
+
+- Deep Neural Networks (dnn module)
+
+## Tutorials for contrib modules
+- aruco. ArUco marker detection (aruco module)
+- bgsegm. Tutorials for bgsegm module
+- bioinspired. Discovering the human retina and its use for image processing
+- ccalib. Multi-camera Calibration
+- ccalib. Omnidirectional Camera Calibration
+- cvv. Interactive Visual Debugging of Computer Vision applications
+- dnn_objdetect. Object Detection using CNNs
+- face. Tutorials for face module
+- face. Tutorial on Facial Landmark Detector API
+- fuzzy. Fuzzy image processing tutorials
+- hdf. The Hierarchical Data Format (hdf) I/O
+-line_descriptor. Line Features Tutorial
+- phase_unwrapping. Phase Unwrapping tutorial
+- sfm. Structure From Motion
+- structured_light. Structured Light tutorials
+- text. Text module
+- tracking. Customizing the CN Tracker
+- tracking. Introduction to OpenCV Tracker
+- tracking. Using MultiTracker
+- ximgproc. Disparity map post-filtering
+- ximgproc. Structured forests for fast edge detection
+- ximgproc. Structured forest training
+- xphoto. Training the learning-based white balance algorithm
+
+
 
 - Email: [sujatabisoyi@gmail.com](https://mail.google.com/)
 - GitHub: [your-github-username](https://github.com/shyama7004)
