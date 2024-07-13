@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/bd73bccf-42a3-42de-a21c-306e4ba51189)### NumPy: The Absolute Basics for Beginners
+### NumPy: The Absolute Basics for Beginners
 
 **Welcome to the absolute beginner’s guide to NumPy!**
 
@@ -918,6 +918,8 @@ array([[2, 3],
 **Printing N-Dimensional Arrays:**
 When printing N-dimensional arrays, the last axis is the fastest-changing axis, while the first axis is the slowest.
 
+`When printing N-dimensional arrays, the last axis is the fastest-changing axis, while the first axis is the slowest`. This means that when iterating over the elements of the array, the last axis is the one that changes the most rapidly, and the first axis is the one that changes the least rapidly.
+
 **Example:**
 ```python
 array = np.ones((4, 3, 2))
@@ -1223,6 +1225,486 @@ array([[ 1, 10,  3,  4],
 
 For more details, refer to the [NumPy documentation on flipping](https://numpy.org/doc/stable/reference/generated/numpy.flip.html).
 
+### Reshaping and Flattening Multidimensional Arrays
+
 ---
 
-These comprehensive notes cover various essential topics in NumPy, including broadcasting, array operations, creating and manipulating matrices, generating random numbers, finding unique elements, transposing and reshaping arrays, and reversing arrays. This detailed guide should provide a solid foundation for working with NumPy arrays in Python.
+#### **Flattening Arrays with `.flatten()` and `.ravel()`**
+
+Flattening an array converts a multidimensional array into a one-dimensional array. This operation is useful for simplifying data structures, especially before performing operations that require one-dimensional input. In NumPy, there are two primary methods for flattening an array: `.flatten()` and `.ravel()`. While they seem similar at first glance, they have crucial differences.
+
+---
+
+**1. Using `x.flatten()`**
+
+- **Definition**: `.flatten()` returns a copy of the array collapsed into one dimension.
+- **Memory**: Since `.flatten()` creates a new array, it consumes more memory compared to `ravel()`.
+- **Effect on Parent Array**: Changes made to the new array do not affect the original array.
+
+Example:
+```python
+import numpy as np
+
+# Create a 2D array
+x = np.array([[1, 2, 3, 4], 
+              [5, 6, 7, 8], 
+              [9, 10, 11, 12]])
+
+# Flatten the array
+a1 = x.flatten()
+
+# Modify the new array
+a1[0] = 99
+
+print("Original array:\n", x)
+print("New flattened array:\n", a1)
+```
+Output:
+```
+Original array:
+[[ 1  2  3  4]
+ [ 5  6  7  8]
+ [ 9 10 11 12]]
+New flattened array:
+[99  2  3  4  5  6  7  8  9 10 11 12]
+```
+
+**2. Using `x.ravel()`**
+
+- **Definition**: `.ravel()` returns a flattened array as a view of the input array, if possible.
+- **Memory**: Since `.ravel()` does not create a copy, it is more memory efficient.
+- **Effect on Parent Array**: Changes made to the new array will affect the original array, as they share the same data.
+
+Example:
+```python
+# Create a 2D array
+x = np.array([[1, 2, 3, 4], 
+              [5, 6, 7, 8], 
+              [9, 10, 11, 12]])
+
+# Ravel the array
+a2 = x.ravel()
+
+# Modify the new array
+a2[0] = 98
+
+print("Original array:\n", x)
+print("New raveled array:\n", a2)
+```
+Output:
+```
+Original array:
+[[98  2  3  4]
+ [ 5  6  7  8]
+ [ 9 10 11 12]]
+New raveled array:
+[98  2  3  4  5  6  7  8  9 10 11 12]
+```
+
+#### **Conclusion**
+
+- Use `.flatten()` when you need a new, independent array.
+- Use `.ravel()` for memory efficiency when you don't need a separate array.
+
+---
+
+### Accessing Docstrings for More Information
+
+#### **Using `help()`, `?`, and `??`**
+
+Python and NumPy offer built-in access to documentation through docstrings, which provide a quick and concise summary of objects and their usage.
+
+**1. The `help()` Function**
+
+- **Definition**: The `help()` function displays the help text for a given object.
+- **Usage**: Useful for quickly accessing information about functions, methods, and objects.
+
+Example:
+```python
+help(max)
+```
+Output:
+```
+Help on built-in function max in module builtins:
+
+max(...)
+    max(iterable, *[, default=obj, key=func]) -> value
+    max(arg1, arg2, *args, *[, key=func]) -> value
+
+    With a single iterable argument, return its biggest item. The
+    default keyword-only argument specifies an object to return if
+    the provided iterable is empty.
+    With two or more arguments, return the largest argument.
+```
+
+**2. The `?` and `??` Notations in IPython**
+
+- **Single Question Mark (`?`)**: Provides the docstring of the object.
+- **Double Question Marks (`??`)**: Provides the source code of the object (if available).
+
+Example with a function:
+```python
+def double(a):
+    '''Return a * 2'''
+    return a * 2
+
+double?
+```
+Output:
+```
+Signature: double(a)
+Docstring: Return a * 2
+File:      ~/Desktop/<ipython-input-23-b5adf20be596>
+Type:      function
+```
+Using `??` to see the source code:
+```python
+double??
+```
+Output:
+```
+Signature: double(a)
+Source:
+def double(a):
+    '''Return a * 2'''
+    return a * 2
+File:      ~/Desktop/<ipython-input-23-b5adf20be596>
+Type:      function
+```
+
+Example with a NumPy array:
+```python
+import numpy as np
+
+a = np.array([1, 2, 3, 4, 5, 6])
+a?
+```
+Output:
+```
+Type:            ndarray
+String form:     [1 2 3 4 5 6]
+Length:          6
+File:            ~/anaconda3/lib/python3.9/site-packages/numpy/__init__.py
+Docstring:       <no docstring>
+Class docstring:
+ndarray(shape, dtype=float, buffer=None, offset=0,
+        strides=None, order=None)
+
+An array object represents a multidimensional, homogeneous array
+of fixed-size items.  An associated data-type object describes the
+format of each element in the array (its byte-order, how many bytes it
+occupies in memory, whether it is an integer, a floating point number,
+or something else, etc.)
+
+Arrays should be constructed using `array`, `zeros` or `empty` (refer
+to the See Also section below).  The parameters given here refer to
+a low-level method (`ndarray(...)`) for instantiating an array.
+
+For more information, refer to the `numpy` module and examine the
+methods and attributes of an array.
+```
+
+#### **Conclusion**
+
+- **`help()`**: General Python function to get help.
+- **`?`**: Quick access to docstrings in IPython.
+- **`??`**: Access to source code in IPython.
+
+---
+
+### Working with Mathematical Formulas
+
+#### **Example: Mean Square Error (MSE) Formula**
+
+The Mean Square Error (MSE) is a common metric used in regression models in machine learning. The formula for MSE is:
+
+<img src="https://numpy.org/doc/stable/_images/np_MSE_formula.png">
+
+Where:
+- `n` is the number of observations.
+- Y<sub>i</sub> are the actual values.
+- Y_prediction<sub>i</sub> are the predicted values.
+
+Implementing this formula is simple and straightforward in NumPy:
+
+<img src="https://numpy.org/doc/stable/_images/np_MSE_implementation.png">
+
+What makes this work so well is that `predictions` and `labels` can contain one or a thousand values. They only need to be the same size.
+
+You can visualize it this way:
+<img src="https://numpy.org/doc/stable/_images/np_mse_viz1.png">
+
+In this example, both the predictions and labels vectors contain three values, meaning n has a value of three. After we carry out subtractions the values in the vector are squared. Then NumPy sums the values, and your result is the error value for that prediction and a score for the quality of the model.
+
+<img src="https://numpy.org/doc/stable/_images/np_mse_viz2.png">
+<img src="https://numpy.org/doc/stable/_images/np_mse_viz2.png">
+<img src="https://numpy.org/doc/stable/_images/np_MSE_explanation2.png">
+
+
+
+**Implementation in NumPy**:
+```python
+import numpy as np
+
+# Example predictions and labels
+predictions = np.array([2.5, 0.0, 2.1, 1.6])
+labels = np.array([3.0, -0.5, 2.0, 1.5])
+
+# Calculate MSE
+mse = np.mean((predictions - labels) ** 2)
+print("Mean Square Error:", mse)
+```
+Output:
+```
+Mean Square Error: 0.0975
+```
+
+#### **Visualization of MSE Calculation**
+
+- **Step 1**: Subtract the actual values from the predicted values.
+- **Step 2**: Square the result of each subtraction.
+- **Step 3**: Sum the squared differences.
+- **Step 4**: Divide by the number of observations.
+
+Visualization:
+```plaintext
+predictions: [2.5, 0.0, 2.1, 1.6]
+labels:      [3.0, -0.5, 2.0, 1.5]
+Step 1: Subtract
+  result:   [-0.5, 0.5, 0.1, 0.1]
+Step 2: Square
+  result:   [0.25, 0.25, 0.01, 0.01]
+Step 3: Sum
+  result:   0.52
+Step 4: Divide by number of observations (4)
+  MSE:      0.13
+```
+
+---
+
+### Saving and Loading NumPy Objects
+
+#### **Methods to Save and Load Arrays**
+
+- **`np.save`**: Save a single array to a binary `.npy` file.
+- **`np.load`**: Load an array from a binary `.npy` file.
+- **`np.savetxt`**: Save an array to a text file.
+- **`np.loadtxt`**: Load data from a text file.
+- **`np.savez`**: Save multiple arrays to a single `.npz` file.
+- **`np.savez_compressed`**: Save multiple arrays to a compressed `.npz` file.
+
+**Saving a Single Array**:
+```python
+a = np.array([1, 2, 3, 4, 5, 6])
+np.save('filename.npy', a)
+```
+
+**Loading a Single Array**
+:
+```python
+a_loaded = np.load('filename.npy')
+print(a_loaded)
+```
+Output:
+```
+[1 2 3 4 5 6]
+```
+
+**Saving Multiple Arrays**:
+```python
+a = np.array([1, 2, 3, 4, 5, 6])
+b = np.array([7, 8, 9, 10, 11, 12])
+np.savez('arrays.npz', array1=a, array2=b)
+```
+
+**Loading Multiple Arrays**:
+```python
+arrays = np.load('arrays.npz')
+print(arrays['array1'])
+print(arrays['array2'])
+```
+Output:
+```
+[1 2 3 4 5 6]
+[ 7  8  9 10 11 12]
+```
+
+#### **Conclusion**
+
+- **`np.save` and `np.load`**: Efficient methods for binary storage.
+- **`np.savetxt` and `np.loadtxt`**: Methods for human-readable text files.
+- **`np.savez` and `np.savez_compressed`**: Useful for saving multiple arrays in one file.
+
+---
+
+### Detailed Notes on Importing, Exporting, and Plotting Data with Pandas and Matplotlib
+
+---
+
+#### **Importing and Exporting CSV Files Using Pandas**
+
+**1. Reading CSV Files**
+
+Reading a CSV file in Python is straightforward with the help of the Pandas library. Pandas provides powerful and easy-to-use data structures for data manipulation.
+
+- **Importing Pandas**:
+    ```python
+    import pandas as pd
+    ```
+
+- **Reading a CSV File**:
+    - **Example**: Suppose you have a CSV file named `music.csv` with columns `Artist`, `Genre`, `Plays`, and `Revenue`.
+        ```python
+        # Read the entire CSV file
+        x = pd.read_csv('music.csv', header=0).values
+        print(x)
+        ```
+        Output:
+        ```plaintext
+        [['Billie Holiday' 'Jazz' 1300000 27000000]
+         ['Jimmie Hendrix' 'Rock' 2700000 70000000]
+         ['Miles Davis' 'Jazz' 1500000 48000000]
+         ['SIA' 'Pop' 2000000 74000000]]
+        ```
+
+- **Selecting Specific Columns**:
+    - **Example**: If you only need specific columns, such as `Artist` and `Plays`:
+        ```python
+        x = pd.read_csv('music.csv', usecols=['Artist', 'Plays']).values
+        print(x)
+        ```
+        Output:
+        ```plaintext
+        [['Billie Holiday' 27000000]
+         ['Jimmie Hendrix' 70000000]
+         ['Miles Davis' 48000000]
+         ['SIA' 74000000]]
+        ```
+<img src="https://numpy.org/doc/stable/_images/np_pandas.png">
+
+**2. Exporting Arrays to CSV Files**
+
+Pandas can also be used to export data. If you have a NumPy array that you want to save as a CSV file, you can first convert it to a Pandas DataFrame.
+
+- **Creating a NumPy Array**:
+    ```python
+    import numpy as np
+
+    a = np.array([[-2.58289208,  0.43014843, -1.24082018, 1.59572603],
+                  [ 0.99027828, 1.17150989,  0.94125714, -0.14692469],
+                  [ 0.76989341,  0.81299683, -0.95068423, 0.11769564],
+                  [ 0.20484034,  0.34784527,  1.96979195, 0.51992837]])
+    ```
+
+- **Converting to a DataFrame**:
+    ```python
+    df = pd.DataFrame(a)
+    print(df)
+    ```
+    Output:
+    ```plaintext
+              0         1         2         3
+    0 -2.582892  0.430148 -1.240820  1.595726
+    1  0.990278  1.171510  0.941257 -0.146925
+    2  0.769893  0.812997 -0.950684  0.117696
+    3  0.204840  0.347845  1.969792  0.519928
+    ```
+
+- **Saving the DataFrame to a CSV File**:
+    ```python
+    df.to_csv('pd.csv')
+    ```
+
+- **Reading the Saved CSV File**:
+    ```python
+    data = pd.read_csv('pd.csv')
+    print(data)
+    ```
+<img src="https://numpy.org/doc/stable/_images/np_readcsv.png">
+
+**3. Using NumPy to Save CSV Files**
+
+NumPy also provides a method to save arrays directly to CSV files.
+
+- **Saving with `np.savetxt`**:
+    ```python
+    np.savetxt('np.csv', a, fmt='%.2f', delimiter=',', header='1,  2,  3,  4')
+    ```
+
+- **Reading CSV Files from the Command Line**:
+    ```plaintext
+    $ cat np.csv
+    #  1,  2,  3,  4
+    -2.58,0.43,-1.24,1.60
+    0.99,1.17,0.94,-0.15
+    0.77,0.81,-0.95,0.12
+    0.20,0.35,1.97,0.52
+    ```
+
+You can also open the file with any text editor for viewing or editing.
+
+**Additional Resources**:
+- **Pandas Documentation**: [Pandas Documentation](https://pandas.pydata.org/pandas-docs/stable/)
+- **Pandas Installation Guide**: [Pandas Installation](https://pandas.pydata.org/pandas-docs/stable/getting_started/install.html)
+
+---
+
+#### **Plotting Arrays with Matplotlib**
+
+If you need to generate a plot for your values, it’s very simple with Matplotlib.
+
+For example, you may have an array like this one:
+```py
+a = np.array([2, 1, 5, 7, 4, 6, 8, 14, 10, 9, 18, 20, 22])
+```
+If you already have Matplotlib installed, you can import it with:
+
+```py
+import matplotlib.pyplot as plt
+
+# If you're using Jupyter Notebook, you may also want to run the following
+# line of code to display your code in the notebook:
+
+%matplotlib inline
+```
+
+All you need to do to plot your values is run:
+
+```py
+plt.plot(a)
+
+# If you are running from a command line, you may need to do this:
+# >>> plt.show()
+```
+<img src="https://numpy.org/doc/stable/_images/matplotlib1.png">
+
+For example, you can plot a 1D array like this:
+
+```py
+x = np.linspace(0, 5, 20)
+y = np.linspace(0, 10, 20)
+plt.plot(x, y, 'purple') # line
+plt.plot(x, y, 'o')      # dots
+```
+<img src="https://numpy.org/doc/stable/_images/matplotlib2.png">
+
+With Matplotlib, you have access to an enormous number of visualization options.
+
+```py
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+X = np.arange(-5, 5, 0.15)
+Y = np.arange(-5, 5, 0.15)
+X, Y = np.meshgrid(X, Y)
+R = np.sqrt(X**2 + Y**2)
+Z = np.sin(R)
+
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis')
+```
+
+<img src="https://numpy.org/doc/stable/_images/matplotlib3.png">
+
+**Additional Resources**:
+- **Matplotlib Documentation**: [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
+- **Matplotlib Installation Guide**: [Matplotlib Installation](https://matplotlib.org/stable/users/installing.html)
+
