@@ -17,6 +17,29 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
       - [Writing documentation for OpenCV (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Writing%20documentation%20for%20OpenCV.md)
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
       - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
+          
+          - What is NumPy?
+          - Installation
+          - [NumPy quickstart](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/NumPy%20quickstart.md)
+          - [NumPy: the absolute basics for beginners](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
+            
+          - NumPy fundamentals
+          - Array creation
+          - Indexing on ndarrays
+          - I/O with NumPy
+          - Data types
+          - Broadcasting
+          - Copies and views
+          - Working with Arrays of Strings And Bytes
+          - Structured arrays
+          - Universal functions (ufunc) basics
+          - NumPy for MATLAB users
+          - NumPy tutorials
+          - NumPy how-tos
+          - Using NumPy C-API
+          - F2PY user guide and reference manual
+          - Under-the-hood documentation for developers
+          - Interoperability with NumPy
 
 - The Core Functionality (core module) 
 - Image Processing (imgproc module) 
