@@ -18,13 +18,16 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
       - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
           
-          - What is NumPy?
-          - Installation
+          - [What is NumPy?](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/What%20is%20NumPy%3F.md)
+
+          - [Installation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Numpy_Installation.md)
+
           - [NumPy quickstart](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/NumPy%20quickstart.md)
           - [NumPy: the absolute basics for beginners](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
             
           - NumPy fundamentals
-          - Array creation
+          - [Array creation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/NumPy%20fundamentals/Array%20creation.md)
+
           - Indexing on ndarrays
           - I/O with NumPy
           - Data types
