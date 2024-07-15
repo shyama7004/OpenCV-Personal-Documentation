@@ -1,98 +1,110 @@
-## Installing NumPy
+### Detailed Guide for Installing NumPy
 
-The only prerequisite for installing NumPy is Python itself. If you don’t have Python yet and want the simplest way to get started, we recommend you use the `Anaconda Distribution` - it includes Python, NumPy, and many other commonly used packages for scientific computing and data science.
+#### Prerequisites
 
-NumPy can be installed with `conda`, with `pip`, with a package manager on macOS and Linux, or from source. 
+- **Python:** Ensure you have Python installed on your system. 
+- **Anaconda Distribution:** For a simplified setup, especially for beginners, using the Anaconda Distribution is recommended as it includes Python, NumPy, and many other packages for scientific computing and data science.
 
-### CONDA
+#### Installation Methods
 
-If you use `conda`, you can install NumPy from the `defaults` or `conda-forge` channels:
+##### Using Conda
 
-```py
-# Best practice, use an environment rather than install in the base env
-conda create -n my-env
-conda activate my-env
-# If you want to install from conda-forge
-conda config --env --add channels conda-forge
-# The actual install command
-conda install numpy
+1. **Create and Activate Environment:**
+    ```sh
+    conda create -n my-env
+    conda activate my-env
+    ```
+
+2. **Install from Conda-Forge (Optional):**
+    ```sh
+    conda config --env --add channels conda-forge
+    ```
+
+3. **Install NumPy:**
+    ```sh
+    conda install numpy
+    ```
+
+##### Using Pip
+
+1. **Install NumPy:**
+    ```sh
+    pip install numpy
+    ```
+
+2. **Virtual Environments:** It is good practice to use virtual environments to ensure reproducible installs. Refer to guides on virtual environments for detailed instructions.
+
+#### Python and NumPy Installation Guide
+
+Installing and managing packages in Python can be complex due to the variety of tools available. This guide provides recommendations based on user experience and operating system.
+
+##### Recommendations
+
+**Beginning Users (Windows, macOS, Linux):**
+1. **Install Anaconda:** This includes all necessary packages and tools.
+2. **Code Writing and Execution:** Use JupyterLab for exploratory and interactive computing, and Spyder or Visual Studio Code for scripting.
+3. **Package Management:** Use Anaconda Navigator to manage packages and launch tools like JupyterLab, Spyder, or Visual Studio Code.
+
+**Advanced Users:**
+
+- **Conda Users:**
+    1. **Install Miniforge:** A minimal installer for conda.
+    2. **Environment Management:** Keep the base conda environment minimal and create separate environments for different projects.
+
+- **Pip/PyPI Users:**
+    1. **Install Python:** Use python.org, Homebrew, or your Linux package manager.
+    2. **Dependency Management:** Use Poetry for managing dependencies and environments.
+
+##### Python Package Management
+
+**Conda vs Pip:**
+
+1. **Language Support:**
+   - **Conda:** Cross-language package manager, can install Python itself.
+   - **Pip:** Specific to Python, installs packages for a particular Python installation.
+
+2. **Package Repositories:**
+   - **Conda:** Uses its own channels (e.g., defaults, conda-forge).
+   - **Pip:** Uses the Python Packaging Index (PyPI).
+
+3. **Integrated Solutions:**
+   - **Conda:** Manages packages, dependencies, and environments.
+   - **Pip:** May require additional tools for environment and dependency management.
+
+##### Reproducible Installs
+
+To ensure reproducible installs:
+
+1. **Use separate environments for different projects.**
+2. **Record package names and versions:**
+   - **Conda:** `conda environments` and `environment.yml`
+   - **Pip:** `virtual environments` and `requirements.txt`
+   - **Poetry:** `virtual environments` and `pyproject.toml`
+
+#### NumPy Packages & Accelerated Linear Algebra Libraries
+
+NumPy depends on accelerated linear algebra libraries (typically Intel MKL or OpenBLAS). Here are some key points:
+
+1. **NumPy Wheels on PyPI:** Built with OpenBLAS, included in the wheel, making it larger.
+2. **Conda Defaults Channel:** NumPy built against Intel MKL, which is installed as a separate package.
+3. **Conda-Forge Channel:** Built against a dummy “BLAS” package, defaults to OpenBLAS but can be configured to use MKL, BLIS, or reference BLAS.
+
+**Performance Considerations:**
+
+- **Intel MKL:** Typically faster and more robust, but not open source. Larger install size (~700 MB).
+- **OpenBLAS:** Smaller install size (~30 MB), open source.
+
+**Threading Behavior:**
+
+- Both MKL and OpenBLAS use multi-threading for function calls (e.g., `np.dot`), often utilizing all CPU cores. This can impact performance, especially when combined with other parallelization methods.
+
+#### Troubleshooting
+
+If you encounter the following error:
 ```
-### PIP
-
-If you use `pip`, you can install NumPy with:
-
-```
-pip install numpy
-```
-Also when using pip, it’s good practice to use a virtual environment.
-
-## Python and NumPy installation guide
-
-Installing and managing packages in Python is complicated, there are a number of alternative solutions for most tasks. This guide tries to give the reader a sense of the best (or most popular) solutions, and give clear recommendations. It focuses on users of Python, NumPy, and the PyData (or numerical computing) stack on common operating systems and hardware.
-
-### Recommendations
-We’ll start with recommendations based on the user’s experience level and operating system of interest. If you’re in between “beginning” and “advanced”, please go with “beginning” if you want to keep things simple, and with “advanced” if you want to work according to best practices that go a longer way in the future.
-
-### Beginning users
-On all of Windows, macOS, and Linux:
-
-- Install [Anaconda](https://www.anaconda.com/download) (it installs all packages you need and all other tools mentioned below).
-
-- For writing and executing code, use notebooks in JupyterLab for exploratory and interactive computing, and Spyder or Visual Studio Code for writing scripts and packages.
-
-- Use Anaconda Navigator to manage your packages and start JupyterLab, Spyder, or Visual Studio Code.
-### Advanced users
-
-#### Conda
-- Install [Miniforge](https://github.com/conda-forge/miniforge).
-Keep the base conda environment minimal, and use one or more conda environments to install the package you need for the task or project you’re working on.
-Alternative if you prefer pip/PyPI
-For users who know, from personal preference or reading about the main differences between conda and pip below, they prefer a pip/PyPI-based solution, we recommend:
-
-Install Python from python.org, Homebrew, or your Linux package manager.
-Use Poetry as the most well-maintained tool that provides a dependency resolver and environment management capabilities in a similar fashion as conda does.
-Python package management
-Managing packages is a challenging problem, and, as a result, there are lots of tools. For web and general purpose Python development there’s a whole host of tools complementary with pip. For high-performance computing (HPC), Spack is worth considering. For most NumPy users though, conda and pip are the two most popular tools.
-
-Pip & conda
-The two main tools that install Python packages are pip and conda. Their functionality partially overlaps (e.g. both can install numpy), however, they can also work together. We’ll discuss the major differences between pip and conda here - this is important to understand if you want to manage packages effectively.
-
-The first difference is that conda is cross-language and it can install Python, while pip is installed for a particular Python on your system and installs other packages to that same Python install only. This also means conda can install non-Python libraries and tools you may need (e.g. compilers, CUDA, HDF5), while pip can’t.
-
-The second difference is that pip installs from the Python Packaging Index (PyPI), while conda installs from its own channels (typically “defaults” or “conda-forge”). PyPI is the largest collection of packages by far, however, all popular packages are available for conda as well.
-
-The third difference is that conda is an integrated solution for managing packages, dependencies and environments, while with pip you may need another tool (there are many!) for dealing with environments or complex dependencies.
-
-
-Reproducible installs
-As libraries get updated, results from running your code can change, or your code can break completely. It’s important to be able to reconstruct the set of packages and versions you’re using. Best practice is to:
-
-use a different environment per project you’re working on,
-record package names and versions using your package installer; each has its own metadata format for this:
-Conda: conda environments and environment.yml
-Pip: virtual environments and requirements.txt
-Poetry: virtual environments and pyproject.toml
-NumPy packages & accelerated linear algebra libraries
-NumPy doesn’t depend on any other Python packages, however, it does depend on an accelerated linear algebra library - typically Intel MKL or OpenBLAS. Users don’t have to worry about installing those (they’re automatically included in all NumPy install methods). Power users may still want to know the details, because the used BLAS can affect performance, behavior and size on disk:
-
-The NumPy wheels on PyPI, which is what pip installs, are built with OpenBLAS. The OpenBLAS libraries are included in the wheel. This makes the wheel larger, and if a user installs (for example) SciPy as well, they will now have two copies of OpenBLAS on disk.
-
-In the conda defaults channel, NumPy is built against Intel MKL. MKL is a separate package that will be installed in the users’ environment when they install NumPy.
-
-In the conda-forge channel, NumPy is built against a dummy “BLAS” package. When a user installs NumPy from conda-forge, that BLAS package then gets installed together with the actual library - this defaults to OpenBLAS, but it can also be MKL (from the defaults channel), or even BLIS or reference BLAS.
-
-The MKL package is a lot larger than OpenBLAS, it’s about 700 MB on disk while OpenBLAS is about 30 MB.
-
-MKL is typically a little faster and more robust than OpenBLAS.
-
-Besides install sizes, performance and robustness, there are two more things to consider:
-
-Intel MKL is not open source. For normal use this is not a problem, but if a user needs to redistribute an application built with NumPy, this could be an issue.
-Both MKL and OpenBLAS will use multi-threading for function calls like np.dot, with the number of threads being determined by both a build-time option and an environment variable. Often all CPU cores will be used. This is sometimes unexpected for users; NumPy itself doesn’t auto-parallelize any function calls. It typically yields better performance, but can also be harmful - for example when using another level of parallelization with Dask, scikit-learn or multiprocessing.
-Troubleshooting
-If your installation fails with the message below, see Troubleshooting ImportError.
-
 IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
 
 Importing the numpy c-extensions failed. This error can happen for
 different reasons, often due to issues with your setup.
+```
+Consult the troubleshooting guide for solutions to common setup issues.
