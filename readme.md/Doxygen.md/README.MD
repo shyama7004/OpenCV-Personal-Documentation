@@ -6,7 +6,8 @@
 
 - [Documenting the code](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Doxygen.md/%20Documenting%20the%20code.md)
 
-- Additional Documentation
+- [Additional Documentation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Additional%20Documentation.md)
+
 - Markdown support
 - Lists
 - Grouping
