@@ -8,12 +8,12 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 
 ## OpenCV Tutorials
 
-- Introduction to OpenCV
-   - Other platforms
+- ## Introduction to OpenCV
+   - ### Other platforms
       - [Installation in MacOS (Day-1)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Installation.md)
-   - Usage basics
+   - ### Usage basics
       - [Getting Started with Images (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Usage%20basics.md)
-   - Miscellaneous
+   - ### Miscellaneous
       - [Writing documentation for OpenCV (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Writing%20documentation%20for%20OpenCV.md)
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
       - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
@@ -25,12 +25,13 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
           - [NumPy quickstart](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/NumPy%20quickstart.md)
           - [NumPy: the absolute basics for beginners](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
             
-          - NumPy fundamentals
+          - <h3>NumPy fundamentals</h3>
           - [Array creation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/NumPy%20fundamentals/Array%20creation.md)
 
-          - Indexing on ndarrays
-          - I/O with NumPy
-          - Data types
+          - [Indexing on ndarrays](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Indexing%20on%20ndarrays.md)
+            
+          - [I/O with NumPy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Importing%20data%20with%20genfromtxt.md)
+          - [Data types](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Data%20types.md)
           - Broadcasting
           - Copies and views
           - Working with Arrays of Strings And Bytes
