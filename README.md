@@ -13,6 +13,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
       - [Installation in MacOS (Day-1)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Installation.md)
    - #### Usage basics
       - [Getting Started with Images (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Usage%20basics.md)
+      - [Installing OpenCV and Configuring VS Code](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Installing%20OpenCV%20and%20Configuring%20VS%20Code.md)
    - #### Miscellaneous
       - [Writing documentation for OpenCV (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Writing%20documentation%20for%20OpenCV.md)
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
