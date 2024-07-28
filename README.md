@@ -16,19 +16,19 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
    - ### Miscellaneous
       - [Writing documentation for OpenCV (Day-2)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/blob/main/readme.md/Writing%20documentation%20for%20OpenCV.md)
       - [Doxygen (Day-3)](https://github.com/shyama7004/OpenCV-Personal-Documentation-MacOS-/tree/main/readme.md/Doxygen.md)
-      - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
+      - [Numpy (Day-4)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
           
-          - [What is NumPy?](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/What%20is%20NumPy%3F.md)
+          - [What is NumPy? (Day-4)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/What%20is%20NumPy%3F.md)
 
-          - [Installation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Numpy_Installation.md)
+          - [Installation (Day-4)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Numpy_Installation.md)
 
-          - [NumPy quickstart](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/NumPy%20quickstart.md)
-          - [NumPy: the absolute basics for beginners](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
+          - [NumPy quickstart (Day-5)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/NumPy%20quickstart.md)
+          - [NumPy: the absolute basics for beginners (Day-6)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Numpy.md)
             
           - <h3>NumPy fundamentals</h3>
-          - [Array creation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/NumPy%20fundamentals/Array%20creation.md)
+          - [Array creation (Day-7)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/NumPy%20fundamentals/Array%20creation.md)
 
-          - [Indexing on ndarrays](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Indexing%20on%20ndarrays.md)
+          - [Indexing on ndarrays (Day-8)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Indexing%20on%20ndarrays.md)
             
           - [I/O with NumPy](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Importing%20data%20with%20genfromtxt.md)
           - [Data types](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Other%20Defs/Data%20types.md)
@@ -96,6 +96,12 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 - ximgproc. Structured forests for fast edge detection
 - ximgproc. Structured forest training
 - xphoto. Training the learning-based white balance algorithm
+
+### Projects and Examples
+- Project 1: Real-time Object Detection
+   - Description and code
+- Project 2: Image Stitching
+   - Description and code
 
 
 
