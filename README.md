@@ -154,22 +154,90 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
     - **Revision Tips**: Implement color-based object tracking and image segmentation.
 
 ## 📚 NumPy Tutorials
-
-Understanding NumPy is crucial for working efficiently with OpenCV, as it provides powerful array processing capabilities.
-
 ### Basic NumPy
-- **Introduction to NumPy**: [NumPy Basics](https://numpy.org/doc/stable/user/quickstart.html)
-- **Array Creation and Manipulation**: [Creating Arrays](https://numpy.org/doc/stable/user/basics.creation.html)
-- **Indexing and Slicing**: [Indexing and Slicing](https://numpy.org/doc/stable/user/basics.indexing.html)
-- **Array Operations**: [Array Operations](https://numpy.org/doc/stable/reference/routines.math.html)
-- **Revision Tips**: Practice creating and manipulating arrays, and performing basic operations.
+1. **Introduction to NumPy**:
+   - Overview of NumPy and its uses.
+   - [NumPy Basics](https://numpy.org/doc/stable/user/quickstart.html)
+
+2. **Array Creation and Manipulation**:
+   - Creating arrays (from lists, using functions like `arange`, `linspace`).
+   - Reshaping arrays.
+   - [Creating Arrays](https://numpy.org/doc/stable/user/basics.creation.html)
+
+3. **Indexing and Slicing**:
+   - Basic slicing and indexing.
+   - Advanced indexing.
+   - [Indexing and Slicing](https://numpy.org/doc/stable/user/basics.indexing.html)
+
+4. **Array Operations**:
+   - Arithmetic operations (addition, subtraction, multiplication, division).
+   - Basic linear algebra operations.
+   - [Array Operations](https://numpy.org/doc/stable/reference/routines.math.html)
+
+5. **Array Attributes**:
+   - Shape, size, and dimensions.
+   - Data types and type conversion.
+   - [Array Attributes](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html)
+
+6. **Basic Linear Algebra**:
+   - Dot product and matrix multiplication.
+   - Transpose of a matrix.
+   - [Linear Algebra](https://numpy.org/doc/stable/reference/routines.linalg.html)
 
 ### Advanced NumPy
-- **Broadcasting**: [Broadcasting](https://numpy.org/doc/stable/user/basics.broadcasting.html)
-- **Vectorized Operations**: [Vectorized Operations](https://numpy.org/doc/stable/reference/ufuncs.html)
-- **Linear Algebra with NumPy**: [Linear Algebra](https://numpy.org/doc/stable/reference/routines.linalg.html)
-- **Random Sampling**: [Random Sampling](https://numpy.org/doc/stable/reference/random/index.html)
-- **Revision Tips**: Implement advanced operations and linear algebra computations.
+1. **Broadcasting**:
+   - Rules of broadcasting.
+   - Practical examples of broadcasting.
+   - [Broadcasting](https://numpy.org/doc/stable/user/basics.broadcasting.html)
+
+2. **Vectorized Operations**:
+   - Element-wise operations.
+   - Using universal functions (ufuncs).
+   - [Vectorized Operations](https://numpy.org/doc/stable/reference/ufuncs.html)
+
+3. **Advanced Linear Algebra**:
+   - Eigenvalues and eigenvectors.
+   - Singular Value Decomposition (SVD).
+   - Inverse of a matrix.
+   - [Advanced Linear Algebra](https://numpy.org/doc/stable/reference/routines.linalg.html)
+
+4. **Random Sampling**:
+   - Generating random numbers.
+   - Sampling from different distributions.
+   - [Random Sampling](https://numpy.org/doc/stable/reference/random/index.html)
+
+5. **Fancy Indexing**:
+   - Using boolean arrays for indexing.
+   - Index arrays and multidimensional indexing.
+   - [Fancy Indexing](https://numpy.org/doc/stable/reference/arrays.indexing.html)
+
+6. **Sorting and Searching**:
+   - Sorting arrays.
+   - Searching and filtering arrays.
+   - [Sorting and Searching](https://numpy.org/doc/stable/reference/routines.sort.html)
+
+7. **Data Manipulation**:
+   - Stacking and splitting arrays.
+   - Joining and concatenating arrays.
+   - [Data Manipulation](https://numpy.org/doc/stable/user/basics.joining.html)
+
+### Revision Tips
+- **Practice Problems**: Solve problems on platforms like [NumPy Exercises](https://github.com/rougier/numpy-100).
+- **Implement Projects**: Build small projects that require image processing with OpenCV and NumPy.
+- **Review and Repeat**: Regularly revisit topics and solve related problems.
+- **Use Flashcards**: Create flashcards for important functions and methods.
+- **Engage in Discussions**: Participate in forums or study groups to discuss concepts and applications.
+
+<!--### Additional Resources
+- **Official NumPy Documentation**: [NumPy Documentation](https://numpy.org/doc/stable/)
+- **Tutorials and Guides**:
+  - [NumPy Quickstart Tutorial](https://numpy.org/doc/stable/user/quickstart.html)
+  - [Real Python NumPy Tutorial](https://realpython.com/numpy-tutorial/)
+  - [W3Schools NumPy Tutorial](https://www.w3schools.com/python/numpy_intro.asp)
+- **Online Courses**:
+  - [Coursera: Introduction to Data Science in Python](https://www.coursera.org/learn/python-data-analysis)
+  - [Udacity: Data Analyst Nanodegree](https://www.udacity.com/course/data-analyst-nanodegree--nd002)
+-->
 
 
 ## 📦 Core OpenCV Modules
