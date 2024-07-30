@@ -5,7 +5,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 ## 📋 Table of Contents
 
 - [Introduction](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Introduction.md)
-- [OpenCV Tutorials](#opencv-tutorials)
+- [OpenCV Tutorials](#OpenCV-Tutorials)
 - [NumPy Tutorials](#numpy-tutorials)
 - [Core OpenCV Modules](#core-opencv-modules)
 - [OpenCV.js Tutorials](#opencvjs-tutorials)
