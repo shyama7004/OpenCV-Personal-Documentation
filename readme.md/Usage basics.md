@@ -122,7 +122,10 @@ Here’s a breakdown of the function’s parameters and behavior:
 If the window was created with the `cv::WINDOW_AUTOSIZE` flag, the image will be displayed with its original size, but it will still be limited by the screen resolution. Otherwise, the image will be scaled to fit the window.
 
 Here’s an example of how to use cv::imshow:
-```C++
+
+In Python
+
+```.py
 import cv2
 
 //Load the image
@@ -131,6 +134,78 @@ img = cv2.imread('image.jpg')
 /Display the image
 cv2.imshow('Window Name', img)
 ```
+In Cpp
+```.cpp
+#include <opencv2/opencv.hpp>
+
+int main() {
+    // Load the image
+    cv::Mat img = cv::imread("image.jpg");
+
+    // Check if the image was loaded successfully
+    if (img.empty()) {
+        std::cerr << "Error: Could not load image" << std::endl;
+        return -1;
+    }
+
+    // Display the image
+    cv::imshow("Window Name", img);
+
+    // Wait for a key press indefinitely
+    cv::waitKey(0);
+
+    return 0;
+}
+```
+### Explanation
+
+```cpp
+#include <opencv2/opencv.hpp>
+```
+This line includes the OpenCV header file which provides the necessary functions and data structures for image processing.
+
+```cpp
+int main() {
+```
+This is the main function, the entry point of the C++ program.
+
+```cpp
+    // Load the image
+    cv::Mat img = cv::imread("image.jpg");
+```
+- `cv::Mat`: This is a matrix data type provided by OpenCV, used to store images.
+- `cv::imread("image.jpg")`: This function reads an image from the file named "image.jpg" and stores it in the `img` matrix.
+
+```cpp
+    // Check if the image was loaded successfully
+    if (img.empty()) {
+        std::cerr << "Error: Could not load image" << std::endl;
+        return -1;
+    }
+```
+- `img.empty()`: This method checks if the image matrix is empty, which would indicate that the image failed to load.
+- `std::cerr`: This is the standard error stream, used here to print an error message.
+- `return -1;`: This terminates the program with a status code of -1, indicating an error.
+
+```cpp
+    // Display the image
+    cv::imshow("Window Name", img);
+```
+- `cv::imshow("Window Name", img)`: This function displays the image in a window. The first parameter is the name of the window, and the second is the image matrix to display.
+
+```cpp
+    // Wait for a key press indefinitely
+    cv::waitKey(0);
+```
+- `cv::waitKey(0)`: This function waits for a key press. The parameter `0` means it will wait indefinitely until a key is pressed.
+
+```cpp
+    return 0;
+}
+```
+- `return 0;`: This terminates the program with a status code of 0, indicating successful completion.
+
+
 
 `Note` :
 
