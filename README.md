@@ -4,7 +4,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 
 ## 📋 Table of Contents
 
-- [Introduction](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/readme.md/Introduction.md)
+- [Introduction](#introduction)
 - [OpenCV Tutorials](#opencv-tutorials)
 - [NumPy Tutorials](#numpy-tutorials)
 - [Core OpenCV Modules](#core-opencv-modules)
@@ -14,126 +14,109 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 - [Community and Contributions](#community-and-contributions)
 - [Contact](#contact)
 
+## 📖 Introduction
+
+Welcome to my OpenCV documentation repository! Here you'll find a comprehensive collection of tutorials, projects, and notes aimed at mastering OpenCV for computer vision and image processing.
+
 ## 🖥️ OpenCV Tutorials
 
 ### Core Learning (Month 1)
 1. **Introduction to OpenCV**
-   - **Overview of OpenCV**: [OpenCV Overview](https://opencv.org/about/)
-   - **Installation and Setup**: [Installation Guide](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html)
-   - **Basic Structures (Mat, Scalar, Point, etc.)**: [Core Structures](https://docs.opencv.org/master/d6/d6d/tutorial_mat_the_basic_image_container.html)
+   - [Overview of OpenCV](https://opencv.org/about/)
+   - [Installation and Setup](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html)
+   - [Basic Structures (Mat, Scalar, Point, etc.)](https://docs.opencv.org/master/d6/d6d/tutorial_mat_the_basic_image_container.html)
    - **Revision Tips**: Practice by writing small programs to load, display, and manipulate images.
 
 2. **Core Operations**
-   - **Basic Operations on Images**: [Basic Image Operations](https://docs.opencv.org/master/d3/df2/tutorial_py_basic_ops.html)
-   - **Pixel Manipulation**: [Pixel Manipulation](https://docs.opencv.org/master/df/d9d/tutorial_py_colorspaces.html)
-   - **Arithmetic Operations**: [Arithmetic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html)
-   - **Logic Operations**: [Logic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
-   - **Geometric Transformations**: [Geometric Transformations](https://docs.opencv.org/master/da/d6e/tutorial_py_geometric_transformations.html)
+   - [Basic Operations on Images](https://docs.opencv.org/master/d3/df2/tutorial_py_basic_ops.html)
+   - [Pixel Manipulation](https://docs.opencv.org/master/df/d9d/tutorial_py_colorspaces.html)
+   - [Arithmetic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html)
+   - [Logic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
+   - [Geometric Transformations](https://docs.opencv.org/master/da/d6e/tutorial_py_geometric_transformations.html)
    - **Revision Tips**: Implement small projects like image filters, blending, and basic transformations.
 
 ### Advanced Topics and Projects (Month 2)
 3. **Image Processing**
-   - **Smoothing and Blurring**: [Smoothing Images](https://docs.opencv.org/master/d4/d13/tutorial_py_filtering.html)
-   - **Image Thresholding**: [Image Thresholding](https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html)
-   - **Morphological Operations**: [Morphological Transformations](https://docs.opencv.org/master/d9/d61/tutorial_py_morphological_ops.html)
-   - **Edge Detection**: [Canny Edge Detection](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html)
-   - **Image Gradients**: [Image Gradients](https://docs.opencv.org/master/dd/d43/tutorial_py_gradients.html)
+   - [Smoothing and Blurring](https://docs.opencv.org/master/d4/d13/tutorial_py_filtering.html)
+   - [Image Thresholding](https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html)
+   - [Morphological Operations](https://docs.opencv.org/master/d9/d61/tutorial_py_morphological_ops.html)
+   - [Canny Edge Detection](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html)
+   - [Image Gradients](https://docs.opencv.org/master/dd/d43/tutorial_py_gradients.html)
    - **Advanced Image Processing Techniques**:
-  
-### Restoration
 
+#### Restoration
 1. **Wiener Filtering**:
-   - While OpenCV does not directly support Wiener filtering, you can use SciPy for this purpose:
-   - [Wiener Filtering with SciPy](https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html) - Look for the section on Wiener filtering.
+   - [Wiener Filtering with SciPy](https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html)
 
 2. **Richardson-Lucy Deconvolution**:
-   - Richardson-Lucy deconvolution can be performed using the scikit-image library:
    - [Richardson-Lucy Deconvolution (scikit-image)](https://scikit-image.org/docs/stable/auto_examples/filters/plot_deconvolution.html)
 
 3. **Total Variation Denoising**:
-   - Total Variation denoising is available in scikit-image:
-   - [Total Variation Denoising (scikit-image)](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise_tv.html)
+   - [Total Variation Denoising (scikit-image)](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise.html)
 
-### Denoising
+#### Denoising
+1. [Gaussian Blurring (OpenCV)](https://docs.opencv.org/master/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
+2. [Median Blurring (OpenCV)](https://docs.opencv.org/master/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
+3. [Non-Local Means Denoising (OpenCV)](https://docs.opencv.org/master/d5/d69/tutorial_py_non_local_means.html)
 
-1. **Gaussian Denoising**:
-   - [Gaussian Blurring (OpenCV)](https://docs.opencv.org/master/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
-
-2. **Median Denoising**:
-   - [Median Blurring (OpenCV)](https://docs.opencv.org/master/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
-
-3. **Non-Local Means Denoising**:
-   - [Non-Local Means Denoising (OpenCV)](https://docs.opencv.org/master/d5/d69/tutorial_py_non_local_means.html)
-
-### Segmentation
-
-1. **Thresholding**:
-   - [Image Thresholding (OpenCV)](https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html)
-
-2. **Edge-Based Segmentation**:
-   - [Canny Edge Detection (OpenCV)](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html)
-
-3. **Region-Based Segmentation**:
-   - [Watershed Algorithm (OpenCV)](https://docs.opencv.org/master/d3/db4/tutorial_py_watershed.html)
-
-4. **Advanced Methods (Watershed and Graph-Based Segmentation)**:
-   - [Watershed Algorithm (OpenCV)](https://docs.opencv.org/master/d3/db4/tutorial_py_watershed.html)
-   - For graph-based segmentation, you can explore more advanced implementations in research papers or third-party libraries like PyTorch or TensorFlow. Here’s a resource:
-   - [Graph-Based Segmentation (PyTorch Geometric)](https://pytorch-geometric.readthedocs.io/en/latest/notes/segmentation.html)
-     
+#### Segmentation
+1. [Image Thresholding (OpenCV)](https://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html)
+2. [Canny Edge Detection (OpenCV)](https://docs.opencv.org/master/da/d22/tutorial_py_canny.html)
+3. [Watershed Algorithm (OpenCV)](https://docs.opencv.org/master/d3/db4/tutorial_py_watershed.html)
+4. [Graph-Based Segmentation (PyTorch Geometric)](https://pytorch-geometric.readthedocs.io/en/latest/notes/segmentation.html)
    - **Revision Tips**: Create an image processing pipeline that includes smoothing, thresholding, edge detection, and advanced techniques.
 
 4. **Feature Detection and Description**
-   - **Keypoints and Descriptors**: [Feature Detection and Description](https://docs.opencv.org/master/dc/dc3/tutorial_py_matcher.html)
-   - **Feature Matching**: [Feature Matching](https://docs.opencv.org/master/dc/dc3/tutorial_py_matcher.html)
-   - **Object Detection**: [Cascade Classifiers](https://docs.opencv.org/master/d7/d8b/tutorial_py_face_detection.html)
+   - [Feature Detection and Description](https://docs.opencv.org/master/dc/dc3/tutorial_py_matcher.html)
+   - [Feature Matching](https://docs.opencv.org/master/dc/dc3/tutorial_py_matcher.html)
+   - [Cascade Classifiers](https://docs.opencv.org/master/d7/d8b/tutorial_py_face_detection.html)
    - **Revision Tips**: Develop a simple application for detecting and matching features in images.
 
 5. **Video Analysis**
-   - **Video Capturing and Saving**: [Video Capture](https://docs.opencv.org/master/dd/d43/tutorial_py_video_display.html)
-   - **Background Subtraction**: [Background Subtraction](https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html)
-   - **Motion Detection**: [Motion Detection](https://docs.opencv.org/master/df/d9d/tutorial_py_colorspaces.html)
-   - **Object Tracking**: [Object Tracking](https://docs.opencv.org/master/d7/d00/tutorial_meanshift.html)
+   - [Video Capture](https://docs.opencv.org/master/dd/d43/tutorial_py_video_display.html)
+   - [Background Subtraction](https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html)
+   - [Motion Detection](https://docs.opencv.org/master/df/d9d/tutorial_py_colorspaces.html)
+   - [Object Tracking](https://docs.opencv.org/master/d7/d00/tutorial_meanshift.html)
    - **Revision Tips**: Create a program that captures video and implements background subtraction and object tracking.
 
 ### Specialization and Contributions (Month 3)
 6. **Core Computer Vision Concepts**
-   - **Camera Calibration**: Understanding intrinsic and extrinsic parameters, and how to perform calibration using OpenCV.
-   - **Stereo Vision**: Techniques for depth estimation from stereo images, including epipolar geometry and disparity map computation.
-   - **3D Reconstruction**: Methods to reconstruct 3D scenes from multiple images, structure from motion, and multiview stereo.
+   - [Camera Calibration with OpenCV](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html)
+   - [Depth Map from Stereo Images](https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html)
+   - [3D Reconstruction from Stereo Images](https://docs.opencv.org/4.x/da/de9/tutorial_py_epipolar_geometry.html)
 
 7. **Machine Learning with OpenCV**
-   - **K-Nearest Neighbors**: [KNN](https://docs.opencv.org/master/d5/d26/tutorial_py_knn_understanding.html)
-   - **Support Vector Machines**: [SVM](https://docs.opencv.org/master/d1/d73/tutorial_introduction_to_svm.html)
-   - **Decision Trees and Random Forests**: [Decision Trees](https://docs.opencv.org/master/d3/dc0/group__ml.html)
-   - **K-Means Clustering**: [K-means Clustering](https://docs.opencv.org/master/d1/d5c/tutorial_py_kmeans_opencv.html)
-   - **Hyperparameter Tuning**: Techniques for optimizing machine learning models.
-   - **Model Evaluation**: Metrics and methods for evaluating model performance.
-   - **Deployment**: Strategies for deploying machine learning models in production environments.
+   - [KNN](https://docs.opencv.org/master/d5/d26/tutorial_py_knn_understanding.html)
+   - [SVM](https://docs.opencv.org/master/d1/d73/tutorial_introduction_to_svm.html)
+   - [Decision Trees](https://docs.opencv.org/master/d3/dc0/group__ml.html)
+   - [K-means Clustering](https://docs.opencv.org/master/d1/d5c/tutorial_py_kmeans_opencv.html)
+   - **Hyperparameter Tuning**: [Hyperparameter Tuning Techniques](https://machinelearningmastery.com/hyperparameter-optimization-with-random-search-and-grid-search/)
+   - **Model Evaluation**: [Metrics and Methods for Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
+   - **Deployment**: [Strategies for Deploying Machine Learning Models](https://www.tensorflow.org/tfx/guide/serving)
    - **Revision Tips**: Implement machine learning models to classify images or perform clustering.
 
 8. **Deep Learning with OpenCV**
-   - **Loading and Using Pre-Trained Models**: [Deep Learning with OpenCV](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
-   - **Training Custom Models**: [Training Models](https://docs.opencv.org/master/d2/dc0/tutorial_introduction_to_traincascade.html)
-   - **Image Classification**: [Image Classification](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
-   - **Object Detection**: [YOLO, SSD](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
-   - **Semantic Segmentation**: [Semantic Segmentation](https://docs.opencv.org/master/da/d60/tutorial_bounding_boxes.html)
+   - [Deep Learning with OpenCV](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
+   - [Training Models](https://docs.opencv.org/master/d2/dc0/tutorial_introduction_to_traincascade.html)
+   - [Image Classification](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
+   - [YOLO, SSD](https://docs.opencv.org/master/d5/de7/tutorial_dnn_googlenet.html)
+   - [Semantic Segmentation](https://docs.opencv.org/master/da/d60/tutorial_bounding_boxes.html)
    - **Revision Tips**: Develop applications that use pre-trained models for image classification and object detection.
 
 ### Additional Focus Areas (Throughout the Preparation)
 9. **OpenCV Contrib Modules**
-   - **ximgproc**: Extended image processing, including edge-aware filters and superpixels.
-   - **calib3d**: Advanced calibration techniques and 3D data handling.
-   - **features2d**: Detailed exploration of feature detection, description, and matching.
+   - [Extended Image Processing (ximgproc)](https://docs.opencv.org/4.x/d9/dc5/tutorial_ximgproc_intro.html)
+   - [Advanced Calibration Techniques and 3D Data Handling (calib3d)](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html)
+   - [2D Features Framework (features2d)](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_features2d.html)
 
 10. **Computational Photography**
-    - **HDR Imaging**: Techniques for capturing and processing high dynamic range images.
-    - **Image Stitching**: Methods to create panoramas and wide-angle images.
-    - **Deblurring**: Techniques to remove motion blur and defocus blur from images.
+   - [HDR Imaging with OpenCV](https://docs.opencv.org/4.x/d3/db7/tutorial_hdr_imaging.html)
+   - [Image Stitching with OpenCV](https://docs.opencv.org/4.x/d8/d19/tutorial_stitcher.html)
+   - [Deblurring Techniques](https://www.pyimagesearch.com/2021/08/16/opencv-deblurring-images-with-fft-and-inverse-fft/)
 
 11. **Real-Time Applications**
-    - **Optimizing for Real-Time Performance**: Using multi-threading and GPU acceleration.
-    - **Techniques for Real-Time Processing**: Algorithms and approaches for processing video streams and real-time data.
+   - [Optimizing with Multi-Threading and GPU Acceleration](https://docs.opencv.org/4.x/d2/d0a/tutorial_introduction_to_opencl.html)
+   - [Real-Time Video Processing and Augmented Reality](https://www.pyimagesearch.com/2021/03/15/augmented-reality-with-aruco-markers-and-opencv/)
 
 12. **Documentation and Testing**
     - **Writing Documentation**: [Writing Documentation](https://opencv.org/documentation/)
