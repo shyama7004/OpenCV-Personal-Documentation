@@ -22,15 +22,16 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 
 ### Core Learning (Month 1)
 1. **Introduction to OpenCV**
-   - [Overview of OpenCV](https://opencv.org/about/)
-   - [Installation and Setup](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html)
-   - [Basic Structures (Mat, Scalar, Point, etc.)](https://docs.opencv.org/master/d6/d6d/tutorial_mat_the_basic_image_container.html)
+   - [Overview of OpenCV](https://opencv.org/about/) 
+   - [Installation and Setup](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Quick%20Start.md)
+   - [Basic Structures (Mat, Scalar, Point, etc.)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Structures.md)
    - **Revision Tips**: Practice by writing small programs to load, display, and manipulate images.
 
 2. **Core Operations**
-   - [Basic Operations on Images](https://docs.opencv.org/master/d3/df2/tutorial_py_basic_ops.html)
-   - [Pixel Manipulation](https://docs.opencv.org/master/df/d9d/tutorial_py_colorspaces.html)
-   - [Arithmetic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html)
+   - [Basic Operations on Images](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)
+   - [Pixel Manipulation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)
+   - [Arithmetic Operations](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Arithmetic%20Operations.mdl)
+|
    - [Logic Operations](https://docs.opencv.org/master/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
    - [Geometric Transformations](https://docs.opencv.org/master/da/d6e/tutorial_py_geometric_transformations.html)
    - **Revision Tips**: Implement small projects like image filters, blending, and basic transformations.
