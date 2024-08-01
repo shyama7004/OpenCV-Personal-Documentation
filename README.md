@@ -34,8 +34,8 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [Logic Operations](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
    - [Geometric Transformations](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)-->
  
-  - **Basic Operations on Images**: [Basic Operations on Images](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
-  - **Pixel Manipulation**: [Changing Colorspaces](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
+  - **Basic Operations on Images**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)   |   [openCV Docs](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
+  - **Pixel Manipulation**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
   - **Arithmetic Operations**: [Arithmetic Operations](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html)
   - **Logic Operations**: [Image Blending using Pyramids](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
   - **Geometric Transformations**: [Geometric Transformations](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)
