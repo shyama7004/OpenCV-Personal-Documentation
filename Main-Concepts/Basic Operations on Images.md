@@ -183,7 +183,7 @@ plt.subplot(236), plt.imshow(constant, 'gray'), plt.title('CONSTANT')
 
 plt.show()
 ```
-For more details click on this Link : [Code explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/tree/main/More%20Explanation)
+For more details click on this Link : [Code explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/21.md)
 
 See the result below. (Image is displayed with matplotlib. So RED and BLUE channels will be interchanged):
 
