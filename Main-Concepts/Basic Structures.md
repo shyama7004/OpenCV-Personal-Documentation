@@ -230,8 +230,9 @@ For small matrices you may use comma separated initializers or initializer lists
   ```cpp
     Mat C = (Mat_<double>(3,3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
     cout << "C = " << endl << " " << C << endl << endl;
-    ```
-  ```cpp
+  ```
+
+```cpp
     C = (Mat_<double>({0, -1, 0, -1, 5, -1, 0, -1, 0})).reshape(3);
     cout << "C = " << endl << " " << C << endl << endl;
 ```
@@ -239,7 +240,7 @@ For small matrices you may use comma separated initializers or initializer lists
 "></div>
 Create a new header for an existing Mat object and cv::Mat::clone or cv::Mat::copyTo it.
 
-  ```cpp
+```cpp
     Mat RowClone = C.row(1).clone();
     cout << "RowClone = " << endl << " " << RowClone << endl << endl;
 ```
@@ -247,10 +248,11 @@ Create a new header for an existing Mat object and cv::Mat::clone or cv::Mat::co
 `Note`
 You can fill out a matrix with random values using the cv::randu() function. You need to give a lower and upper limit for the random values:
     
-```cpp
+
+  ```cpp
     Mat R = Mat(3, 2, CV_8UC3);
     randu(R, Scalar::all(0), Scalar::all(255));
-```
+  ```
 ---
 ## Output formatting
 In the above examples you could see the default formatting option. OpenCV, however, allows you to format your matrix output:
@@ -260,18 +262,22 @@ In the above examples you could see the default formatting option. OpenCV, howev
     cout << "R (default) = " << endl <<        R           << endl << endl;
     ```
 <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut8.png"></div>
+
 - Python
-    ```
+    
+  ```
     cout << "R (python)  = " << endl << format(R, Formatter::FMT_PYTHON) << endl << endl;
   
     ```
 <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut16.png"></div>
+
 - Comma separated values (CSV)
     
-```
+  ```
     cout << "R (csv)     = " << endl << format(R, Formatter::FMT_CSV   ) << endl << endl;
-```
-<div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut10.png"></div>
+  ```
+
+ <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut10.png"></div>
 - Numpy
     
 ```
