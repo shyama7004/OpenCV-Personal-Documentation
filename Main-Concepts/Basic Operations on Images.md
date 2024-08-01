@@ -22,6 +22,8 @@ Let's load a color image first:
 >>> assert img is not None, "file could not be read, check with os.path.exists()"
 ```
 
+This code reads the assigned image.
+
 You can access a pixel value by its row and column coordinates. For a BGR image, it returns an array of Blue, Green, Red values. For a grayscale image, just the corresponding intensity is returned.
 
 ```python
@@ -50,17 +52,25 @@ Numpy is an optimized library for fast array calculations. Simply accessing each
 The above method is normally used for selecting a region of an array, say the first 5 rows and last 3 columns. For individual pixel access, the Numpy array methods, `array.item()` and `array.itemset()` are considered better. They always return a scalar, however, so if you want to access all the B, G, R values, you will need to call `array.item()` separately for each value.
 
 Better pixel accessing and editing method:
+```py
+import cv2 as cv
 
-```python
-# Accessing RED value
->>> img.item(10,10,2)
-59
+# Load the image
+img = cv.imread("/Users/sankarsanbisoyi/Desktop/Python/Numpy Practice/download.jpeg")
 
-# Modifying RED value
->>> img.itemset((10,10,2), 100)
->>> img.item(10,10,2)
-100
+# Ensure the image is loaded properly
+if img is None:
+    print("Error: Image not loaded.")
+else:
+    # Set the pixel value at (10, 10) in the third channel (blue, green, red -> 0, 1, 2)
+    img[10, 10, 2] = 100
+
+    # Display the modified image to verify the change
+    cv.imshow("Modified Image", img)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
 ```
+`Note`:Maintain all the whitespaces.
 
 ## Accessing Image Properties
 Image properties include the number of rows, columns, and channels; type of image data; number of pixels; etc.
@@ -125,12 +135,17 @@ Suppose you want to set all the red pixels to zero - you do not need to split th
 ```python
 >>> img[:,:,2] = 0
 ```
+`Note`:You can also try `[:,:,0]` & `[:,:,1]`
 
 ### Warning
 `cv.split()` is a costly operation (in terms of time). So use it only if necessary. Otherwise, go for Numpy indexing.
 
 ## Making Borders for Images (Padding)
-If you want to create a border around an image, something like a photo frame, you can use `cv.copyMakeBorder()`. But it has more applications for convolution operation, zero padding, etc. This function takes the following arguments:
+If you want to create a border around an image, something like a photo frame, you can use `cv.copyMakeBorder()`. But it has more applications for convolution operation, zero padding, etc. 
+
+`The convolution operation` is a mathematical tool used to combine two signals or functions to produce a third signal. In the context of signals and systems, convolution relates the input signal and the impulse response of a system to produce the output signal.
+
+This function takes the following arguments:
 - `src` - input image
 - `top, bottom, left, right` - border width in the number of pixels in corresponding directions
 - `borderType` - Flag defining what kind of border to be added. It can be the following types:
@@ -168,8 +183,10 @@ plt.subplot(236), plt.imshow(constant, 'gray'), plt.title('CONSTANT')
 
 plt.show()
 ```
+For more details click on this Link : [Code explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/tree/main/More%20Explanation)
 
 See the result below. (Image is displayed with matplotlib. So RED and BLUE channels will be interchanged):
 
 ![Image with Borders](https://docs.opencv.org/4.x/border.jpg)
+
 
