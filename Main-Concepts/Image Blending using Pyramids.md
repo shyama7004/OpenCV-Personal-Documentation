@@ -6,7 +6,7 @@ To blend images using image pyramids in OpenCV, you typically follow these steps
 
 2. **Generate Laplacian Pyramids**: From the Gaussian pyramids, generate Laplacian pyramids. Each level of the Laplacian pyramid is formed by subtracting the upsampled version of the next level in the Gaussian pyramid from the current level.
 
-3. **Blend the Images**: Use a mask to blend the Laplacian pyramids of the two images. The mask can be a binary or gradient mask that determines how much of each image is used in different regions.
+3. **Blend the Images**: Use a mask to blend the Laplacian pyramids of the two images. The mask can be a [binary or gradient mask](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.4.md) that determines how much of each image is used in different regions.
 
 4. **Reconstruct the Image**: Reconstruct the final blended image by upsampling and adding the blended Laplacian pyramid levels.
 
