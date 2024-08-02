@@ -1,4 +1,4 @@
-p# OpenCV Color Space Conversion and Object Tracking
+# OpenCV Color Space Conversion and Object Tracking
 
 ## Goal
 In this tutorial, you will learn how to:
