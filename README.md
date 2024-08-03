@@ -34,7 +34,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [Logic Operations](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
    - [Geometric Transformations](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)-->
  
-  - **Basic Operations on Images**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)   |   [openCV Docs](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
+  - **Basic Operations on Images**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
   - **Pixel Manipulation**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
   - **Arithmetic Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Arithmetic%20Operations.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html)
   - **Logic Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Blending%20using%20Pyramids.md) 
@@ -43,10 +43,10 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 
 ### Advanced Topics and Projects (Month 2)
 3. **Image Processing**
-   - [Smoothing and Blurring](https://docs.opencv.org/5.x/d4/d13/tutorial_py_filtering.html)
-   - [Image Thresholding](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
-   - [Morphological Operations](https://docs.opencv.org/5.x/d9/d61/tutorial_py_morphological_ops.html)
-   - [Canny Edge Detection](https://docs.opencv.org/5.x/da/d22/tutorial_py_canny.html)
+   - **Smoothing and Blurring**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20and%20Blurring.md)   |   [OpenCV](https://docs.opencv.org/5.x/d4/d13/tutorial_py_filtering.html)
+   - **Image Thresholding**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Thresholding.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
+   - **Morphological Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Morphological%20Transformations.md)   |   [OpenCV](https://docs.opencv.org/5.x/d9/d61/tutorial_py_morphological_ops.html)
+   - **Canny Edge Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Canny%20Edge%20Detection.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/da/d22/tutorial_py_canny.html)
    - [Image Gradients](https://docs.opencv.org/5.x/dd/d43/tutorial_py_gradients.html)
    - **Advanced Image Processing Techniques**:
 
