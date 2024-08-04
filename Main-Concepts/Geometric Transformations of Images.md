@@ -28,6 +28,8 @@ res = cv.resize(img, (2*width, 2*height), interpolation=cv.INTER_CUBIC)
 ### Translation
 Translation is the shifting of an object's location. If you know the shift in the (x, y) direction and let it be (tx, ty), you can create the transformation matrix M as follows:
 
+<div align="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/8.png" width ="300" height="150"></div>
+
 ```python
 import numpy as np
 import cv2 as cv
@@ -44,28 +46,50 @@ cv.waitKey(0)
 cv.destroyAllWindows()
 ```
 
-**Warning:** The third argument of the `cv.warpAffine()` function is the size of the output image, which should be in the form of **(width, height)**. Remember width = number of columns, and height = number of rows.
+### Explanation of code :
+
+```py
+M = np.float32([[1, 0, 100], [0, 1, 50]])
+dst = cv.warpAffine(img, M, (cols, rows))
+```
+
+1. **Creating the Transformation Matrix:**
+   ```python
+   M = np.float32([[1, 0, 100], [0, 1, 50]])
+   ```
+   This line creates a 2x3 transformation matrix `M` using `numpy`. The matrix specifies an affine transformation, where the first two elements of each row are the scale and rotation factors, and the third element is the translation factor. In this case:
+   - `[1, 0, 100]` means no scaling or rotation in the x-direction and a translation of 100 pixels.
+   - `[0, 1, 50]` means no scaling or rotation in the y-direction and a translation of 50 pixels.
+
+2. **Applying the Affine Transformation:**
+   ```python
+   dst = cv.warpAffine(img, M, (cols, rows))
+   ```
+   This line applies the affine transformation to the image `img` using OpenCV's `warpAffine` function. The parameters are:
+   - `img`: The input image.
+   - `M`: The transformation matrix.
+   - `(cols, rows)`: The size of the output image, which is typically the same as the input image.
+
+   The result is an image `dst` where the original image `img` has been translated by 100 pixels to the right and 50 pixels down.
+
+**Warning:** The third argument of the `cv.warpAffine()` function is the size of the output image, which should be in the form of **(width, height)**. 
+
+`Remember` 
+  - Width = number of columns, and
+  - Height = number of rows.
 
 ### Rotation
 Rotation of an image for an angle θ is achieved by the transformation matrix of the form:
 
-\[
-M = \begin{bmatrix}
-\cos\theta & -\sin\theta \\
-\sin\theta & \cos\theta
-\end{bmatrix}
-\]
-
+<div align="center"><img src="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/9.png" width ="300"></div>
 
 But OpenCV provides scaled rotation with adjustable center of rotation so that you can rotate at any location you prefer. The modified transformation matrix is given by:
 
-\[ M = \begin{bmatrix} \alpha & \beta & (1 - \alpha) \cdot \text{center.x} - \beta \cdot \text{center.y} \\ -\beta & \alpha & \beta \cdot \text{center.x} + (1 - \alpha) \cdot \text{center.y} \end{bmatrix} \]
-
-where:
-- \(\alpha = \text{scale} \cdot \cos \theta\)
-- \(\beta = \text{scale} \cdot \sin \theta\)
+<div align="center"><img src="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/10.png" width ="900" height="300"></div>
 
 To find this transformation matrix, OpenCV provides a function, `cv.getRotationMatrix2D`. Check out the below example which rotates the image by 90 degrees with respect to the center without any scaling.
+
+For futher `explanation`  click on : [Matrix Explained](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.5.md)
 
 ```python
 img = cv.imread('messi5.jpg', cv.IMREAD_GRAYSCALE)
@@ -76,6 +100,57 @@ rows, cols = img.shape
 M = cv.getRotationMatrix2D(((cols-1)/2.0, (rows-1)/2.0), 90, 1)
 dst = cv.warpAffine(img, M, (cols, rows))
 ```
+### Explanation:
+
+```python
+M = cv.getRotationMatrix2D((((cols-1)/2.0),((rows-1)/2.0)), 90, 1)
+```
+
+Here's what each part of the function does:
+
+1. **`cv.getRotationMatrix2D`**: This is an OpenCV function that calculates the 2D rotation matrix for an image.
+
+2. **`((cols-1)/2.0, (rows-1)/2.0)`**: These are the coordinates of the center of the image around which the rotation will occur.
+   - `cols` is the number of columns in the image (width).
+   - `rows` is the number of rows in the image (height).
+   - `((cols-1)/2.0, (rows-1)/2.0)` computes the center of the image by dividing the width and height by 2. Subtracting 1 and dividing by 2.0 ensures the center point is calculated correctly, accounting for zero-based indexing.
+
+3. **`90`**: This is the angle of rotation in degrees. Here, it specifies a rotation of 90 degrees.
+
+4. **`1`**: This is the scale factor. A scale of 1 means the image will be rotated without scaling (i.e., the image size will remain the same).
+
+Putting it all together:
+- The `cv.getRotationMatrix2D` function computes the rotation matrix \(M\) needed to rotate an image by 90 degrees around its center point, without changing the image size.
+
+This matrix M can then be used with the `cv.warpAffine` function to apply the rotation to the image. Here's an example of how you might use it in a full context:
+
+```python
+import cv2 as cv
+
+# Load the image
+image = cv.imread('path_to_image.jpg')
+
+# Get the dimensions of the image
+(rows, cols) = image.shape[:2]
+
+# Compute the rotation matrix
+M = cv.getRotationMatrix2D(((cols-1)/2.0, (rows-1)/2.0), 90, 1)
+
+# Apply the rotation to the image
+rotated_image = cv.warpAffine(image, M, (cols, rows))
+
+# Save or display the rotated image
+cv.imwrite('rotated_image.jpg', rotated_image)
+# or
+cv.imshow('Rotated Image', rotated_image)
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+
+In this example, the image is loaded, its center is computed, the rotation matrix is calculated, and then the image is rotated and displayed or saved.
+
+### Results:
+![Image-1](https://docs.opencv.org/5.x/rotation.jpg)
 
 ### Affine Transformation
 In affine transformation, all parallel lines in the original image will still be parallel in the output image. To find the transformation matrix, we need three points from the input image and their corresponding locations in the output image. Then `cv.getAffineTransform` will create a 2x3 matrix which is to be passed to `cv.warpAffine`.
@@ -99,6 +174,9 @@ plt.subplot(122), plt.imshow(dst), plt.title('Output')
 plt.show()
 ```
 
+### Results
+![Image-2](https://docs.opencv.org/5.x/affine.jpg)
+
 ### Perspective Transformation
 For perspective transformation, you need a 3x3 transformation matrix. Straight lines will remain straight even after the transformation. To find this transformation matrix, you need 4 points on the input image and corresponding points on the output image. Among these 4 points, 3 of them should not be collinear. Then the transformation matrix can be found by the function `cv.getPerspectiveTransform`. Then apply `cv.warpPerspective` with this 3x3 transformation matrix.
 
@@ -120,10 +198,13 @@ plt.subplot(121), plt.imshow(img), plt.title('Input')
 plt.subplot(122), plt.imshow(dst), plt.title('Output')
 plt.show()
 ```
+### Results
+![Image-3](https://docs.opencv.org/5.x/perspective.jpg)
 
 ## Additional Resources
 1. "Computer Vision: Algorithms and Applications", Richard Szeliski
 
 ## Exercises
-Generated on Tue Jul 30 2024 23:09:41 for OpenCV by doxygen 1.9.8
 ```
+
+
