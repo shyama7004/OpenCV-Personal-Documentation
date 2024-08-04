@@ -10,6 +10,8 @@ You can add two images with the OpenCV function, `cv.add()`, or simply by the nu
 ### Note
 There is a difference between OpenCV addition and Numpy addition. OpenCV addition is a saturated operation while Numpy addition is a modulo operation.
 
+For more explanation on [Modulo v/s Saturated Operation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.3.md)
+
 For example, consider the below sample:
 
 ```python
@@ -28,15 +30,16 @@ This will be more visible when you add two images. Stick with OpenCV functions, 
 ## Image Blending
 This is also image addition, but different weights are given to images in order to give a feeling of blending or transparency. Images are added as per the equation below:
 
-\[ \text{dst} = \alpha \cdot \text{img1} + \beta \cdot \text{img2} + \gamma \]
+<div align ="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/6.png" width="500" height ="100"></div>
 
-By varying \(\alpha\) from 0 to 1, you can perform a cool transition between one image to another.
+By varying &alpha; from 0 to 1, you can perform a cool transition between one image to another.
 
 Here I took two images to blend together. The first image is given a weight of 0.7 and the second image is given 0.3. `cv.addWeighted()` applies the following equation to the image:
 
-\[ \text{dst} = 0.7 \cdot \text{img1} + 0.3 \cdot \text{img2} \]
+<div align ="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/7.png" width="500" height ="100"></div>
 
-Here \(\gamma\) is taken as zero.
+
+Here &gamma; is taken as zero.
 
 ```python
 img1 = cv.imread('ml.png')
@@ -94,58 +97,77 @@ cv.destroyAllWindows()
 
 ### Explanation
 
-1. **Load two images**:
-    ```python
-    img1 = cv.imread('messi5.jpg')
-    img2 = cv.imread('opencv-logo-white.png')
-    assert img1 is not None, "file could not be read, check with os.path.exists()"
-    assert img2 is not None, "file could not be read, check with os.path.exists()"
-    ```
-    We load two images: one is the main image (`img1`) and the other is the logo (`img2`). We ensure both images are loaded correctly.
+#### 1. Loading Images
+```python
+import cv2 as cv
 
-2. **Define a region of interest (ROI)**:
-    ```python
-    rows, cols, channels = img2.shape
-    roi = img1[0:rows, 0:cols]
-    ```
-    We create a region of interest in `img1` that is the same size as `img2`.
+# Load two images
+img1 = cv.imread('messi5.jpg')
+img2 = cv.imread('opencv-logo-white.png')
+assert img1 is not None, "file could not be read, check with os.path.exists()"
+assert img2 is not None, "file could not be read, check with os.path.exists()"
+```
+- **Purpose**: This section loads two images using OpenCV's `imread` function.
+- **`img1`**: This is the main image (e.g., 'messi5.jpg').
+- **`img2`**: This is the logo image you want to overlay on the main image (e.g., 'opencv-logo-white.png').
+- **Assertions**: The `assert` statements ensure that the images are loaded correctly. If an image fails to load, it raises an assertion error with a message.
 
-3. **Create a mask of the logo and its inverse**:
-    ```python
-    img2gray = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
-    ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
-    mask_inv = cv.bitwise_not(mask)
-    ```
-    We convert `img2` to grayscale, then create a binary mask where the logo is white and the background is black. We also create an inverse mask.
+#### 2. Creating a Region of Interest (ROI)
+```python
+# I want to put the logo on the top-left corner, so I create an ROI
+rows, cols, channels = img2.shape
+roi = img1[0:rows, 0:cols]
+```
+- **Purpose**: This section sets up a region in `img1` where the logo will be placed.
+- **`img2.shape`**: Retrieves the dimensions of the logo image. `rows` and `cols` are the height and width, respectively, and `channels` is the number of color channels.
+- **`roi`**: Defines a region of interest in `img1` that matches the size of `img2`. This region is located at the top-left corner of `img1`.
 
-4. **Black out the area of the logo in the ROI**:
-    ```python
-    img1_bg = cv.bitwise_and(roi, roi, mask=mask_inv)
-    ```
-    Using the inverse mask, we black out the area of the logo in the ROI.
+#### 3. Creating Masks
+```python
+# Now create a mask of the logo and create its inverse mask also
+img2gray = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
+mask_inv = cv.bitwise_not(mask)
+```
+- **`cv.cvtColor`**: Converts the logo image (`img2`) to grayscale, resulting in `img2gray`.
+- **`cv.threshold`**: Applies a binary threshold to the grayscale logo image. This creates a binary mask (`mask`) where the logo is white (255) and the background is black (0).
+- **`cv.bitwise_not`**: Creates an inverse of the mask (`mask_inv`), where the logo is black (0) and the background is white (255).
 
-5. **Extract the logo region from the logo image**:
-    ```python
-    img2_fg = cv.bitwise_and(img2, img2, mask=mask)
-    ```
-    Using the mask, we extract the logo region from `img2`.
+#### 4. Blacking Out the Logo Area in ROI
+```python
+# Now black-out the area of the logo in ROI
+img1_bg = cv.bitwise_and(roi, roi, mask=mask_inv)
+```
+- **Purpose**: This section removes the area of the logo from the ROI in `img1`.
+- **`cv.bitwise_and`**: Applies a bitwise AND operation between the ROI and itself, but only where `mask_inv` is white (255). This zeroes out the area where the logo will go, effectively blacking it out.
 
-6. **Combine the background and the logo**:
-    ```python
-    dst = cv.add(img1_bg, img2_fg)
-    img1[0:rows, 0:cols] = dst
-    ```
-    We add the background and the logo, and then place the result back into the original image.
+#### 5. Extracting the Logo Region
+```python
+# Take only region of the logo from the logo image
+img2_fg = cv.bitwise_and(img2, img2, mask=mask)
+```
+- **Purpose**: This section extracts just the logo from `img2`.
+- **`cv.bitwise_and`**: Applies a bitwise AND operation between `img2` and itself, but only where `mask` is white (255). This isolates the logo from its background.
 
-7. **Display the result**:
-    ```python
-    cv.imshow('res', img1)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
-    ```
-    We display the final image.
+#### 6. Combining the Logo with the ROI
+```python
+# Put the logo in ROI and modify the main image
+dst = cv.add(img1_bg, img2_fg)
+img1[0:rows, 0:cols] = dst
+```
+- **Purpose**: This section combines the blacked-out ROI with the isolated logo and updates the main image.
+- **`cv.add`**: Adds `img1_bg` and `img2_fg` together, placing the logo in the blacked-out area.
+- **`img1[0:rows, 0:cols] = dst`**: Replaces the original ROI in `img1` with the combined image (`dst`).
 
-Check the result below. The left image shows the mask we created. The right image shows the final result. For better understanding, display all the intermediate images in the above code, especially `img1_bg` and `img2_fg`.
+#### 7. Displaying the Result
+```python
+cv.imshow('res', img1)
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+- **`cv.imshow`**: Displays the modified image (`img1`) in a window titled 'res'.
+- **`cv.waitKey(0)`**: Waits indefinitely for a key press. This keeps the window open until a key is pressed.
+- **`cv.destroyAllWindows`**: Closes all OpenCV windows.
 
 ![Mask and Result](https://docs.opencv.org/4.x/overlay.jpg)
 
