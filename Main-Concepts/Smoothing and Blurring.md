@@ -8,7 +8,11 @@ Learn to:
 ## 2D Convolution (Image Filtering)
 As in one-dimensional signals, images also can be filtered with various low-pass filters (LPF), high-pass filters (HPF), etc. LPF helps in removing noise, blurring images, etc. HPF filters help in finding edges in images.
 
+🔬 `A low-pass filter` is a type of electrical circuit that allows low-frequency signals to pass through while blocking or reducing high-frequency signals
+
 OpenCV provides a function `cv.filter2D()` to convolve a kernel with an image. As an example, we will try an averaging filter on an image. A 5x5 averaging filter kernel will look like the below:
+
+🌐 In OpenCV, a kernel (or convolution matrix) is a small matrix used for image processing operations, such as filtering or edge detection. It's applied to the image through a process called convolution, which involves element-wise multiplication and summation, to achieve a specific effect. For example, a Gaussian kernel can be used for blurring an image.
 
 ![Formula1](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/1.png)
 
@@ -61,6 +65,8 @@ plt.subplot(122),plt.imshow(blur),plt.title('Blurred')
 plt.xticks([]), plt.yticks([])
 plt.show()
 ```
+`Explanation` of xticks and yticks: [Click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.1.md)
+
 ![Image-2](https://docs.opencv.org/5.x/blur.jpg)
 
 ### 2. Gaussian Blurring
