@@ -45,9 +45,9 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 3. **Image Processing**
    - **Smoothing and Blurring**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20and%20Blurring.md)   |   [OpenCV](https://docs.opencv.org/5.x/d4/d13/tutorial_py_filtering.html)
    - **Image Thresholding**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Thresholding.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
-   - **Morphological Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Morphological%20Transformations.md)   |   [OpenCV](https://docs.opencv.org/5.x/d9/d61/tutorial_py_morphological_ops.html)
+   - **Morphological Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Morphological%20Transformations.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d9/d61/tutorial_py_morphological_ops.html)
    - **Canny Edge Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Canny%20Edge%20Detection.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/da/d22/tutorial_py_canny.html)
-   - [Image Gradients](https://docs.opencv.org/5.x/dd/d43/tutorial_py_gradients.html)
+   - **Image Gradients** : [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Gradients.md)   |   [OpenCv](https://docs.opencv.org/5.x/dd/d43/tutorial_py_gradients.html)
    - **Advanced Image Processing Techniques**:
 
 #### Restoration
