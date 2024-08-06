@@ -37,7 +37,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
   - **Basic Operations on Images**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
   - **Pixel Manipulation**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
   - **Arithmetic Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Arithmetic%20Operations.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html)
-  - **Logic Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Blending%20using%20Pyramids.md) 
+  - **Image Pyramids**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Blending%20using%20Pyramids.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/dc/dff/tutorial_py_pyramids.html#autotoc_md1437)
   - **Geometric Transformations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Geometric%20Transformations%20of%20Images.md)   |   [OpenCv Docs](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)
   - **Revision Tips**: Implement small projects like image filters, blending, and basic transformations.
 
