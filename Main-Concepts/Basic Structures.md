@@ -112,13 +112,9 @@ int main(int argc, char** argv) {
 }
 ```
 
-### Explanation:
-- **Command-Line Argument:** The program expects the path to an image file as a command-line argument.
-- **Step 1:** Matrices `A` and `C` are declared.
-- **Step 2:** The image is read from the file path provided and stored in `A`.
-- **Step 3:** Matrix `B` is created as a copy of `A` using the copy constructor.
-- **Step 4:** Matrix `C` is assigned the contents of `A` using the assignment operator.
-- **Display:** The images `A`, `B`, and `C` are displayed in separate windows.
+This will open three windows displaying the original image, the image copied using the copy constructor, and the image assigned using the assignment operator.
+
+All the above objects, in the end, point to the same single data matrix and making a modification using any of them will affect all the other ones as well. In practice the different objects just provide different access methods to the same underlying data. Nevertheless, their header parts are different. 
 
 For more explanation ,[click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/Code-1.md)
 
@@ -129,9 +125,7 @@ g++ -o example example.cpp `pkg-config --cflags --libs opencv4`
 ./example path/to/your/image.jpg
 ```
 
-This will open three windows displaying the original image, the image copied using the copy constructor, and the image assigned using the assignment operator.
 
-All the above objects, in the end, point to the same single data matrix and making a modification using any of them will affect all the other ones as well. In practice the different objects just provide different access methods to the same underlying data. Nevertheless, their header parts are different. 
 
 The real interesting part is that you can create headers which refer to only a subsection of the full data. For example, to create a `region of interest` (ROI) in an image you just create a new header with the new boundaries:
 
@@ -139,7 +133,13 @@ The real interesting part is that you can create headers which refer to only a s
 Mat D (A, Rect(10, 10, 100, 100) ); // using a rectangle
 Mat E = A(Range::all(), Range(1,3)); // using row and column boundaries
 ```
-Now you may ask – if the matrix itself may belong to multiple Mat objects, who takes responsibility for cleaning it up when it's no longer needed? The short answer is: the last object that used it. This is handled by using a reference counting mechanism. Whenever somebody copies a header of a Mat object, a counter is increased for the matrix. Whenever a header is cleaned, this counter is decreased. When the counter reaches zero the matrix is freed. Sometimes you will want to copy the matrix itself too, so OpenCV provides cv::Mat::clone() and cv::Mat::copyTo() functions.
+Now you may ask – if the matrix itself may belong to multiple Mat objects, who takes responsibility for cleaning it up when it's no longer needed? 
+
+The short answer is: the last object that used it. 
+
+This is handled by using a reference counting mechanism. Whenever somebody copies a header of a Mat object, a counter is increased for the matrix. Whenever a header is cleaned, this counter is decreased. When the counter reaches zero the matrix is freed. 
+
+Sometimes you will want to copy the matrix itself too, so OpenCV provides cv::Mat::clone() and cv::Mat::copyTo() functions.
 ```cpp
 Mat F = A.clone();
 Mat G;
@@ -167,7 +167,7 @@ There are, however, many other color systems, each with their own advantages:
   - CIE L*a*b* is a perceptually uniform color space, which comes in handy if you need to measure the distance of a given color to another color.
 
 
-Each of the building components has its own valid domains. This leads to the data type used. How we store a component defines the control we have over its domain. The smallest data type possible is char, which means one byte or 8 bits. This may be unsigned (so can store values from 0 to 255) or signed (values from -127 to +127). Although this width, in the case of three components (like RGB), already gives 16 million possible colors to represent, we may acquire an even finer control by using the float (4 byte = 32 bit) or double (8 byte = 64 bit) data types for each component. Nevertheless, remember that increasing the size of a component also increases the size of the whole picture in memory.
+Each of the building components has its own valid domains. This leads to the data type used. How we store a component defines the control we have over its domain. `The smallest data type possible is char`, which means one byte or `8` bits. This may be unsigned (so can store values from 0 to 255) or signed (values from -127 to +127). Although this width, in the case of three components (like RGB), already gives 16 million possible colors to represent, we may acquire an even finer control by using the float (4 byte = 32 bit) or double (8 byte = 64 bit) data types for each component. Nevertheless, remember that increasing the size of a component also increases the size of the whole picture in memory.
 
 ## Creating a Mat object explicitly
 
@@ -186,10 +186,15 @@ For two dimensional and multichannel images we first define their size: row and 
 
 Then we need to specify the data type to use for storing the elements and the number of channels per matrix point. To do this we have multiple definitions constructed according to the following convention:
 
-```CV_[The number of bits per item][Signed or Unsigned][Type Prefix]C[The channel number]
+```
+CV_[The number of bits per item][Signed or Unsigned][Type Prefix]C[The channel number]
 ```
 
 For instance, CV_8UC3 means we use unsigned char types that are 8 bit long and each pixel has three of these to form the three channels. There are types predefined for up to four channels. The cv::Scalar is four element short vector. Specify it and you can initialize all matrix points with a custom value. If you need more you can create the type with the upper macro, setting the channel number in parenthesis as you can see below.
+
+- `cv::Scalar` is a 4-element vector that can represent a scalar value or a color. 
+
+For more explanation click on :[Code Snippet Explained](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/1.3.md)
 
   - Use C/C++ arrays and initialize via constructor
 
@@ -200,6 +205,8 @@ For instance, CV_8UC3 means we use unsigned char types that are 8 bit long and e
   The upper example shows how to create a matrix with more than two     
   dimensions. Specify its dimension, then pass a pointer containing the 
   size for each dimension and the rest remains the same.
+
+For more explanation click on :[Code Snippet Explained](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/1.3.2.md)
 
   - cv::Mat::create function:
 
@@ -221,6 +228,12 @@ You cannot initialize the matrix values with this construction. It will only rea
     Mat Z = Mat::zeros(3,3, CV_8UC1);
     cout << "Z = " << endl << " " << Z << endl << endl;
     ```
+
+- `Mat::eye(4, 4, CV_64F)` : creates a 4x4 identity matrix where the diagonal elements are 1 and all other elements are 0.
+- `Mat::ones(2, 2, CV_32F)` : creates a 2x2 matrix where all elements are 1.
+- `Mat::zeros(3, 3, CV_8UC1)` creates a 3x3 matrix where all elements are 0.
+
+
     <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut3.png" src="https://docs.opencv.org/4.x/MatBasicContainerOut3.png"
                         src="https://docs.opencv.org/4.x/MatBasicContainerOut3.png">
     </div>
@@ -253,6 +266,7 @@ You can fill out a matrix with random values using the cv::randu() function. You
     Mat R = Mat(3, 2, CV_8UC3);
     randu(R, Scalar::all(0), Scalar::all(255));
   ```
+Further Explanation : [Click Here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/1.3.3.md)
 ---
 ## Output formatting
 In the above examples you could see the default formatting option. OpenCV, however, allows you to format your matrix output:
@@ -328,6 +342,8 @@ OpenCV offers support for output of other common OpenCV data structures too via 
         vPoints[i] = Point2f((float)(i * 5), (float)(i % 7));
     cout << "A vector of 2D Points = " << vPoints << endl << endl;
   ```
+
+Further Code Explanation : [Click Here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/1.3.4.md)
 <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut15.png"></div>
 
 Most of the samples here have been included in a small console application. You can download it from here or in the core section of the cpp samples.
