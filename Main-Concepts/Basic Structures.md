@@ -116,7 +116,7 @@ This will open three windows displaying the original image, the image copied usi
 
 All the above objects, in the end, point to the same single data matrix and making a modification using any of them will affect all the other ones as well. In practice the different objects just provide different access methods to the same underlying data. Nevertheless, their header parts are different. 
 
-For more explanation ,[click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/Code-1.md)
+For more explanation :[click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/Code-1.md)
 
 To compile and run this program, use the following commands (assuming you have OpenCV installed):
 
@@ -176,12 +176,14 @@ In the Load, Modify, and Save an Image tutorial you have already learned how to 
 Although Mat works really well as an image container, it is also a general matrix class. Therefore, it is possible to create and manipulate multidimensional matrices. You can create a Mat object in multiple ways:
 
 - cv::Mat::Mat Constructor
+
 ```cpp
     Mat M(2,2, CV_8UC3, Scalar(0,0,255));
     cout << "M = " << endl << " " << M << endl << endl;
 ```
 
 <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut1.png"></div>
+
 For two dimensional and multichannel images we first define their size: row and column count wise.
 
 Then we need to specify the data type to use for storing the elements and the number of channels per matrix point. To do this we have multiple definitions constructed according to the following convention:
@@ -202,6 +204,7 @@ For more explanation click on :[Code Snippet Explained](https://github.com/shyam
     int sz[3] = {2,2,2};
     Mat L(3,sz, CV_8UC(1), Scalar::all(0));
     ```
+
   The upper example shows how to create a matrix with more than two     
   dimensions. Specify its dimension, then pass a pointer containing the 
   size for each dimension and the rest remains the same.
@@ -251,6 +254,7 @@ For small matrices you may use comma separated initializers or initializer lists
 ```
 <div align="center"><image src="https://docs.opencv.org/4.x/MatBasicContainerOut6.png
 "></div>
+
 Create a new header for an existing Mat object and cv::Mat::clone or cv::Mat::copyTo it.
 
 ```cpp
@@ -259,6 +263,7 @@ Create a new header for an existing Mat object and cv::Mat::clone or cv::Mat::co
 ```
 ---
 `Note`
+
 You can fill out a matrix with random values using the cv::randu() function. You need to give a lower and upper limit for the random values:
     
 
@@ -266,7 +271,9 @@ You can fill out a matrix with random values using the cv::randu() function. You
     Mat R = Mat(3, 2, CV_8UC3);
     randu(R, Scalar::all(0), Scalar::all(255));
   ```
+
 Further Explanation : [Click Here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/1.3.3.md)
+
 ---
 ## Output formatting
 In the above examples you could see the default formatting option. OpenCV, however, allows you to format your matrix output:
@@ -292,6 +299,7 @@ In the above examples you could see the default formatting option. OpenCV, howev
   ```
 
  <div align="center"><img src="https://docs.opencv.org/4.x/MatBasicContainerOut10.png"></div>
+
 - Numpy
     
 ```
