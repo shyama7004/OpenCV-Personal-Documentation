@@ -175,6 +175,99 @@ cv.destroyAllWindows()
 ### Exercises
 - Create a slideshow of images in a folder with smooth transition between images using the `cv.addWeighted` function.
 
----
+### Solution
+To create a slideshow of images in a folder with smooth transitions using `cv.addWeighted` in OpenCV, you'll need to:
 
-This completes the Markdown file with the detailed explanation of arithmetic operations on images using OpenCV.
+1. Read all images from the specified folder.
+2. Display each image for a certain duration.
+3. Implement smooth transitions between images using `cv.addWeighted` to blend one image into the next.
+
+Here's a step-by-step guide with the code:
+
+### Step-by-Step Guide
+
+1. **Import necessary libraries:**
+   You'll need OpenCV for image processing and `os` for file operations.
+
+2. **Read images from the folder:**
+   Use `os.listdir` to get a list of all image files in the folder.
+
+3. **Display each image:**
+   Use `cv.imshow` and `cv.waitKey` to display each image for a specific duration.
+
+4. **Smooth transition using `cv.addWeighted`:**
+   Implement a loop that blends the current image into the next one using `cv.addWeighted`.
+
+### Code Example
+
+```python
+import cv2 as cv
+import os
+
+def load_images_from_folder(folder):
+    images = []
+    for filename in os.listdir(folder):
+        img = cv.imread(os.path.join(folder, filename))
+        if img is not None:
+            images.append(img)
+    return images
+
+def show_slideshow(images, transition_time=1, display_time=2):
+    num_images = len(images)
+    if num_images == 0:
+        print("No images to display.")
+        return
+
+    for i in range(num_images):
+        next_img = images[(i + 1) % num_images]
+        current_img = images[i]
+        
+        # Display the current image
+        cv.imshow('Slideshow', current_img)
+        cv.waitKey(display_time * 1000)  # Display the image for display_time seconds
+
+        # Transition effect
+        for alpha in range(0, 101):
+            blend = cv.addWeighted(current_img, (100 - alpha) / 100.0, next_img, alpha / 100.0, 0)
+            cv.imshow('Slideshow', blend)
+            cv.waitKey(transition_time * 10)  # Control the speed of transition (10 ms per step)
+
+        # Pause briefly before showing the next image
+        cv.waitKey(200)
+
+    cv.destroyAllWindows()
+
+# Path to the folder containing images
+folder_path = 'images'
+
+# Load images from the folder
+images = load_images_from_folder(folder_path)
+
+# Show slideshow with smooth transitions
+show_slideshow(images, transition_time=1, display_time=2)
+```
+
+### Explanation
+
+1. **Loading Images:**
+   - The `load_images_from_folder` function reads all images from the specified folder and stores them in a list.
+
+2. **Displaying Images:**
+   - The `show_slideshow` function iterates through the list of images.
+   - `cv.imshow` is used to display each image.
+   - `cv.waitKey(display_time * 1000)` holds the image on the screen for `display_time` seconds.
+
+3. **Smooth Transition:**
+   - For each pair of current and next images, a loop iterates from 0 to 100.
+   - `cv.addWeighted` blends the current and next images based on the alpha value, which changes from 0 to 1 smoothly.
+   - `cv.waitKey(transition_time * 10)` controls the speed of the transition by waiting 10 milliseconds for each step.
+
+4. **Pausing Before the Next Image:**
+   - A brief pause of 200 milliseconds is added before showing the next image to give a smooth viewing experience.
+
+### Usage
+
+- Place your images in the `images` folder.
+- Adjust `transition_time` and `display_time` as needed.
+- Run the script to see the slideshow with smooth transitions.
+
