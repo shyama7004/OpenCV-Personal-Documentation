@@ -1,168 +1,223 @@
+# OpenCV: Image Pyramids
+
+## Goal
+
+In this chapter:
+- We will learn about Image Pyramids.
+- We will use Image pyramids to create a new fruit, "Orapple".
+- We will see these functions: `cv.pyrUp()`, `cv.pyrDown()`.
+
+## Theory
+
+Normally, we work with an image of constant size. But on some occasions, we need to work with the same images in different resolutions. For example, while searching for something in an image, like a face, we are not sure at what size the object will be present in the said image. In that case, we need to create a set of the same image with different resolutions and search for the object in all of them. These sets of images with different resolutions are called Image Pyramids (because when they are kept in a stack with the highest resolution image at the bottom and the lowest resolution image at the top, it looks like a pyramid).
+
+There are two kinds of Image Pyramids:
+1. Gaussian Pyramid
+2. Laplacian Pyramid
+
+A higher level (low resolution) in a Gaussian Pyramid is formed by removing consecutive rows and columns in the lower level (higher resolution) image. Then each pixel in the higher level is formed by the contribution from 5 pixels in the underlying level with gaussian weights. By doing so, an MxN image becomes M/2xN/2 image. So, the area reduces to one-fourth of the original area. It is called an Octave. The same pattern continues as we go upper in the pyramid (i.e., resolution decreases). Similarly, while expanding, the area becomes 4 times in each level. We can find Gaussian pyramids using `cv.pyrDown()` and `cv.pyrUp()` functions.
+
+```python
+img = cv.imread('messi5.jpg')
+assert img is not None, "file could not be read, check with os.path.exists()"
+lower_reso = cv.pyrDown(higher_reso)
+```
+
+
+Below are the 4 levels in an image pyramid.
+
+![Image-1](https://docs.opencv.org/5.x/messipyr.jpg)
+
+Now, you can go down the image pyramid with the `cv.pyrUp()` function.
+
+```python
+higher_reso2 = cv.pyrUp(lower_reso)
+```
+
+Remember, `higher_reso2` is not equal to `higher_reso` because once you decrease the resolution, you lose information. Below is an image 3 levels down the pyramid created from the smallest image in the previous case. Compare it with the original image.
+
+![Image-2](https://docs.opencv.org/5.x/messiup.jpg)
+
+Laplacian Pyramids are formed from the Gaussian Pyramids. There is no exclusive function for that. Laplacian pyramid images are like edge images only. Most of its elements are zeros. `They are used in image compression`. A level in a Laplacian Pyramid is formed by the difference between that level in the Gaussian Pyramid and the expanded version of its upper level in the Gaussian Pyramid.
+
+![Image-3](https://docs.opencv.org/5.x/lap.jpg)
+
 ## Image Blending using Pyramids
 
-To blend images using image pyramids in OpenCV, you typically follow these steps:
+One application of Pyramids is Image Blending. For example, in image stitching, you may need to stack two images together, but it may not look good due to discontinuities between the images. In that case, image blending with Pyramids gives you seamless blending without leaving much data in the images. One classical example of this is the blending of two fruits, Orange and Apple. See the result now itself to understand what I am saying:
 
-1. **Generate Gaussian Pyramids**: Create Gaussian pyramids for each input image. This involves repeatedly downsampling the image using `cv2.pyrDown()` to create a series of progressively smaller images.
+![Image-4](https://docs.opencv.org/5.x/orapple.jpg)
 
-2. **Generate Laplacian Pyramids**: From the Gaussian pyramids, generate Laplacian pyramids. Each level of the Laplacian pyramid is formed by subtracting the upsampled version of the next level in the Gaussian pyramid from the current level.
+Please check the first reference in additional resources; it has full diagrammatic details on image blending, Laplacian Pyramids, etc. Simply it is done as follows:
 
-3. **Blend the Images**: Use a mask to blend the Laplacian pyramids of the two images. The mask can be a [binary or gradient mask](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.4.md) that determines how much of each image is used in different regions.
+1. Load the two images of apple and orange.
+2. Find the Gaussian Pyramids for apple and orange (in this particular example, the number of levels is 6).
+3. From Gaussian Pyramids, find their Laplacian Pyramids.
+4. Now join the left half of the apple and the right half of the orange in each level of the Laplacian Pyramids.
+5. Finally, from this joint image pyramids, reconstruct the original image.
 
-4. **Reconstruct the Image**: Reconstruct the final blended image by upsampling and adding the blended Laplacian pyramid levels.
+Below is the full code. (For simplicity, each step is done separately, which may take more memory. You can optimize it if you want to).
 
-Here is an example code that demonstrates this process:
-
-```py
-import cv2
+```python
+import cv2 as cv
 import numpy as np
 
-def blend_images(img1, img2):
-    # Generate Gaussian pyramids for both images
-    G1 = img1.copy()
-    G2 = img2.copy()
-    gp1 = [G1]
-    gp2 = [G2]
-    
-    for _ in range(6):
-        G1 = cv2.pyrDown(G1)
-        G2 = cv2.pyrDown(G2)
-        gp1.append(G1)
-        gp2.append(G2)
-    
-    # Generate Laplacian pyramids for both images
-    lp1 = [gp1[-1]]
-    lp2 = [gp2[-1]]
-    
-    for i in range(5, 0, -1):
-        L1 = cv2.subtract(gp1[i-1], cv2.pyrUp(gp1[i]))
-        L2 = cv2.subtract(gp2[i-1], cv2.pyrUp(gp2[i]))
-        lp1.append(L1)
-        lp2.append(L2)
-    
-    # Blend the Laplacian pyramids
-    LS = []
-    for l1, l2 in zip(lp1, lp2):
-        rows, cols, dpt = l1.shape
-        ls = np.hstack((l1[:, :cols // 2], l2[:, cols // 2:]))
-        LS.append(ls)
-    
-    # Reconstruct the image
-    ls_ = LS[0]
-    for i in range(1, 6):
-        ls_ = cv2.pyrUp(ls_)
-        ls_ = cv2.add(ls_, LS[i])
-    
-    return ls_
+A = cv.imread('apple.jpg')
+B = cv.imread('orange.jpg')
+assert A is not None, "file could not be read, check with os.path.exists()"
+assert B is not None, "file could not be read, check with os.path.exists()"
 
-# Read the images
-img1 = cv2.imread('apple.jpg')
-img2 = cv2.imread('orange.jpg')
+# generate Gaussian pyramid for A
+G = A.copy()
+gpA = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpA.append(G)
 
-# Blend the images
-blended_image = blend_images(img1, img2)
+# generate Gaussian pyramid for B
+G = B.copy()
+gpB = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpB.append(G)
 
-# Display the result
-cv2.imshow('Blended Image', blended_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# generate Laplacian Pyramid for A
+lpA = [gpA[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpA[i])
+    L = cv.subtract(gpA[i-1], GE)
+    lpA.append(L)
+
+# generate Laplacian Pyramid for B
+lpB = [gpB[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpB[i])
+    L = cv.subtract(gpB[i-1], GE)
+    lpB.append(L)
+
+# Now add left and right halves of images in each level
+LS = []
+for la, lb in zip(lpA, lpB):
+    rows, cols, dpt = la.shape
+    ls = np.hstack((la[:, 0:cols//2], lb[:, cols//2:]))
+    LS.append(ls)
+
+# now reconstruct
+ls_ = LS[0]
+for i in range(1, 6):
+    ls_ = cv.pyrUp(ls_)
+    ls_ = cv.add(ls_, LS[i])
+
+# image with direct connecting each half
+real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
+
+cv.imwrite('Pyramid_blending2.jpg', ls_)
+cv.imwrite('Direct_blending.jpg', real)
 ```
-## Step by Step Explanation
 
-### Imports
+## Explanation:
+
+### 1. Importing Required Libraries
 ```python
-import cv2
+import cv2 as cv
 import numpy as np
 ```
-- **`cv2`**: This is the OpenCV library, which provides functions for image processing.
-- **`np`**: This is the NumPy library, which provides support for large, multi-dimensional arrays and matrices.
+- **`cv2`**: OpenCV library for image processing.
+- **`numpy`**: Library for numerical operations, particularly with arrays (used here for image manipulation).
 
-### Blending Function Definition
+### 2. Reading the Images
 ```python
-def blend_images(img1, img2):
+A = cv.imread('apple.jpg')
+B = cv.imread('orange.jpg')
+assert A is not None, "file could not be read, check with os.path.exists()"
+assert B is not None, "file could not be read, check with os.path.exists()"
 ```
-- **`blend_images`**: This is a function that takes two images as input and returns a blended image using the pyramid blending technique.
+- **`cv.imread('apple.jpg')` and `cv.imread('orange.jpg')`**: Load the images `apple.jpg` and `orange.jpg` into variables `A` and `B`.
+- **`assert A is not None`**: Ensures the image was successfully loaded; if not, an error message is shown.
 
-### Generate Gaussian Pyramids
+### 3. Generating Gaussian Pyramid for Image A
 ```python
-    # Generate Gaussian pyramids for both images
-    G1 = img1.copy()
-    G2 = img2.copy()
-    gp1 = [G1]
-    gp2 = [G2]
-    
-    for _ in range(6):
-        G1 = cv2.pyrDown(G1)
-        G2 = cv2.pyrDown(G2)
-        gp1.append(G1)
-        gp2.append(G2)
+G = A.copy()
+gpA = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpA.append(G)
 ```
-- **`G1` and `G2`**: Copies of the input images `img1` and `img2`.
-- **`gp1` and `gp2`**: Lists to store the Gaussian pyramids of `img1` and `img2`.
-- **Loop**: This loop creates 6 levels of the Gaussian pyramid for each image by repeatedly applying the `cv2.pyrDown` function, which reduces the image size by a factor of 2.
+- **`G = A.copy()`**: Create a copy of image `A` to start the pyramid.
+- **`gpA = [G]`**: Initialize a list `gpA` to store the Gaussian pyramid of image `A`. It starts with the original image.
+- **`cv.pyrDown(G)`**: Applies Gaussian blurring followed by downsampling (reducing the image size by half). This is done iteratively to create a pyramid.
+- **`gpA.append(G)`**: Add each downsampled image to the pyramid list `gpA`.
 
-### Generate Laplacian Pyramids
+### 4. Generating Gaussian Pyramid for Image B
 ```python
-    # Generate Laplacian pyramids for both images
-    lp1 = [gp1[-1]]
-    lp2 = [gp2[-1]]
-    
-    for i in range(5, 0, -1):
-        L1 = cv2.subtract(gp1[i-1], cv2.pyrUp(gp1[i]))
-        L2 = cv2.subtract(gp2[i-1], cv2.pyrUp(gp2[i]))
-        lp1.append(L1)
-        lp2.append(L2)
+G = B.copy()
+gpB = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpB.append(G)
 ```
-- **`lp1` and `lp2`**: Lists to store the Laplacian pyramids of `img1` and `img2`.
-- **Initialization**: The top level of the Laplacian pyramid is the same as the top level of the Gaussian pyramid.
-- **Loop**: This loop creates the Laplacian pyramid by taking the difference between each level of the Gaussian pyramid and the expanded version of the next level using `cv2.pyrUp`. This process enhances the edges in the images.
+- This process is identical to the one used for `A`, but it generates the Gaussian pyramid for image `B`, storing it in `gpB`.
 
-### Blend the Laplacian Pyramids
+### 5. Generating Laplacian Pyramid for Image A
 ```python
-    # Blend the Laplacian pyramids
-    LS = []
-    for l1, l2 in zip(lp1, lp2):
-        rows, cols, dpt = l1.shape
-        ls = np.hstack((l1[:, :cols // 2], l2[:, cols // 2:]))
-        LS.append(ls)
+lpA = [gpA[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpA[i])
+    L = cv.subtract(gpA[i-1], GE)
+    lpA.append(L)
 ```
-- **`LS`**: List to store the blended Laplacian pyramid.
-- **Loop**: This loop blends each level of the Laplacian pyramids by horizontally stacking the left half of `l1` (from `img1`) and the right half of `l2` (from `img2`).
+- **`lpA = [gpA[5]]`**: Initialize the Laplacian pyramid `lpA` with the smallest image in the Gaussian pyramid (the last one in `gpA`).
+- **`cv.pyrUp(gpA[i])`**: Upsample the image (increases the size by 2x) to match the size of the next level up in the pyramid.
+- **`cv.subtract(gpA[i-1], GE)`**: Subtract the upsampled image from the corresponding level in the Gaussian pyramid to get the Laplacian image.
+- **`lpA.append(L)`**: Add the Laplacian image to the `lpA` list.
 
-### Reconstruct the Image
+### 6. Generating Laplacian Pyramid for Image B
 ```python
-    # Reconstruct the image
-    ls_ = LS[0]
-    for i in range(1, 6):
-        ls_ = cv2.pyrUp(ls_)
-        ls_ = cv2.add(ls_, LS[i])
-    
-    return ls_
+lpB = [gpB[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpB[i])
+    L = cv.subtract(gpB[i-1], GE)
+    lpB.append(L)
 ```
-- **`ls_`**: The reconstructed image starting from the smallest level of the blended Laplacian pyramid.
-- **Loop**: This loop reconstructs the image by expanding each level (`cv2.pyrUp`) and adding it to the next level of the pyramid using `cv2.add`.
+- This step is identical to the one used for `A`, but it generates the Laplacian pyramid for image `B`, storing it in `lpB`.
 
-### Reading and Blending Images
+### 7. Combining the Two Images at Each Level of the Pyramid
 ```python
-# Read the images
-img1 = cv2.imread('apple.jpg')
-img2 = cv2.imread('orange.jpg')
-
-# Blend the images
-blended_image = blend_images(img1, img2)
+LS = []
+for la, lb in zip(lpA, lpB):
+    rows, cols, dpt = la.shape
+    ls = np.hstack((la[:, 0:cols//2], lb[:, cols//2:]))
+    LS.append(ls)
 ```
-- **`img1` and `img2`**: Load the images from disk using `cv2.imread`.
-- **`blended_image`**: Blend the images using the `blend_images` function.
+- **`zip(lpA, lpB)`**: Pairs the corresponding levels of the Laplacian pyramids of `A` and `B`.More about code snippet, [for la, lb in zip(lpA, lpB)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.4.md)
+- **`np.hstack((la[:, 0:cols//2], lb[:, cols//2:]))`**: Horizontally stacks the left half of `la` (Laplacian of `A`) with the right half of `lb` (Laplacian of `B`).
+- **`LS.append(ls)`**: Adds the combined image at each level to the `LS` list.
 
-### Displaying the Result
+### 8. Reconstructing the Final Blended Image
 ```python
-# Display the result
-cv2.imshow('Blended Image', blended_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+ls_ = LS[0]
+for i in range(1, 6):
+    ls_ = cv.pyrUp(ls_)
+    ls_ = cv.add(ls_, LS[i])
 ```
-- **`cv2.imshow`**: Displays the blended image in a window.
-- **`cv2.waitKey(0)`**: Waits indefinitely for a key press. This keeps the window open until a key is pressed.
-- **`cv2.destroyAllWindows`**: Closes all OpenCV windows.
+- **`ls_ = LS[0]`**: Start with the smallest combined image.
+- **`cv.pyrUp(ls_)`**: Upsamples the image to the next level.
+- **`cv.add(ls_, LS[i])`**: Add the current upsampled image to the corresponding level in `LS` to reconstruct the final blended image.
 
-### Summary
-This code performs pyramid blending of two images, a technique used to blend two images seamlessly. The process involves creating Gaussian and Laplacian pyramids for each image, blending the pyramids, and then reconstructing the final blended image. The result is displayed in a window using OpenCV.
+### 9. Direct Blending of the Two Images (Without Pyramids)
+```python
+real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
+```
+- **`np.hstack((A[:, :cols//2], B[:, cols//2:]))`**: Directly stack the left half of image `A` with the right half of image `B`.
+
+### 10. Saving the Blended Images
+```python
+cv.imwrite('Pyramid_blending2.jpg', ls_)
+cv.imwrite('Direct_blending.jpg', real)
+```
+- **`cv.imwrite('Pyramid_blending2.jpg', ls_)`**: Save the pyramid-blended image as `Pyramid_blending2.jpg`.
+- **`cv.imwrite('Direct_blending.jpg', real)`**: Save the directly blended image as `Direct_blending.jpg`.
+
+## Additional Resources
+
+1. [Image Blending](http://pages.cs.wisc.edu/~csverma/CS766_09/ImageMosaic/imagemosaic.html)
