@@ -12,6 +12,8 @@ The algorithm is based on a PSF (Point Spread Function), where PSF is described 
 
 ## Original Data, Noisy Data, and Restoration using Richardson-Lucy
 
+![Image-1](https://scikit-image.org/docs/stable/_images/sphx_glr_plot_deconvolution_001.png)
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
