@@ -3,16 +3,19 @@
 ## Goal
 In this tutorial, you will learn simple thresholding, adaptive thresholding, and Otsu's thresholding. You will learn the functions `cv.threshold` and `cv.adaptiveThreshold`.
 
+In OpenCV, `thresholding` is a process used to convert a grayscale image to a binary image where the pixels are either 0 or 1. The threshold value is the level that separates the two states. Pixels with intensities above the threshold are set to one (or white), and those below are set to zero (or black). This is often used in image processing for tasks like object detection or segmentation.
+
 ## Simple Thresholding
 Here, the matter is straightforward. For every pixel, the same threshold value is applied. If the pixel value is smaller than the threshold, it is set to 0, otherwise, it is set to a maximum value. The function `cv.threshold` is used to apply the thresholding. The first argument is the source image, which should be a grayscale image. The second argument is the threshold value used to classify the pixel values. The third argument is the maximum value which is assigned to pixel values exceeding the threshold. OpenCV provides different types of thresholding, which is given by the fourth parameter of the function. Basic thresholding as described above is done by using the type `cv.THRESH_BINARY`. All simple thresholding types are:
 
-- `cv.THRESH_BINARY`
-- `cv.THRESH_BINARY_INV`
-- `cv.THRESH_TRUNC`
-- `cv.THRESH_TOZERO`
-- `cv.THRESH_TOZERO_INV`
+These are OpenCV thresholding types:
 
-See the documentation of the types for the differences.
+- `cv.THRESH_BINARY`: Pixels are set to a maximum value if they exceed a threshold, otherwise, they're set to 0.
+- `cv.THRESH_BINARY_INV`: The inverse of `THRESH_BINARY`, where pixels below the threshold are set to the maximum value, and others are set to 0.
+- `cv.THRESH_TRUNC`: Pixels above the threshold are set to the threshold value, and those below remain unchanged.
+- `cv.THRESH_TOZERO`: Pixels below the threshold are set to 0, and those above remain unchanged.
+- `cv.THRESH_TOZERO_INV`: The inverse of `THRESH_TOZERO`, where pixels above the threshold are set to 0, and those below remain unchanged.
+
 
 The method returns two outputs. The first is the threshold that was used, and the second output is the thresholded image.
 
