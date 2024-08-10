@@ -13,6 +13,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 - [Projects and Examples](#projects-and-examples)
 - [Community and Contributions](#community-and-contributions)
 - [Contact](#contact)
+- [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/tree/main/Numpy)
 
 ## 📖 Introduction
 
