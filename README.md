@@ -53,13 +53,13 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 
 #### Restoration
 1. **Wiener Filtering**:
-   - [Wiener Filtering with SciPy](https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html)
+   - [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Wiener%20Filtering.md)   |   [SciPy Docs](https://scipy-cookbook.readthedocs.io/items/SignalSmooth.html)
 
 2. **Richardson-Lucy Deconvolution**:
-   - [Richardson-Lucy Deconvolution (scikit-image)](https://scikit-image.org/docs/stable/auto_examples/filters/plot_deconvolution.html)
+   - [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Richardson-Lucy%20Deconvolution.md)   |   [Scikit Docs](https://scikit-image.org/docs/stable/auto_examples/filters/plot_deconvolution.html)
 
 3. **Total Variation Denoising**:
-   - [Total Variation Denoising (scikit-image)](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise.html)
+   - [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Denoising%20a%20Picture.md)   |   [Scikit Docs](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise.html)
 
 #### Denoising
 1. [Gaussian Blurring (OpenCV)](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
