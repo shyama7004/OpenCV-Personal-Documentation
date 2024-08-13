@@ -2,7 +2,7 @@
 
 In this example, we deconvolve an image using the Richardson-Lucy deconvolution algorithm ([1], [2]).
 
-The algorithm is based on a PSF (Point Spread Function), where PSF is described as the impulse response of the optical system. The blurred image is sharpened through a number of iterations, which need to be hand-tuned.
+The algorithm sharpens a blurry image by using something called a PSF (Point Spread Function), which describes how a point of light spreads out or blurs in the image. The algorithm repeatedly adjusts the image based on this PSF to gradually reduce the blur. The number of times the algorithm adjusts the image (iterations) needs to be carefully chosen for the best results.
 
 ### References
 
@@ -107,6 +107,9 @@ plt.show()
 
 ### `astro_noisy += (rng.poisson(lam=25, size=astro.shape) - 10) / 255.0`
 - **Purpose**: Adds Poisson-distributed noise to the `astro_noisy` image.
+
+`A Poisson distribution` is a discrete probability distribution that predicts the likelihood of a specific number of events occurring within a given space or time interval.
+
 - **Explanation**:
   - `rng.poisson(lam=25, size=astro.shape)` generates Poisson noise with a mean (`lam`) of 25.
   - Subtracting 10 centers the noise around zero.
