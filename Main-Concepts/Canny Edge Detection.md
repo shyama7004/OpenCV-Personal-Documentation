@@ -15,7 +15,9 @@ It is a multi-stage algorithm and we will go through each stage.
 Since edge detection is susceptible to noise in the image, the first step is to remove the noise in the image with a 5x5 Gaussian filter. We have already seen this in previous chapters.
 
 ### Finding Intensity Gradient of the Image
-The smoothened image is then filtered with a Sobel kernel in both horizontal and vertical directions to get the first derivative in the horizontal direction (`G_x`) and vertical direction (`G_y`). From these two images, we can find the edge gradient and direction for each pixel as follows:
+The smoothened image is then filtered with a Sobel kernel in both horizontal and vertical directions to get the first derivative in the horizontal direction (G<sub>x</sub>) and vertical direction (G<sub>y</sub>). From these two images, we can find the edge gradient and direction for each pixel as follows:
+
+The `Sobel` Operator is a discrete differentiation operator.(Already raed before)
 
 <div align="center"><img src="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/5.png"></div>
 
@@ -37,12 +39,18 @@ This stage decides which edges are real edges and which are not. For this, we ne
 
 The edge A is above the `maxVal`, so considered as a "sure-edge". Although edge C is below `maxVal`, it is connected to edge A, so that is also considered a valid edge and we get that full curve. But edge B, although it is above `minVal` and is in the same region as that of edge C, it is not connected to any "sure-edge", so that is discarded. So it is very important that we have to select `minVal` and `maxVal` accordingly to get the correct result.
 
+- `sure-edge` pixels refer to edges that have an intensity gradient greater than maxVal. These edges are considered definitive and are not discarded, unlike edges with intensity gradients between minVal and maxVal, which are classified based on their connectivity to “sure-edge” pixels.
+
 This stage also removes small pixel noises on the assumption that edges are long lines.
 
 So what we finally get are strong edges in the image.
 
 ## Canny Edge Detection in OpenCV
-OpenCV puts all the above in a single function, `cv.Canny()`. We will see how to use it. The first argument is our input image. The second and third arguments are our `minVal` and `maxVal` respectively. The fourth argument is `aperture_size`. It is the size of the Sobel kernel used to find image gradients. By default, it is 3. The last argument is `L2gradient` which specifies the equation for finding gradient magnitude. If it is True, it uses the equation mentioned above which is more accurate, otherwise it uses this function: \( Edge\_Gradient = |G_x| + |G_y| \). By default, it is False.
+OpenCV puts all the above in a single function, `cv.Canny()`. We will see how to use it. The first argument is our input image. The second and third arguments are our `minVal` and `maxVal` respectively. The fourth argument is `aperture_size`. It is the size of the Sobel kernel used to find image gradients. By default, it is 3. The last argument is `L2gradient` which specifies the equation for finding gradient magnitude. If it is True, it uses the equation mentioned above which is more accurate, otherwise it uses this function: <br> Edge_Gradient(G) = |G<sub>x</sub>| + |G<sub>y</sub>| . By default, it is False.
+
+### How to find minVal and maxVal?
+
+Click here to find the `answer`: [minVal/maxVal](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.4.md)
 
 ```python
 import numpy as np
