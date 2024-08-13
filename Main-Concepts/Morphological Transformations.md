@@ -6,6 +6,8 @@ In this chapter,
 - We will learn different morphological operations like Erosion, Dilation, Opening, Closing, etc.
 - We will see different functions like: `cv.erode()`, `cv.dilate()`, `cv.morphologyEx()`, etc.
 
+In image processing `morphology` is a set of image processing operations that analyze images based on their shapes. 
+
 ## Theory
 Morphological transformations are some simple operations based on the image shape. It is normally performed on binary images. It needs two inputs, one is our original image, the second one is called structuring element or kernel which decides the nature of the operation. Two basic morphological operators are Erosion and Dilation. Then its variant forms like Opening, Closing, Gradient, etc. also come into play. We will see them one-by-one with help of the following image:
 
@@ -13,6 +15,8 @@ Morphological transformations are some simple operations based on the image shap
 
 ### 1. Erosion
 The basic idea of erosion is just like soil erosion only, it erodes away the boundaries of the foreground object (Always try to keep foreground in white). So what does it do? The kernel slides through the image (as in 2D convolution). A pixel in the original image (either 1 or 0) will be considered 1 only if all the pixels under the kernel are 1, otherwise, it is eroded (made to zero).
+
+`Foreground` is the part of a view, picture, photograph, etc. that appears closest to the person looking at it
 
 So what happens is that all the pixels near the boundary will be discarded depending upon the size of the kernel. So the thickness or size of the foreground object decreases or simply the white region decreases in the image. It is useful for removing small white noises (as we have seen in the colorspace chapter), detaching two connected objects, etc.
 
