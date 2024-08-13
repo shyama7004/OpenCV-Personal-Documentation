@@ -19,11 +19,11 @@ Sobel operators perform a joint Gaussian smoothing plus differentiation operatio
 
 It calculates the Laplacian of the image given by the relation:
 
-\[ \Delta src = \frac{\partial^2 src}{\partial x^2} + \frac{\partial^2 src}{\partial y^2} \]
+![Image-1](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/11.png)
 
 where each derivative is found using Sobel derivatives. If `ksize = 1`, then the following kernel is used for filtering:
 
-\[ \text{kernel} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & -4 & 1 \\ 0 & 1 & 0 \end{bmatrix} \]
+![Image-2](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/12.png)
 
 ### Code
 
@@ -52,6 +52,12 @@ plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 ```
+
+`Colormaps` or `Cmap` in python colormaps is a very useful tool for data visualization. Matlibpro comes with a number of built-in colormaps, such as sequential, diverging, cyclic, qualitative, miscellaneous, etc. Y
+
+Image:
+
+![Image-3](https://docs.opencv.org/4.x/gradients.jpg)
 
 ### Result
 
@@ -88,6 +94,10 @@ plt.title('Sobel abs(CV_64F)'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 ```
+Check the result below:
+
+![Image-4](https://docs.opencv.org/4.x/double_edge.jpg)
+
 
 ### Additional Resources
 
