@@ -48,7 +48,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - **Image Thresholding**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Thresholding.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
    - **Morphological Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Morphological%20Transformations.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d9/d61/tutorial_py_morphological_ops.html)
    - **Canny Edge Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Canny%20Edge%20Detection.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/da/d22/tutorial_py_canny.html)
-   - **Image Gradients** : [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Gradients.md)   |   [OpenCv](https://docs.opencv.org/5.x/dd/d43/tutorial_py_gradients.html)
+   - **Image Gradients** : [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Gradients.md)   |   [OpenCv](https://docs.opencv.org/4.x/d5/d0f/tutorial_py_gradients.html)
    - **Advanced Image Processing Techniques**:
 
 #### Restoration
@@ -62,7 +62,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Denoising%20a%20Picture.md)   |   [Scikit Docs](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise.html)
 
 #### Denoising
-1. [Gaussian Blurring (OpenCV)](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
+1. **Gaussian Blurring : **[My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
 2. [Median Blurring (OpenCV)](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
 3. [Non-Local Means Denoising (OpenCV)](https://docs.opencv.org/5.x/d5/d69/tutorial_py_non_local_means.html)
 
