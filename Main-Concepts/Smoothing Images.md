@@ -7,43 +7,45 @@ In this tutorial, you will learn how to apply diverse linear filters to smooth i
 - `medianBlur()`
 - `bilateralFilter()`
 
+- For more details about linear filter click on this link : [Click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.9.1.md)
 # Theory
 
-**Note:** The explanation below belongs to the book *Computer Vision: Algorithms and Applications* by Richard Szeliski and to *Learning OpenCV*.
+> Note: The explanation below belongs to the book *Computer Vision: Algorithms and Applications* by Richard Szeliski and to *Learning OpenCV*.
 
-Smoothing, also called blurring, is a simple and frequently used image processing operation. There are many reasons for smoothing. In this tutorial, we will focus on smoothing to reduce noise (other uses will be seen in the following tutorials).
+- Smoothing, also called blurring, is a simple and frequently used image processing operation.
+- There are many reasons for smoothing. In this tutorial, we will focus on smoothing to reduce noise (other uses will be seen in the following tutorials).
+- To perform a smoothing operation, we will apply a filter to our image. The most common type of filters are linear, in which an output pixel's value(i.e.<em>g(i,j)</em>) is determined as a weighted sum of input pixel values(i.e.<em>f(i+k,j+l)</em>):
 
-To perform a smoothing operation, we will apply a filter to our image. The most common type of filters are linear, in which an output pixel's value is determined as a weighted sum of input pixel values:
+![img1](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/13.png)
 
-\[ g(x,y) = \sum_i \sum_j h(i,j) f(x+i, y+j) \]
-
-Here, \( h(i,j) \) is called the kernel, which is the coefficients of the filter.
+Here,  <em>h(i,j)</em> is called the kernel, which is the coefficients of the filter.
 
 It helps to visualize a filter as a window of coefficients sliding across the image.
 
-There are many kinds of filters. Here we will mention the most used:
+- There are many kinds of filters. Here we will mention the most used:
 
 ## Normalized Box Filter
 
-This filter is the simplest of all! Each output pixel is the mean of its kernel neighbors (all of them contribute with equal weights). The kernel is below:
+- This filter is the simplest of all! Each output pixel is the mean of its kernel neighbors (all of them contribute with equal weights).
+- The kernel is below:
 
-\[ h(i,j) = \frac{1}{9} \begin{bmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix} \]
+![img2](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/14.png)
 
 ## Gaussian Filter
 
-Probably the most useful filter (although not the fastest). Gaussian filtering is done by convolving each point in the input array with a Gaussian kernel and then summing them all to produce the output array. 
+- Probably the most useful filter (`although not the fastest`). Gaussian filtering is done by convolving each point in the input array with a Gaussian kernel and then summing them all to produce the output array. 
 
-Just to make the picture clearer, remember how a 1D Gaussian kernel looks like:
+- Just to make the picture clearer, remember how a 1D Gaussian kernel looks like:
 
-\[ G(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{x^2}{2 \sigma^2}} \]
+![img2](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/16.png)
+
 
 Assuming that an image is 1D, you can notice that the pixel located in the middle would have the biggest weight. The weight of its neighbors decreases as the spatial distance between them and the center pixel increases.
 
 **Note:** Remember that a 2D Gaussian can be represented as:
 
-\[ G(x,y) = \frac{1}{2\pi \sigma_x \sigma_y} e^{-\left(\frac{x^2}{2\sigma_x^2} + \frac{y^2}{2\sigma_y^2}\right)} \]
+![img2](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/15.png)
 
-Where \( \mu \) is the mean (the peak) and \( \sigma_x, \sigma_y \) represents the variance (per each of the variables \( x \) and \( y \)).
 
 ## Median Filter
 
@@ -51,11 +53,11 @@ The median filter runs through each element of the signal (in this case, the ima
 
 ## Bilateral Filter
 
-So far, we have explained some filters whose main goal is to smooth an input image. However, sometimes the filters not only dissolve the noise but also smooth away the edges. To avoid this (to a certain extent at least), we can use a bilateral filter.
+- So far, we have explained some filters whose main goal is to smooth an input image. However, sometimes the filters not only dissolve the noise but also smooth away the edges. To avoid this (to a certain extent at least), we can use a bilateral filter.
 
-In an analogous way to the Gaussian filter, the bilateral filter also considers the neighboring pixels with weights assigned to each of them. These weights have two components, the first of which is the same weighting used by the Gaussian filter. The second component takes into account the difference in intensity between the neighboring pixels and the evaluated one.
+- In an analogous way to the Gaussian filter, the bilateral filter also considers the neighboring pixels with weights assigned to each of them. These weights have two components, the first of which is the same weighting used by the Gaussian filter. The second component takes into account the difference in intensity between the neighboring pixels and the evaluated one.
 
-For a more detailed explanation, you can check [this link](https://docs.opencv.org/3.4/d4/d13/tutorial_py_filtering.html).
+- For a more detailed explanation, you can check [this link](https://docs.opencv.org/3.4/d4/d13/tutorial_py_filtering.html).
 
 # Code
 
