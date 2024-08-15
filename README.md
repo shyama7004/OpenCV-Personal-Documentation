@@ -26,6 +26,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [Overview of OpenCV](https://opencv.org/about/)
    - [Installation and Setup](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Quick%20Start.md)
    - [Basic Structures (Mat, Scalar, Point, etc.)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Structures.md)
+   - [Convolution](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Convolution.md)
    - **Revision Tips**: Practice by writing small programs to load, display, and manipulate images.
 
 2. **Core Operations**
@@ -62,9 +63,9 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Denoising%20a%20Picture.md)   |   [Scikit Docs](https://scikit-image.org/docs/stable/auto_examples/filters/plot_denoise.html)
 
 #### Denoising
-1. **Gaussian Blurring : **[My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
-2. [Median Blurring (OpenCV)](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
-3. [Non-Local Means Denoising (OpenCV)](https://docs.opencv.org/5.x/d5/d69/tutorial_py_non_local_means.html)
+1. **Gaussian Blurring**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/dc/dd3/tutorial_gausian_median_blur_bilateral_filter.html)
+2. **Bilateral Filtering**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Bilateral%20Filtering.md)   |   [OpenCV Docs](https://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/MANDUCHI1/Bilateral_Filtering.html)
+3. **Non-Local Means Denoising**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Denoising.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d5/d69/tutorial_py_non_local_means.html)
 
 #### Segmentation
 1. [Image Thresholding (OpenCV)](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
