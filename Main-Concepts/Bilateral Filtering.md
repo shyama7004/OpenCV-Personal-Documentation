@@ -108,3 +108,50 @@ To fix this, we could smooth the red, green, and blue parts of the image separat
 **Figure 5**
 
 Figure 5 (c) shows what happens after applying bilateral filtering five times to the image in figure 5 (a). Even after just one pass, the image looks much cleaner, as seen in figure 5 (b), which is often good enough for most purposes. However, when you apply the filter multiple times, it flattens the colors even more but still keeps the edges sharp. The final image uses fewer colors, making the effects of the filtering more noticeable, especially when printed. The result, as shown in figure 5 (c), has a cartoon-like look, where shadows and edges are preserved, but most of the shading is removed, and no new colors are added.
+
+
+Bilateral filtering is a technique used in image processing to smooth an image while preserving its edges. This is achieved by averaging the pixels' intensities in a local neighborhood, but unlike standard Gaussian blurring, bilateral filtering considers both the spatial proximity and the intensity differences between pixels.
+
+Here's a Python code example using OpenCV to apply bilateral filtering, along with an explanation:
+
+### Python Code
+
+```python
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('example.jpg')
+
+# Apply bilateral filter
+filtered_image = cv2.bilateralFilter(image, d=15, sigmaColor=75, sigmaSpace=75)
+
+# Display the original and filtered images
+cv2.imshow('Original Image', image)
+cv2.imshow('Bilateral Filtered Image', filtered_image)
+
+# Wait for a key press and close the image windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+```
+
+### Explanation of Parameters:
+**Apply bilateral filtering:**
+- `cv2.bilateralFilter()` is the function used to apply bilateral filtering. It has the following important parameters:
+  - **src:** The source image.
+  - **d:** Diameter of the pixel neighborhood used during filtering. A larger value means a smoother image.
+  - **sigmaColor:** The filter sigma in the color space. A larger value means that pixels with a larger intensity difference can be considered for averaging.
+  - **sigmaSpace:** The filter sigma in the coordinate space. A larger value means that farther pixels influence each other as long as their colors are close enough.
+
+- **`d=15`:** The diameter of each pixel neighborhood. This controls the extent of the area around each pixel that the filter considers for averaging.
+- **`sigmaColor=75`:** This determines how much influence the intensity differences have. A larger value allows more significant differences to be averaged, which results in smoother results.
+- **`sigmaSpace=75`:** This determines how much influence the spatial distance has. A larger value allows more distant pixels to be considered in the average, which results in a blurrier image but better edge preservation.
+
+### Notes:
+- **Edge Preservation:** Bilateral filtering preserves edges better than standard blurring techniques like Gaussian blur because it reduces the influence of pixels with a large intensity difference.
+- **Image Selection:** Use a high-contrast image with visible edges to see the effect of bilateral filtering more clearly.
+
+### Result:
+When you run the code, you should see two windows: one displaying the original image and the other displaying the image after bilateral filtering. The edges in the filtered image should be preserved while the overall noise or texture is smoothed out.
+
+Feel free to adjust the parameters (`d`, `sigmaColor`, `sigmaSpace`) to see how they affect the result.
