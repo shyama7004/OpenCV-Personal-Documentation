@@ -119,7 +119,7 @@ Below image shows a zoomed version of the result we got:
 
 ![image](https://docs.opencv.org/5.x/nlm_multi.jpg)
 
-For code code expalanation : [click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.11.md)
+For more code expalanation : [click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.11.md)
 
 It takes a considerable amount of time for computation. In the result, the first image is the original frame, the second is the noisy one, and the third is the denoised image.
 ```
