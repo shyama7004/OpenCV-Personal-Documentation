@@ -68,10 +68,8 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 3. **Non-Local Means Denoising**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Denoising.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d5/d69/tutorial_py_non_local_means.html)
 
 #### Segmentation
-1. [Image Thresholding (OpenCV)](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
-2. [Canny Edge Detection (OpenCV)](https://docs.opencv.org/5.x/da/d22/tutorial_py_canny.html)
-3. [Watershed Algorithm (OpenCV)](https://docs.opencv.org/5.x/d3/db4/tutorial_py_watershed.html)
-4. [Graph-Based Segmentation (PyTorch Geometric)](https://pytorch-geometric.readthedocs.io/en/latest/notes/segmentation.html)
+1. **Watershed Algorithm** :[My docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Segmentation%20with%20Watershed%20Algorithm.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d3/db4/tutorial_py_watershed.html)
+2. [Graph-Based Segmentation (PyTorch Geometric)](https://pytorch-geometric.readthedocs.io/en/latest/notes/segmentation.html)
    - **Revision Tips**: Create an image processing pipeline that includes smoothing, thresholding, edge detection, and advanced techniques.
 
 4. **Feature Detection and Description**
