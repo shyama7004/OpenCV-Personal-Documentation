@@ -9,7 +9,7 @@ In this chapter:
 ## Theory
 In earlier chapters, we have seen many image smoothing techniques like Gaussian Blurring, Median Blurring, etc., and they were good to some extent in removing small quantities of noise. In those techniques, we took a small neighborhood around a pixel and did some operations like Gaussian weighted average, median of the values, etc., to replace the central element. In short, noise removal at a pixel was local to its neighborhood.
 
-There is a property of noise. Noise is generally considered to be a random variable with zero mean. Consider a noisy pixel,<em> p = p<sub>0</sub> + n </em> where p<sub>0</sub> is the true value of the pixel is \(\mu\) and the noise in that pixel is \(n\). You can take a large number of the same pixels (say <strong>N</strong>) from different images and compute their average. Ideally, you should get p = p<sub>0</sub> since the mean of the noise is zero.
+There is a property of noise. Noise is generally considered to be a random variable with zero mean. Consider a noisy pixel,<em> p = p<sub>0</sub> + n </em> where p<sub>0</sub> is the true value of the pixel and the noise in that pixel is <strong>n</strong>. You can take a large number of the same pixels (say <strong>N</strong>) from different images and compute their average. Ideally, you should get p = p<sub>0</sub> since the mean of the noise is zero.
 
 You can verify it yourself by a simple setup. Hold a static camera at a certain location for a couple of seconds. This will give you plenty of frames, or a lot of images of the same scene. Then write a piece of code to find the average of all the frames in the video (This should be too simple for you now). Compare the final result and the first frame. You can see a reduction in noise. Unfortunately, this simple method is not robust to camera and scene motions. Also, often there is only one noisy image available.
 
@@ -124,4 +124,4 @@ For more code expalanation : [click here](https://github.com/shyama7004/OpenCV-P
 It takes a considerable amount of time for computation. In the result, the first image is the original frame, the second is the noisy one, and the third is the denoised image.
 ```
 
-Created by shyama7004 :)
+Created by shyama7004 with help of Opencv Docs :)
