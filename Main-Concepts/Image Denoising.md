@@ -9,17 +9,19 @@ In this chapter:
 ## Theory
 In earlier chapters, we have seen many image smoothing techniques like Gaussian Blurring, Median Blurring, etc., and they were good to some extent in removing small quantities of noise. In those techniques, we took a small neighborhood around a pixel and did some operations like Gaussian weighted average, median of the values, etc., to replace the central element. In short, noise removal at a pixel was local to its neighborhood.
 
-There is a property of noise. Noise is generally considered to be a random variable with zero mean. Consider a noisy pixel, where the true value of the pixel is \(\mu\) and the noise in that pixel is \(n\). You can take a large number of the same pixels (say \(N\)) from different images and compute their average. Ideally, you should get \(\mu\) since the mean of the noise is zero.
+There is a property of noise. Noise is generally considered to be a random variable with zero mean. Consider a noisy pixel,<em> p = p<sub>0</sub> + n </em> where p<sub>0</sub> is the true value of the pixel is \(\mu\) and the noise in that pixel is \(n\). You can take a large number of the same pixels (say <strong>N</strong>) from different images and compute their average. Ideally, you should get p = p<sub>0</sub> since the mean of the noise is zero.
 
 You can verify it yourself by a simple setup. Hold a static camera at a certain location for a couple of seconds. This will give you plenty of frames, or a lot of images of the same scene. Then write a piece of code to find the average of all the frames in the video (This should be too simple for you now). Compare the final result and the first frame. You can see a reduction in noise. Unfortunately, this simple method is not robust to camera and scene motions. Also, often there is only one noisy image available.
 
 So the idea is simple: we need a set of similar images to average out the noise. Consider a small window (say a 5x5 window) in the image. There is a large chance that the same patch may be somewhere else in the image, sometimes in a small neighborhood around it. What about using these similar patches together and finding their average? For that particular window, that is fine. See an example image below:
 
-![image]
+![image](https://docs.opencv.org/5.x/nlm_patch.jpg)
 
 The blue patches in the image look similar. The green patches look similar. So we take a pixel, take a small window around it, search for similar windows in the image, average all the windows, and replace the pixel with the result we got. This method is Non-Local Means Denoising. It takes more time compared to the blurring techniques we saw earlier, but its result is very good. More details and an online demo can be found at the first link in additional resources.
 
-For color images, the image is converted to the CIELAB colorspace, and then it separately denoises the L and AB components.
+For color images, the image is converted to the `CIELAB` colorspace, and then it separately denoises the L and AB components.
+
+`CIELAB or `CIE` `L*a*b*` is a device-independent, 3D color space that enables accurate measurement and comparison of all perceivable colors using three color values.
 
 ## Image Denoising in OpenCV
 OpenCV provides four variations of this technique:
@@ -56,10 +58,23 @@ plt.subplot(121), plt.imshow(img)
 plt.subplot(122), plt.imshow(dst)
 plt.show()
 ```
+### Explanation
 
-Below is a zoomed version of the result. My input image has a Gaussian noise of \(\sigma\). See the result:
+```python
+dst = cv.fastNlMeansDenoisingColored(img, None, 10, 10, 7, 21)
+```
+  - Parameters:
+    - `img`: The input image that you want to denoise.
+    - `None`: The output image placeholder (None implies that a new image will be created).
+    - `10`: The strength of the luminance (color) noise filtering. Higher values remove more noise but can blur details.
+    - `10`: The strength of the color noise filtering.
+    - `7`: The size of the window used to compute the weighted average for a given pixel.
+    - `21`: The size of the neighborhood to search for similar patches. A larger search area may result in better noise reduction but will take longer to compute.
 
-![image]
+
+Below is a zoomed version of the result. My input image has a Gaussian noise of &sigma;. See the result:
+
+![image](https://docs.opencv.org/5.x/nlm_result1.jpg)
 
 ### 2. `cv.fastNlMeansDenoisingMulti()`
 Now we will apply the same method to a video. The first argument is the list of noisy frames. The second argument `imgToDenoiseIndex` specifies which frame we need to denoise; for that, we pass the index of the frame in our input list. The third is the `temporalWindowSize`, which specifies the number of nearby frames to be used for denoising. It should be odd. In that case, a total of `temporalWindowSize` frames are used where the central frame is the frame to be denoised. For example, you passed a list of 5 frames as input. Let `imgToDenoiseIndex = 2` and `temporalWindowSize = 3`. Then frame-1, frame-2, and frame-3 are used to denoise frame-2. Let's see an example:
@@ -98,11 +113,15 @@ plt.subplot(133), plt.imshow(dst, 'gray')
 plt.show()
 ```
 
+
+
 Below image shows a zoomed version of the result we got:
 
-![image]
+![image](https://docs.opencv.org/5.x/nlm_multi.jpg)
+
+For code code expalanation : [click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/3.11.md)
 
 It takes a considerable amount of time for computation. In the result, the first image is the original frame, the second is the noisy one, and the third is the denoised image.
 ```
 
-You can copy this content into a `.md` file and save it.
+Created by shyama7004 :)
