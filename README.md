@@ -81,9 +81,7 @@ This section outlines my specific goals for GSoC preparation:
    - **Revision Tips**: Create an image processing pipeline that includes smoothing, thresholding, edge detection, and advanced techniques. These pipelines could form the basis of GSoC project implementations.
 
 4. **Feature Detection and Description**
-   - [Feature Detection and Description](https://docs.op
-
-encv.org/5.x/d5/d51/group__features2d__main.html)
+   - [Feature Detection and Description](https://docs.opencv.org/5.x/d5/d51/group__features2d__main.html)
    - **Harris Corner Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Harris%20Corner%20Detection.md) | [OpenCV Docs](https://docs.opencv.org/5.x/dc/d0d/tutorial_py_features_harris.html)
    - **SIFT (Scale-Invariant Feature Transform)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SIFT.md) | [OpenCV Docs](https://docs.opencv.org/5.x/da/df5/tutorial_py_sift_intro.html)
    - **SURF (Speeded Up Robust Features)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SURF.md) | [OpenCV Docs](https://docs.opencv.org/5.x/df/dd2/tutorial_py_surf_intro.html)
