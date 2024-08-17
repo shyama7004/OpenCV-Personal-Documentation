@@ -75,7 +75,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - **Revision Tips**: Create an image processing pipeline that includes smoothing, thresholding, edge detection, and advanced techniques.
 
 4. **Feature Detection and Description**
-   - [Feature Detection and Description](https://docs.opencv.org/5.x/dc/dc3/tutorial_py_matcher.html)
+   - **Feature Detection and Description** :[My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Feature%20Detection%20and%20Description.md)	|	[OpenCv Docs](https://docs.opencv.org/5.x/dc/dc3/tutorial_py_matcher.html)
    - [Feature Matching](https://docs.opencv.org/5.x/dc/dc3/tutorial_py_matcher.html)
    - [Cascade Classifiers](https://docs.opencv.org/5.x/d7/d8b/tutorial_py_face_detection.html)
    - **Revision Tips**: Develop a simple application for detecting and matching features in images.
