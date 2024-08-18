@@ -23,7 +23,6 @@ For BGR to Gray conversion, we use the flag `cv.COLOR_BGR2GRAY`. Similarly, for 
 ```py
 import numpy as np
 import cv2 as cv
-from matplotlib import pyplot as plt
 
 img1 = cv.imread("messi.webp") 
 assert img1 is not None,"file couldn't be read ,check with os.path.exists()"
@@ -82,6 +81,61 @@ while(1):
         break
 
 cv.destroyAllWindows()
+```
+## C++ code
+```cpp
+#include <opencv2/opencv.hpp>
+
+int main() {
+    // Open the default camera
+    cv::VideoCapture cap(0);
+
+    // Check if camera opened successfully
+    if (!cap.isOpened()) {
+        std::cout << "Error: Could not open camera" << std::endl;
+        return -1;
+    }
+
+    while (true) {
+        cv::Mat frame;
+        
+        // Capture frame-by-frame
+        cap >> frame;
+
+        // If the frame is empty, break immediately
+        if (frame.empty()) break;
+
+        // Convert from BGR to HSV
+        cv::Mat hsv;
+        cv::cvtColor(frame, hsv, cv::COLOR_BGR2HSV);
+
+        // Define the range of blue color in HSV
+        cv::Scalar lower_blue(110, 50, 50);
+        cv::Scalar upper_blue(130, 255, 255);
+
+        // Threshold the HSV image to get only blue colors
+        cv::Mat mask;
+        cv::inRange(hsv, lower_blue, upper_blue, mask);
+
+        // Bitwise-AND mask and original image
+        cv::Mat res;
+        cv::bitwise_and(frame, frame, res, mask);
+
+        // Display the resulting frames
+        cv::imshow("frame", frame);
+        cv::imshow("mask", mask);
+        cv::imshow("res", res);
+
+        // Wait for 'Esc' key press for 5 ms. If 'Esc' is pressed, break the loop
+        if (cv::waitKey(5) == 27) break;
+    }
+
+    // Release the camera and destroy all windows
+    cap.release();
+    cv::destroyAllWindows();
+
+    return 0;
+}
 ```
 
 Below image shows tracking of the blue object:
@@ -261,5 +315,79 @@ while True:
 # Release the capture and close windows
 cap.release()
 cv.destroyAllWindows()
+```
+## C++ code
+
+```cpp
+#include <opencv2/opencv.hpp>
+#include <iostream>
+
+int main() {
+    // Open the camera (index 1)
+    cv::VideoCapture cap(1);
+    if (!cap.isOpened()) {
+        std::cout << "Bahiya camera kam nhi kar rha" << std::endl;
+        return -1;
+    }
+
+    while (true) {
+        cv::Mat frame;
+        bool ret = cap.read(frame);
+        if (!ret) {
+            std::cout << "Bhaiya mai pagal ho chuka" << std::endl;
+            break;
+        }
+
+        // Convert from BGR to HSV
+        cv::Mat hsv;
+        cv::cvtColor(frame, hsv, cv::COLOR_BGR2HSV);
+
+        // Define the range of red color in HSV
+        cv::Scalar lower_red1(0, 100, 100);
+        cv::Scalar upper_red1(10, 255, 255);
+        cv::Scalar lower_red2(160, 100, 100);
+        cv::Scalar upper_red2(179, 255, 255);
+
+        // Define the range of blue color in HSV
+        cv::Scalar lower_blue(110, 50, 50);
+        cv::Scalar upper_blue(130, 255, 255);
+
+        // Define the range of green color in HSV
+        cv::Scalar lower_green(40, 100, 100);
+        cv::Scalar upper_green(80, 255, 255);
+
+        // Create masks for red, blue, and green colors
+        cv::Mat mask_red1, mask_red2, mask_red, mask_blue, mask_green;
+        cv::inRange(hsv, lower_red1, upper_red1, mask_red1);
+        cv::inRange(hsv, lower_red2, upper_red2, mask_red2);
+        cv::bitwise_or(mask_red1, mask_red2, mask_red);
+
+        cv::inRange(hsv, lower_blue, upper_blue, mask_blue);
+        cv::inRange(hsv, lower_green, upper_green, mask_green);
+
+        // Combine the masks
+        cv::Mat combined_mask;
+        cv::bitwise_or(mask_red, mask_blue, combined_mask);
+        cv::bitwise_or(combined_mask, mask_green, combined_mask);
+
+        // Bitwise-AND mask and original image
+        cv::Mat res;
+        cv::bitwise_and(frame, frame, res, combined_mask);
+
+        // Display the results
+        cv::imshow("frame", frame);
+        cv::imshow("mask", combined_mask);
+        cv::imshow("res", res);
+
+        // Exit on 'Esc' key press
+        if (cv::waitKey(5) == 27) break;
+    }
+
+    // Release the camera and destroy all windows
+    cap.release();
+    cv::destroyAllWindows();
+
+    return 0;
+}
 ```
 ---
