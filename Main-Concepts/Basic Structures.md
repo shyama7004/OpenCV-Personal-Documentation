@@ -200,10 +200,37 @@ For more explanation click on :[Code Snippet Explained](https://github.com/shyam
 
   - Use C/C++ arrays and initialize via constructor
 
-    ```cpp
-    int sz[3] = {2,2,2};
-    Mat L(3,sz, CV_8UC(1), Scalar::all(0));
-    ```
+```cpp
+#include <opencv2/opencv.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main()
+{
+    // Define the dimensions of the matrix
+    int sz[3] = {2, 2, 2};
+
+    // Create a 3D matrix of size 2x2x2 with 8-bit unsigned integer elements
+    Mat L(3, sz, CV_8UC(1), Scalar::all(0));
+
+    // Output the matrix elements to verify
+    for (int i = 0; i < sz[0]; ++i)
+    {
+        for (int j = 0; j < sz[1]; ++j)
+        {
+            for (int k = 0; k < sz[2]; ++k)
+            {
+                cout << "L(" << i << ", " << j << ", " << k << ") = " 
+                     << (int)L.at<uchar>(i, j, k) << endl;
+            }
+        }
+    }
+
+    return 0;
+}
+```
 
   The upper example shows how to create a matrix with more than two     
   dimensions. Specify its dimension, then pass a pointer containing the 
