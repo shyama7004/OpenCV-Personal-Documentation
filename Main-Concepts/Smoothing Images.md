@@ -197,16 +197,95 @@ int display_dst( int delay )
 
 ## Explanation
 
-Let's check the OpenCV functions that involve only the smoothing procedure, as the rest is already known by now.
+Here's a line-by-line explanation of the provided C++ code:
 
-### Normalized Block Filter:
+```cpp
+#include <iostream>
+#include "opencv2/imgproc.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/highgui.hpp"
+```
+- **Includes necessary libraries**: `iostream` for standard input-output operations, `opencv2/imgproc.hpp` for image processing functions, `opencv2/imgcodecs.hpp` for image file reading and writing, and `opencv2/highgui.hpp` for GUI-related functions.
 
-OpenCV offers the function `blur()` to perform smoothing with this filter. We specify 4 arguments:
+```cpp
+using namespace std;
+using namespace cv;
+```
+- **Namespace usage**: `std` allows use of standard C++ library functions without the `std::` prefix, and `cv` allows OpenCV functions to be used without the `cv::` prefix.
 
-- `src`: Source image
-- `dst`: Destination image
-- `Size(w, h)`: Defines the size of the kernel to be used (of width `w` pixels and height `h` pixels)
-- `Point(-1, -1)`: Indicates where the anchor point (the pixel evaluated) is located with respect to the neighborhood. If there is a negative value, then the center of the kernel is considered the anchor point.
+```cpp
+int DELAY_CAPTION = 1500;
+int DELAY_BLUR = 100;
+int MAX_KERNEL_LENGTH = 31;
+```
+- **Variable definitions**: `DELAY_CAPTION` and `DELAY_BLUR` are time delays in milliseconds, and `MAX_KERNEL_LENGTH` is the maximum kernel size for the blur operations.
+
+```cpp
+Mat src; Mat dst;
+char window_name[] = "Smoothing Demo";
+```
+- **Matrix and window name**: `src` and `dst` are OpenCV `Mat` objects used to store the source and destination images. `window_name` is the name of the window used to display images.
+
+```cpp
+int display_caption( const char* caption );
+int display_dst( int delay );
+```
+- **Function declarations**: These functions are declared but defined later. `display_caption` displays a caption on the image, and `display_dst` shows the image for a given time.
+
+```cpp
+int main( int argc, char ** argv )
+```
+- **Main function**: The entry point of the program, where `argc` is the argument count and `argv` is an array of arguments.
+
+```cpp
+namedWindow( window_name, WINDOW_AUTOSIZE );
+```
+- **Create a window**: A window named "Smoothing Demo" is created with automatic sizing based on the image displayed.
+
+```cpp
+const char* filename = argc >=2 ? argv[1] : "lena.jpg";
+```
+- **Image filename**: If a command-line argument is provided, it uses that as the filename; otherwise, it defaults to "lena.jpg".
+
+```cpp
+src = imread( samples::findFile( filename ), IMREAD_COLOR );
+```
+- **Read image**: The image is read from the file specified in `filename` and stored in `src`. It reads the image in color mode.
+
+```cpp
+if (src.empty())
+{
+    printf(" Error opening image\n");
+    printf(" Usage:\n %s [image_name-- default lena.jpg] \n", argv[0]);
+    return EXIT_FAILURE;
+}
+```
+- **Error handling**: If the image is not loaded correctly, an error message is printed, and the program exits with a failure status.
+
+```cpp
+if( display_caption( "Original Image" ) != 0 )
+{
+    return 0;
+}
+```
+- **Display original image caption**: Calls `display_caption` to show "Original Image" on the screen. If it fails, the program exits.
+
+```cpp
+dst = src.clone();
+if( display_dst( DELAY_CAPTION ) != 0 )
+{
+    return 0;
+}
+```
+- **Clone image and display**: Clones the original image `src` to `dst` and displays it with a delay. If it fails, the program exits.
+
+```cpp
+if( display_caption( "Homogeneous Blur" ) != 0 )
+{
+    return 0;
+}
+```
+- **Display caption for Homogeneous Blur**: Displays the caption "Homogeneous Blur" on the screen.
 
 ```cpp
 for ( int i = 1; i < MAX_KERNEL_LENGTH; i = i + 2 )
@@ -218,19 +297,98 @@ for ( int i = 1; i < MAX_KERNEL_LENGTH; i = i + 2 )
     }
 }
 ```
+- **Apply Homogeneous Blur**: Iteratively applies a homogeneous blur (simple average) to the image with increasing kernel sizes and displays each result with a delay.
 
-### Gaussian Filter:
-
-It is performed by the function `GaussianBlur()`. Here we use 4 arguments:
-
-- `src`: Source image
-- `dst`: Destination image
-- `Size(w, h)`: The size of the kernel to be used (the neighbors to be considered). `w` and `h` have to be odd and positive numbers; otherwise, the size will be calculated using the `sigmaX` and `sigmaY` arguments.
-- `sigmaX`: The standard deviation in x. Writing `0` implies that `sigmaX` is calculated using kernel size.
-- `sigmaY`: The standard deviation in y. Writing `0` implies that `sigmaY` is calculated using kernel size.
+```cpp
+if( display_caption( "Gaussian Blur" ) != 0 )
+{
+    return 0;
+}
+```
+- **Display caption for Gaussian Blur**: Displays the caption "Gaussian Blur" on the screen.
 
 ```cpp
 for ( int i = 1; i < MAX_KERNEL_LENGTH; i = i + 2 )
 {
-    GaussianBlur( src, dst, Size( i, i
+    GaussianBlur( src, dst, Size( i, i ), 0, 0 );
+    if( display_dst( DELAY_BLUR ) != 0 )
+    {
+        return 0;
+    }
+}
+```
+- **Apply Gaussian Blur**: Iteratively applies Gaussian blur to the image with increasing kernel sizes and displays each result with a delay.
 
+```cpp
+if( display_caption( "Median Blur" ) != 0 )
+{
+    return 0;
+}
+```
+- **Display caption for Median Blur**: Displays the caption "Median Blur" on the screen.
+
+```cpp
+for ( int i = 1; i < MAX_KERNEL_LENGTH; i = i + 2 )
+{
+    medianBlur ( src, dst, i );
+    if( display_dst( DELAY_BLUR ) != 0 )
+    {
+        return 0;
+    }
+}
+```
+- **Apply Median Blur**: Iteratively applies median blur (removes noise) to the image with increasing kernel sizes and displays each result with a delay.
+
+```cpp
+if( display_caption( "Bilateral Blur" ) != 0 )
+{
+    return 0;
+}
+```
+- **Display caption for Bilateral Blur**: Displays the caption "Bilateral Blur" on the screen.
+
+```cpp
+for ( int i = 1; i < MAX_KERNEL_LENGTH; i = i + 2 )
+{
+    bilateralFilter ( src, dst, i, i*2, i/2 );
+    if( display_dst( DELAY_BLUR ) != 0 )
+    {
+        return 0;
+    }
+}
+```
+- **Apply Bilateral Blur**: Iteratively applies bilateral filtering (preserves edges while smoothing) to the image with increasing kernel sizes and displays each result with a delay.
+
+```cpp
+display_caption( "Done!" );
+```
+- **Final caption**: Displays the caption "Done!" at the end of all processing.
+
+```cpp
+return 0;
+```
+- **Exit main function**: Returns 0 indicating successful execution.
+
+```cpp
+int display_caption( const char* caption )
+{
+    dst = Mat::zeros( src.size(), src.type() );
+    putText( dst, caption,
+             Point( src.cols/4, src.rows/2),
+             FONT_HERSHEY_COMPLEX, 1, Scalar(255, 255, 255) );
+
+    return display_dst(DELAY_CAPTION);
+}
+```
+- **Display caption function**: Creates a black image of the same size as the source, writes a caption in white text at the center, and displays it using `display_dst`.
+
+```cpp
+int display_dst( int delay )
+{
+    imshow( window_name, dst );
+    int c = waitKey ( delay );
+    if( c >= 0 ) { return -1; }
+    return 0;
+}
+```
+- **Display image function**: Shows the `dst` image in the named window and waits for the specified `delay`. If any key is pressed, it returns `-1`, otherwise returns `0`.
