@@ -78,6 +78,8 @@ if cv.waitKey(0) & 0xff == 27:
     cv.destroyAllWindows()
 ```
 
+For more code information : [Click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/11.1.md)
+
 Below are the three results:
 
 ![Harris Corner Detector Results](https://docs.opencv.org/4.x/harris_result.jpg)
