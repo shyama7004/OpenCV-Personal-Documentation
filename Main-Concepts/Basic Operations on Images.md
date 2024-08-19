@@ -44,6 +44,7 @@ You can modify the pixel values the same way.
 >>> print(img[100,100])
 [255 255 255]
 ```
+To see how code is implemented : [Click here](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Full-Code/1.1.md)
 
 ### Warning
 Numpy is an optimized library for fast array calculations. Simply accessing each and every pixel value and modifying it will be very slow and it is discouraged.
