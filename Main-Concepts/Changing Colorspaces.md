@@ -230,10 +230,10 @@ For more details click on : [Argument explanation](https://github.com/shyama7004
 
 In summary, this code captures video from the webcam, processes each frame to detect blue objects using HSV color space, and displays the original frame, the mask, and the result where only blue regions are visible. The loop continues until the 'Esc' key is pressed.
 
-> Warning :If your webcam is not working checkout the following things :
-> 1.A camera is present on the first hand.
-> 2.Permission is granted.
-> 3.cv.VideoCapture(0),change the value to 1 or 2.
+> Warning :If your webcam is not working checkout the following things :<br>
+> 1. A camera is present on the first hand.<br>
+> 2. Permission is granted.<br>
+> 3. cv.VideoCapture(0),change the value to 1 or 2.<br>
 ### Note
 There is some noise in the image. We will see how to remove it in later chapters. This is the simplest method in object tracking. Once you learn functions of contours, you can do plenty of things like find the centroid of an object and use it to track the object, draw diagrams just by moving your hand in front of a camera, and other fun stuff.
 
