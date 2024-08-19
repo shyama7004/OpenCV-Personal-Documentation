@@ -87,7 +87,12 @@
    - **Process**:
      - Each keypoint descriptor is compared to all others in a second image to find the nearest neighbor based on Euclidean distance.
      - To avoid false matches, a ratio test is applied: the distance to the closest match is compared to the distance to the second-closest match. If the ratio is greater than 0.8, the match is rejected.
-     - This test helps eliminate about 90% of false matches while retaining 95% of correct matches, making the matching process more reliable.
+
+<div align ="center"><h3>Ratio Test</h3></div>
+
+<div align =center><img src ="https://i.ytimg.com/vi/MMmFnH1ZHyM/maxresdefault.jpg" width =300 ></div>
+
+  - This test helps eliminate about 90% of false matches while retaining 95% of correct matches, making the matching process more reliable.
 
    - **Result**: After matching keypoints, the images can be aligned, stitched, or analyzed for common features.
 
