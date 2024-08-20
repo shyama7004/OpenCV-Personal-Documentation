@@ -82,7 +82,9 @@ while(1):
 
 cv.destroyAllWindows()
 ```
-## C++ code
+<details>
+    <summary>Click here to see the C++ code</summary>
+
 ```cpp
 #include <opencv2/opencv.hpp>
 
@@ -137,11 +139,14 @@ int main() {
     return 0;
 }
 ```
+</details>
 
 Below image shows tracking of the blue object:
 
-![Tracking Blue Object](https://docs.opencv.org/4.x/frame.jpg)
-
+![Tracking Blue Object](https://docs.opencv.org/4.x/frame.jpg)<br>
+<details>
+<summary>Python Code explanation</summary>
+    
 `Explanation in detail`
 
 This code captures video from your webcam and processes each frame to detect blue objects. Here’s a step-by-step explanation of the code:
@@ -229,6 +234,7 @@ For more details click on : [Argument explanation](https://github.com/shyama7004
     - `cv.destroyAllWindows()`: Closes all OpenCV windows.
 
 In summary, this code captures video from the webcam, processes each frame to detect blue objects using HSV color space, and displays the original frame, the mask, and the result where only blue regions are visible. The loop continues until the 'Esc' key is pressed.
+</details>
 
 > Warning :If your webcam is not working checkout the following things :<br>
 > 1. A camera is present on the first hand.<br>
@@ -316,7 +322,8 @@ while True:
 cap.release()
 cv.destroyAllWindows()
 ```
-## C++ code
+<details>
+<summary>Click here to see the C++ code</summary>
 
 ```cpp
 #include <opencv2/opencv.hpp>
@@ -390,4 +397,6 @@ int main() {
     return 0;
 }
 ```
+</details>
+
 ---
