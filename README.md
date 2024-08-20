@@ -139,11 +139,11 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 
 ### 11. Features Detection and Description
 
-1. **Understanding Features**: [Understanding Features](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
+1. **Understanding Features**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Understanding%20Features.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/db/d27/tutorial_py_table_of_contents_feature2d.html)
 2. **Harris Corner Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Harris%20Corner%20Detection.md)	|	[OpenCv Docs](https://docs.opencv.org/4.x/dc/d0d/tutorial_py_features_harris.html)
-3. **SIFT (Scale-Invariant Feature Transform)**: [My Docs]()|[OpenCV Docs](https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html)
-4. **SURF (Speeded-Up Robust Features)**: [SURF](https://docs.opencv.org/4.x/df/dd2/tutorial_py_surf_intro.html)
-5. **FAST (Features from Accelerated Segment Test)**: [FAST](https://docs.opencv.org/4.x/df/d0c/tutorial_py_fast.html)
+3. **SIFT (Scale-Invariant Feature Transform)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SIFT.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html)
+4. **SURF (Speeded-Up Robust Features)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SURF.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/df/dd2/tutorial_py_surf_intro.html)
+5. **FAST (Features from Accelerated Segment Test)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/FAST%20Algorithm%20for%20Corner%20Detection.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/df/d0c/tutorial_py_fast.html)
 6. **BRIEF (Binary Robust Independent Elementary Features)**: [BRIEF](https://docs.opencv.org/4.x/dc/d7d/tutorial_py_brief.html)
 7. **ORB (Oriented FAST and Rotated BRIEF)**: [ORB](https://docs.opencv.org/4.x/d1/d89/tutorial_py_orb.html) 
 
