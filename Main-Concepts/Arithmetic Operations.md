@@ -53,6 +53,48 @@ cv.imshow('dst', dst)
 cv.waitKey(0)
 cv.destroyAllWindows()
 ```
+<details>
+  <summary>Click to see the C++ code!</summary>
+   
+   ```Cpp
+#include<iostream>
+#include<opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
+int main()
+{
+    // Read the images
+    Mat img1 = imread("images/12.jpg");
+    Mat img2 = imread("images/13.jpg");
+
+    // Check if the images are loaded successfully
+    if (img1.empty() || img2.empty())
+    {
+        cout << "Could not open or find the images!" << endl;
+        return -1;
+    }
+
+    // Blend the images
+    Mat blend;
+    addWeighted(img1, 0.7, img2, 0.3, 0.0, blend);
+
+    // Display the blended image
+    imshow("Blended Image", blend);
+
+    // Wait until user presses a key (5 ms delay)
+    if (waitKey(0) == 27) // 27 is the ASCII code for the ESC key
+    {
+        destroyAllWindows();
+        return 0;
+    }
+
+    return 0;
+}
+```
+</details>
+
 
 Check the result below:
 
@@ -94,6 +136,8 @@ cv.imshow('res', img1)
 cv.waitKey(0)
 cv.destroyAllWindows()
 ```
+<details>
+   <summary>Click to see the detailed Explanation</summary>
 
 ### Explanation
 
@@ -168,6 +212,7 @@ cv.destroyAllWindows()
 - **`cv.imshow`**: Displays the modified image (`img1`) in a window titled 'res'.
 - **`cv.waitKey(0)`**: Waits indefinitely for a key press. This keeps the window open until a key is pressed.
 - **`cv.destroyAllWindows`**: Closes all OpenCV windows.
+</details>
 
 ![Mask and Result](https://docs.opencv.org/4.x/overlay.jpg)
 
@@ -246,6 +291,9 @@ images = load_images_from_folder(folder_path)
 # Show slideshow with smooth transitions
 show_slideshow(images, transition_time=1, display_time=2)
 ```
+
+<details>
+   <summary>Click to see the detailed Explanation</summary>
 
 ### Explanation
 
