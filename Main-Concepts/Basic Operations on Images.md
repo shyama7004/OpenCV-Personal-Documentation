@@ -71,6 +71,53 @@ else:
     cv.waitKey(0)
     cv.destroyAllWindows()
 ```
+<details>
+    <summary>Click here to see the C++ code</summary>
+
+```cpp
+#include <opencv2/opencv.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main()
+{
+    // Load the image
+    Mat img = imread("/Users/sankarsanbisoyi/Desktop/Python/Numpy Practice/download.jpeg");
+
+    // Ensure the image is loaded properly
+    if (img.empty())
+    {
+        cout << "Error: Image not loaded." << endl;
+        return -1;
+    }
+
+    // Set the pixel value at (10, 10) in the third channel (BGR -> 0, 1, 2)
+    img.at<Vec3b>(10, 10)[2] = 100;
+
+    // Display the modified image to verify the change
+    imshow("Modified Image", img);
+    waitKey(0);
+    destroyAllWindows();
+
+    return 0;
+}
+```
+
+### Explanation:
+
+1. **Image Loading:** The image is loaded using `imread`. The path is specified as `"/Users/sankarsanbisoyi/Desktop/Python/Numpy Practice/download.jpeg"`.
+
+2. **Check if Image is Loaded:** If the image is not loaded correctly, the program prints an error message and exits.
+
+3. **Pixel Modification:** The pixel at the coordinates `(10, 10)` in the third channel (which corresponds to the red channel in BGR format) is set to a value of `100`. This is done using `img.at<Vec3b>(10, 10)[2] = 100;`, where `Vec3b` is a vector of 3 unsigned 8-bit integers (corresponding to the B, G, R channels).
+
+4. **Display the Image:** The modified image is displayed using `imshow`, and the program waits for a key press using `waitKey(0)` before closing the window with `destroyAllWindows()`.
+
+This C++ code performs the same operations as the original Python script, including loading the image, modifying a specific pixel, and displaying the result.
+</details>
+
 `Note`:Maintain all the whitespaces.
 
 ## Accessing Image Properties
@@ -184,7 +231,73 @@ plt.subplot(236), plt.imshow(constant, 'gray'), plt.title('CONSTANT')
 
 plt.show()
 ```
-For more details click on this Link : [Code explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/21.md)
+
+For more details click on this Link : [Code explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/21.md)<br>
+<details>
+    <summary>Click here to see the C++ code</summary>
+
+
+```cpp
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main()
+{
+    // Define the BLUE color
+    Scalar BLUE(255, 0, 0);
+
+    // Read the image
+    Mat img1 = imread("opencv-logo.png");
+    if (img1.empty())
+    {
+        cout << "File could not be read, check the path." << endl;
+        return -1;
+    }
+
+    // Apply different types of border
+    Mat replicate, reflect, reflect101, wrap, constant;
+    copyMakeBorder(img1, replicate, 10, 10, 10, 10, BORDER_REPLICATE);
+    copyMakeBorder(img1, reflect, 10, 10, 10, 10, BORDER_REFLECT);
+    copyMakeBorder(img1, reflect101, 10, 10, 10, 10, BORDER_REFLECT_101);
+    copyMakeBorder(img1, wrap, 10, 10, 10, 10, BORDER_WRAP);
+    copyMakeBorder(img1, constant, 10, 10, 10, 10, BORDER_CONSTANT, BLUE);
+
+    // Create windows and display images with titles
+    imshow("ORIGINAL", img1);
+    imshow("REPLICATE", replicate);
+    imshow("REFLECT", reflect);
+    imshow("REFLECT_101", reflect101);
+    imshow("WRAP", wrap);
+    imshow("CONSTANT", constant);
+
+    // Wait for a key press indefinitely
+    waitKey(0);
+    destroyAllWindows();
+
+    return 0;
+}
+```
+
+### Explanation:
+1. **Color Definition:** `Scalar BLUE(255, 0, 0);` defines the blue color using the `Scalar` type, which is equivalent to `(B, G, R)` format in OpenCV.
+  
+2. **Image Loading:** The image is loaded using `imread`. A check is included to ensure that the image is loaded correctly.
+
+3. **Border Types:** The `copyMakeBorder` function is used to add different types of borders around the image, similar to the Python version.
+
+4. **Display:** The images are displayed in separate windows using `imshow`.
+
+5. **Wait for User Input:** The program waits indefinitely for a key press using `waitKey(0)` before closing the windows.
+
+This code mimics the functionality of your Python code but using C++ and OpenCV.
+</details><br>
+
+
 
 See the result below. (Image is displayed with matplotlib. So RED and BLUE channels will be interchanged):
 
