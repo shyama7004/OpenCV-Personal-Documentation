@@ -25,6 +25,37 @@ We have to maximize this function <em>E(u,v)</em> for corner detection. That mea
 
 Here, I<sub>x</sub> and I<sub>y</sub> are image derivatives in x and y directions respectively. (These can be easily found using `cv.Sobel()`).
 
+<details>
+<summary>Click here to know about acv.Sobel() use case</summary>
+
+```cpp
+import numpy as np
+import cv2 as cv
+
+# Load the image
+img = cv.imread("images/messi.jpg")#replace images/messi.jpg by your own image path
+if img is None:
+    print("The image wasn't found.")
+    exit()
+
+# Apply the Sobel operator to compute the gradient
+gradient_x = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=3)  # Gradient in x direction
+gradient_y = cv.Sobel(img, cv.CV_64F, 0, 1, ksize=3)  # Gradient in y direction
+
+# Combine gradients (optional)
+gradient = cv.magnitude(gradient_x, gradient_y)
+
+# Print the gradient matrix
+print(gradient)
+
+# Optionally, display the gradients
+cv.imshow("Gradient X", gradient_x)
+cv.imshow("Gradient Y", gradient_y)
+cv.imshow("Gradient Magnitude", gradient)
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+</details>
 Then comes the main part. After this, they created a score, basically an equation, which determines if a window can contain a corner or not.
 
 <div align = center><img src = https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/24.png width =600 height =100></div>
