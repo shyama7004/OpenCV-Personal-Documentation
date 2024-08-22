@@ -80,8 +80,8 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - **Revision Tips**: Develop a simple application for detecting and matching features in images.
 
 5. **Video Analysis**
-   - [Video Capture](https://docs.opencv.org/5.x/dd/d43/tutorial_py_video_display.html)
-   - [Background Subtraction](https://docs.opencv.org/5.x/d1/dc5/tutorial_background_subtraction.html)
+   - **Video Capture**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Getting%20Started%20with%20Videos.md)	|	[OpenCV Docs](https://docs.opencv.org/5.x/dd/d43/tutorial_py_video_display.html)
+   - **Background Subtraction**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/How%20to%20Use%20Background%20Subtraction%20Methods.md)	|	[OpenCV Docs](https://docs.opencv.org/5.x/d1/dc5/tutorial_background_subtraction.html)
    - [Motion Detection](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
    - [Object Tracking](https://docs.opencv.org/5.x/d7/d00/tutorial_meanshift.html)
    - [Optical Flow](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html)
