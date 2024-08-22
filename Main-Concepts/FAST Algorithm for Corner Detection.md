@@ -96,6 +96,71 @@ See the results. The first image shows FAST with nonmaxSuppression, and the seco
 
 ![image](https://docs.opencv.org/4.x/fast_kp.jpg)
 
+<details>
+<summary>Click here to know more</summary>
+
+```python
+import numpy as np
+import cv2 as cv
+from matplotlib import pyplot as plt
+
+# Load the image in grayscale
+img = cv.imread('images/chess.png', cv.IMREAD_GRAYSCALE)
+
+# Check if the image was successfully loaded
+if img is None:
+    print("Error: Image not found or unable to load.")
+else:
+    print("Image loaded successfully.")
+
+    # Initiate FAST object with default values
+    if hasattr(cv, 'FastFeatureDetector_create'):
+        fast = cv.FastFeatureDetector_create()
+
+        # Find and draw the keypoints
+        kp = fast.detect(img, None)
+        img2 = cv.drawKeypoints(img, kp, None, color=(255, 0, 0))
+
+        # Print all default params
+        print("Threshold: {}".format(fast.getThreshold()))
+        print("nonmaxSuppression: {}".format(fast.getNonmaxSuppression()))
+        print("neighborhood: {}".format(fast.getType()))
+        print("Total Keypoints with nonmaxSuppression: {}".format(len(kp)))
+
+        # Display the image with keypoints
+        cv.imshow('FAST with nonmaxSuppression', img2)
+
+        # Disable nonmaxSuppression
+        fast.setNonmaxSuppression(False)
+        kp = fast.detect(img, None)
+
+        print("Total Keypoints without nonmaxSuppression: {}".format(len(kp)))
+
+        img3 = cv.drawKeypoints(img, kp, None, color=(255, 0, 0))
+
+        # Display the image without nonmaxSuppression
+        cv.imshow('FAST without nonmaxSuppression', img3)
+
+        # Wait for a key press and close windows
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+    else:
+        print("Error: FastFeatureDetector_create is not available in your OpenCV installation.")
+```
+
+### Running the Script
+
+1. **Image Load Check:**
+   - If the image doesn't load (`img is None`), double-check the path or use an absolute path to the image file.
+
+2. **OpenCV Functionality Check:**
+   - If `FastFeatureDetector_create()` is not available, ensure you have the correct OpenCV package installed. If the issue persists, you may need to install OpenCV via `conda` if you are using a Conda environment.
+
+3. **Displaying Images:**
+   - The code uses `cv.imshow()` to display images. Ensure your environment supports GUI windows. If you're running this script in a headless environment (e.g., via SSH without X11 forwarding), `cv.imshow()` will not work, and you'll need to save the images to files using `cv.imwrite()` and then view them manually.
+
+By following these steps and addressing any errors from the debug statements, you should be able to identify and fix the issues, ensuring the script runs successfully.
+</details>
 ## Additional Resources
 - Edward Rosten and Tom Drummond, "Machine learning for high-speed corner detection" in 9th European Conference on Computer Vision, vol. 1, 2006, pp. 430–443.
 - Edward Rosten, Reid Porter, and Tom Drummond, "Faster and better: a machine learning approach to corner detection" in IEEE Trans. Pattern Analysis and Machine Intelligence, 2010, vol 32, pp. 105-119.
