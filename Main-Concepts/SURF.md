@@ -10,17 +10,95 @@ In the last chapter, we saw SIFT for keypoint detection and description. However
 
 In SIFT, Lowe approximated the Laplacian of Gaussian with the Difference of Gaussian for finding scale-space. SURF goes further by approximating LoG with a Box Filter. The image below demonstrates this approximation. One big advantage is that convolution with a box filter can be easily calculated using integral images, and it can be done in parallel for different scales. Additionally, SURF relies on the determinant of the Hessian matrix for both scale and location.
 
+<details>
+<summary>Click here to see Hesian Matrix</summary>
+
+<img src ="https://imgs.search.brave.com/sY6MYyB49xSyOx4dODQeR6Dx8AZW8Jkt0lNyxDFGNj8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jb250/ZW50LmNkbnR3cmsu/Y29tL2ZpbGVzL2FI/VmlQVEV4T0RZeU5T/WmpiV1E5YVhSbGJX/VmthWFJ2Y21sdFlX/ZGxKbVpwYkdWdVlX/MWxQV2wwWlcxbFpH/bDBiM0pwYldGblpW/ODJNemt3TXpJM05X/RTBPRGszTGtwUVJ5/WjJaWEp6YVc5dVBU/QXdNREFtYzJsblBU/ZzRZVEpqTm1NMFky/UTVNMk00TlRVd09X/WTVNVEEyWkRnME5E/SmhNMkl5">
+
+</details>
+
 <div align ="center"><img src ="https://docs.opencv.org/4.x/surf_boxfilter.jpg"></div>
 
-For orientation assignment, SURF uses wavelet responses in the horizontal and vertical direction for a neighborhood of size 6s. Adequate Gaussian weights are also applied to it. Then, they are plotted in a space as shown in the image below. The dominant orientation is estimated by calculating the sum of all responses within a sliding orientation window of 60 degrees. The wavelet response can be found using integral images very easily at any scale. For many applications, rotation invariance is not required, so finding this orientation is unnecessary, which speeds up the process. SURF provides this functionality, called Upright-SURF or U-SURF. It improves speed and is robust up to some point. OpenCV supports both, depending on the flag `upright`. If it is 0, orientation is calculated; if it is 1, orientation is not calculated, making it faster.
+For orientation assignment, SURF uses wavelet responses in the horizontal and vertical direction for a neighborhood of size 6s.
+<details>
+  <summary>Click here to know about wavelet responses</summary>
+ 
+
+Wavelet responses refer to the output of a wavelet transform, which is a mathematical technique used to decompose a signal into its constituent frequency components at different scales. In essence, wavelet responses provide a multiscale representation of a signal, allowing for the analysis of both time and frequency domains simultaneously.
+
+Key Characteristics
+
+Multiscale: Wavelet responses offer a hierarchical representation of a signal, with each scale corresponding to a specific frequency range.
+Time-frequency: Wavelet responses capture both time and frequency information, enabling the analysis of non-stationary signals and the detection of localized events.
+Scalability: Wavelet responses can be computed at varying scales, allowing for the selection of the most relevant frequency ranges for a particular application.
+Applications
+
+Signal Processing: Wavelet responses are used in signal processing for tasks such as denoising, compression, and feature extraction.
+Non-destructive Testing: Wavelet responses are employed in non-destructive testing (NDT) methods, like ultrasonic testing, to analyze the reflections of incident wavelets on material discontinuities.
+Structural Health Monitoring: Wavelet responses are utilized in structural health monitoring (SHM) to detect damage and anomalies in structures by analyzing Lamb wave propagation.
+Notable Properties
+
+Shift and Scaling Coefficients: The coefficients of a wavelet filter bank, known as shift and scaling coefficients, determine the wavelet’s time-frequency resolution and scalability.
+Uncertainty Principle: The continuous wavelet transform (CWT) is subject to the uncertainty principle, which limits the simultaneous resolution of time and frequency.
+Orthogonality: Orthogonal wavelets, defined by a low-pass finite impulse response (FIR) filter, ensure efficient computation and optimal signal representation.
+By leveraging these properties and characteristics, wavelet responses have become a powerful tool in various fields, enabling the analysis and processing of complex signals with unprecedented flexibility and accuracy.
+</details>
+
+- Gaussian weights are applied to the data.
+- The results are plotted as shown in the image.
+- The dominant direction is found by summing all responses within a 60-degree sliding window.
+- A "60-degree sliding window" means looking at a section of angles that covers 60 degrees at a time. You then move this 60-degree section across all possible angles to find the       direction with the strongest signal or feature.
+- The wavelet response can be quickly found at any scale using integral images.
+- Integral images are a way to quickly calculate the sum of pixel values in a rectangular area of an image. They speed up processes like detecting features or patterns in an image by allowing these sums to be computed very efficiently, regardless of the size of the area.
+- In some cases, finding this orientation isn't necessary, which speeds up the process.
+- SURF offers a faster version called Upright-SURF (U-SURF) for these situations.
+- In OpenCV, you can control this with the `upright` flag:
+  - If `upright = 0`, orientation is calculated.
+  - If `upright = 1`, orientation is not calculated, making it faster.
 
 <div align ="center"><img src = "https://docs.opencv.org/4.x/surf_orientation.jpg"></div>
 
-For feature description, SURF uses wavelet responses in the horizontal and vertical direction (again, the use of integral images makes things easier). A neighborhood of size 20s x 20s is taken around the keypoint where `s` is the size. It is divided into 4x4 subregions. For each subregion, horizontal and vertical wavelet responses are taken and a vector is formed like this: ![Vector](image). This vector gives the SURF feature descriptor with a total of 64 dimensions. Lower dimensions result in higher speed of computation and matching, but provide better distinctiveness of features.
+- **Feature Description in SURF**:
+  - SURF (Speeded-Up Robust Features) describes features by analyzing wavelet responses in both horizontal and vertical directions.
+  - A neighborhood around the keypoint is taken, typically of size 20x20 pixels.
+  - This area is divided into 4x4 smaller regions, making a total of 16 subregions.
+  - For each subregion:
+    - Wavelet responses in both the horizontal (`dx`) and vertical (`dy`) directions are calculated.
+    - These responses are then combined into a vector that captures the characteristics of the keypoint.
+    - This vector has 64 dimensions (or values), providing a balance between speed and accuracy in feature matching.
+  
+- **Extended Feature Description**:
+  - For more detailed feature descriptions, SURF offers an extended version with 128 dimensions.
+  - This is done by separately calculating the sums of the wavelet responses (`dx` and `|dx|`) based on the sign of the vertical response (`dy`):
+    - If `dy < 0`, one set of sums is computed.
+    - If `dy ≥ 0`, another set of sums is computed.
+  - This doubles the number of features in the vector, providing better distinctiveness while still maintaining reasonable computation time.
+  - OpenCV allows you to choose between the standard 64-dimensional version and the extended 128-dimensional version using the `extended` flag.
 
-For more distinctiveness, SURF feature descriptor has an extended 128-dimension version. The sums of ![Vector](image) and ![Vector](image) are computed separately for ![Vector](image) and ![Vector](image). Similarly, the sums of ![Vector](image) and ![Vector](image) are split according to the sign of ![Vector](image), doubling the number of features. It doesn't add much computational complexity. OpenCV supports both by setting the value of the flag `extended` with 0 and 1 for 64-dim and 128-dim respectively (default is 128-dim).
+- **Sign of Laplacian for Matching**:
+  - Another important aspect of SURF is the use of the "sign of Laplacian" (related to the trace of the Hessian matrix) during feature detection.
+  - The sign of the Laplacian helps distinguish between bright blobs on dark backgrounds and dark blobs on bright backgrounds.
+  - This feature is already computed during detection, so it adds no extra computation cost.
+  - During matching, only features with the same Laplacian sign are compared, which speeds up the matching process without losing accuracy.
 
-Another important improvement is the use of the sign of the Laplacian (trace of the Hessian Matrix) for the underlying interest point. It adds no computation cost since it is already computed during detection. The sign of the Laplacian distinguishes bright blobs on dark backgrounds from the reverse situation. In the matching stage, we only compare features if they have the same type of contrast (as shown in the image below). This minimal information allows for faster matching without reducing the descriptor's performance.
+<details>
+<summary>Click here to know more about Laplacian usage</summary>
+The "Sign of Laplacian" is a concept used in image processing and feature detection, particularly in algorithms like SURF. Here's a breakdown of what it means:
+
+- **Laplacian**: 
+  - The Laplacian is a mathematical operation that calculates the second derivatives of an image. It helps detect edges or regions in an image where the intensity changes rapidly.
+  - When applied to an image, the Laplacian can highlight areas that are either very bright or very dark compared to their surroundings.
+
+- **Sign of Laplacian**:
+  - The "sign" of the Laplacian simply refers to whether the value of the Laplacian is positive or negative:
+    - **Positive Sign**: Indicates that the area is a **bright region** (blob) on a darker background.
+    - **Negative Sign**: Indicates that the area is a **dark region** (blob) on a brighter background.
+  
+- **Usage in SURF**:
+  - SURF uses the sign of the Laplacian to help distinguish between different types of features. 
+  - When matching features between images, SURF only compares features that have the same sign of the Laplacian. This ensures that only similar types of features (e.g., bright regions on dark backgrounds) are compared, which improves the accuracy of the matching process.
+  - The sign of the Laplacian is determined during the initial detection phase, so using it for matching doesn't add any extra computational cost.
+</details>
 
 <div align ="center"><img src = "https://docs.opencv.org/4.x/surf_matching.jpg"></div>
 
