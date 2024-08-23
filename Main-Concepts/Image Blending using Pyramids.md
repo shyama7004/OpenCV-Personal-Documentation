@@ -114,7 +114,8 @@ real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
 cv.imwrite('Pyramid_blending2.jpg', ls_)
 cv.imwrite('Direct_blending.jpg', real)
 ```
-
+<details>
+    <summary>Explanation</summary>
 ## Explanation:
 
 ### 1. Importing Required Libraries
@@ -217,7 +218,88 @@ cv.imwrite('Direct_blending.jpg', real)
 ```
 - **`cv.imwrite('Pyramid_blending2.jpg', ls_)`**: Save the pyramid-blended image as `Pyramid_blending2.jpg`.
 - **`cv.imwrite('Direct_blending.jpg', real)`**: Save the directly blended image as `Direct_blending.jpg`.
+</details>
+<details>
+<summary>For resizing the images</summary>
+- If you face any errors then you can do the resizing , mostly it should work.
 
+```python
+import cv2 as cv
+import numpy as np
+
+# Load images
+A = cv.imread("images/messi1.png")
+assert A is not None, "File could not be read, check with os.path.exists()"
+B = cv.imread("images/ronaldo.png")
+assert B is not None, "File could not be read, check with os.path.exists()"
+
+# Generate Gaussian pyramid for A
+G = A.copy()
+gpA = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpA.append(G)
+
+# Generate Gaussian pyramid for B
+G = B.copy()
+gpB = [G]
+for i in range(6):
+    G = cv.pyrDown(G)
+    gpB.append(G)
+
+# Generate Laplacian Pyramid for A
+lpA = [gpA[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpA[i])
+    GE = cv.resize(GE, (gpA[i-1].shape[1], gpA[i-1].shape[0]))  # Resize to match shape
+    L = cv.subtract(gpA[i-1], GE)
+    lpA.append(L)
+
+# Generate Laplacian Pyramid for B
+lpB = [gpB[5]]
+for i in range(5, 0, -1):
+    GE = cv.pyrUp(gpB[i])
+    GE = cv.resize(GE, (gpB[i-1].shape[1], gpB[i-1].shape[0]))  # Resize to match shape
+    L = cv.subtract(gpB[i-1], GE)
+    lpB.append(L)
+
+# Now add left and right halves of the images in each level
+LS = []
+for la, lb in zip(lpA, lpB):
+    la = cv.resize(la, (min(la.shape[1], lb.shape[1]), min(la.shape[0], lb.shape[0])))  # Resize to the smallest shape
+    lb = cv.resize(lb, (min(la.shape[1], lb.shape[1]), min(la.shape[0], lb.shape[0])))
+    rows, cols, dpt = la.shape
+    ls = np.hstack((la[:, :cols//2], lb[:, cols//2:]))
+    LS.append(ls)
+
+# Reconstruct the image
+ls_ = LS[0]
+for i in range(1, 6):
+    ls_ = cv.pyrUp(ls_)
+    ls_ = cv.resize(ls_, (LS[i].shape[1], LS[i].shape[0]))  # Resize to match the shape
+    ls_ = cv.add(ls_, LS[i])
+
+# Direct blending without pyramids
+cols = A.shape[1]
+real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
+
+# Display results
+cv.imshow("Pyramid Blend", ls_)
+cv.imshow("Direct Blend", real)
+
+if cv.waitKey(0) & 0xFF == 27:
+    cv.destroyAllWindows()
+```
+
+### Key Fixes:
+1. **Resizing Arrays Before Concatenation**:
+   - Before horizontally stacking (`np.hstack`) the two arrays `la` and `lb`, they are resized to have matching dimensions. This ensures that they can be concatenated without any dimension mismatch errors.
+
+2. **General Resize Handling**:
+   - Throughout the pyramid construction and reconstruction, ensure that any image being processed is resized to match the target dimensions to avoid similar errors.
+
+This should solve the `ValueError` related to mismatched dimensions during the concatenation process.
+</details>
 ## Additional Resources
 
 1. [Image Blending](http://pages.cs.wisc.edu/~csverma/CS766_09/ImageMosaic/imagemosaic.html)
