@@ -26,7 +26,7 @@ We have to maximize this function <em>E(u,v)</em> for corner detection. That mea
 Here, I<sub>x</sub> and I<sub>y</sub> are image derivatives in x and y directions respectively. (These can be easily found using `cv.Sobel()`).
 
 <details>
-<summary>Click here to know about acv.Sobel() use case</summary>
+<summary>Click here to know about cv.Sobel() use case</summary>
 
 ```cpp
 import numpy as np
@@ -122,33 +122,121 @@ Sometimes, you may need to find the corners with maximum accuracy. OpenCV comes 
 import numpy as np
 import cv2 as cv
 
-filename = 'chessboard2.jpg'
-img = cv.imread(filename)
+# Load the image
+img = cv.imread("images/pentagon.png")
+assert img is not None, "File wasn't found, check for os.path.exists()"
+
+# Convert to grayscale
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-
-# find Harris corners
 gray = np.float32(gray)
-dst = cv.cornerHarris(gray, 2, 3, 0.04)
-dst = cv.dilate(dst, None)
-ret, dst = cv.threshold(dst, 0.01 * dst.max(), 255, 0)
-dst = np.uint8(dst)
 
-# find centroids
-ret, labels, stats, centroids = cv.connectedComponentsWithStats(dst)
+# Detect corners using Harris Corner Detection
+corner = cv.cornerHarris(gray, 2, 3, 0.04)
+corner = cv.dilate(corner, None)
 
-# define the criteria to stop and refine the corners
-criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
-corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), criteria)
+# Threshold to mark the corners
+ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)
+corner = np.uint8(corner)
 
-# Now draw them
-res = np.hstack((centroids, corners))
-res = np.int0(res)
-img[res[:, 1], res[:, 0]] = [0, 0, 255]
-img[res[:, 3], res[:, 2]] = [0, 255, 0]
+# Find connected components
+ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)
 
-cv.imwrite('subpixel5.png', img)
+# Define criteria for sub-pixel accuracy
+stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
+
+# Refine corner locations to sub-pixel accuracy
+corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)
+
+# Concatenate centroids and refined corners
+result = np.hstack((centroids, corners))
+result = np.int0(result)
+
+# Draw the centroids and corners on the image
+img[result[:, 1], result[:, 0]] = [0, 0, 255]  # Centroids marked in red
+img[result[:, 3], result[:, 2]] = [0, 255, 0]  # Refined corners marked in green
+
+# Display the result
+cv.imshow('Corners & Centroids', img)
+cv.waitKey(0)
+cv.destroyAllWindows()
 ```
+<details>
+<summary>Code Explanation</summary>
 
+## Explanation
+
+```python
+# Detect corners using Harris Corner Detection
+corner = cv.cornerHarris(gray, 2, 3, 0.04)
+corner = cv.dilate(corner, None)
+```
+- **`corner = cv.cornerHarris(gray, 2, 3, 0.04)`**: Applies the Harris Corner Detection algorithm to detect corners in the grayscale image. The parameters are:
+  - `gray`: Input grayscale image.
+  - `2`: Block size, which is the neighborhood size considered for corner detection.
+  - `3`: Aperture parameter for the Sobel operator (used internally in corner detection).
+  - `0.04`: Harris detector free parameter (typically between 0.04 to 0.06).
+- **`corner = cv.dilate(corner, None)`**: Dilates the corner regions to make them more prominent in the output image. Dilation increases the thickness of the corner points detected.
+
+```python
+# Threshold to mark the corners
+ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)
+corner = np.uint8(corner)
+```
+- **`ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)`**: Applies a binary threshold to the corner detection result to mark the corners. The threshold value is set to 1% of the maximum corner response value. If a pixel value is greater than the threshold, it is set to 255 (white); otherwise, it is set to 0 (black).
+- **`corner = np.uint8(corner)`**: Converts the result of the thresholding to an unsigned 8-bit integer type, which is the standard format for image data.
+
+```python
+# Find connected components
+ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)
+```
+- **`ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)`**: Finds connected components in the binary image (`corner`). It returns:
+  - `ret`: The number of connected components.
+  - `labels`: An array where each element has a label indicating which connected component it belongs to.
+  - `stats`: Statistics about each connected component (e.g., bounding box, area).
+  - `centroids`: The centroids (center points) of each connected component.
+
+```python
+# Define criteria for sub-pixel accuracy
+stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
+```
+- **`stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)`**: Defines the termination criteria for the sub-pixel corner refinement. It stops the algorithm when:
+  - `cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER`: Either the specified accuracy (`EPS`) or the maximum number of iterations (`MAX_ITER`) is reached.
+  - `100`: The maximum number of iterations.
+  - `0.001`: The desired accuracy (epsilon) for corner refinement.
+
+```python
+# Refine corner locations to sub-pixel accuracy
+corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)
+```
+- **`corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)`**: Refines the corner positions to sub-pixel accuracy based on the centroids found earlier. It uses the grayscale image as input, and the centroids as initial estimates. The parameters `(5, 5)` define the half-size of the search window, and `(-1, -1)` specifies the region of interest (full image in this case).
+
+```python
+# Concatenate centroids and refined corners
+result = np.hstack((centroids, corners))
+result = np.int0(result)
+```
+- **`result = np.hstack((centroids, corners))`**: Horizontally stacks the centroids and their corresponding refined corners into a single array for easier processing.
+- **`result = np.int0(result)`**: Converts the resulting array to integer format, ensuring that the coordinates are in pixel format (integer values).
+
+```python
+# Draw the centroids and corners on the image
+img[result[:, 1], result[:, 0]] = [0, 0, 255]  # Centroids marked in red
+img[result[:, 3], result[:, 2]] = [0, 255, 0]  # Refined corners marked in green
+```
+- **`img[result[:, 1], result[:, 0]] = [0, 0, 255]`**: Marks the original centroids on the image with red color (`[0, 0, 255]` in BGR format).
+- **`img[result[:, 3], result[:, 2]] = [0, 255, 0]`**: Marks the refined corners on the image with green color (`[0, 255, 0]` in BGR format).
+
+```python
+# Display the result
+cv.imshow('Corners & Centroids', img)
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+- **`cv.imshow('Corners & Centroids', img)`**: Displays the image with the marked centroids and corners in a window titled "Corners & Centroids".
+- **`cv.waitKey(0)`**: Waits indefinitely for a key press. This is necessary to keep the image window open.
+- **`cv.destroyAllWindows()`**: Closes all OpenCV windows that were opened during the program.
+
+</details>
 Below is the result, where some important locations are shown in the zoomed window to visualize:
 
 ![Subpixel Accuracy](https://docs.opencv.org/4.x/subpixel3.png)
@@ -156,3 +244,4 @@ Below is the result, where some important locations are shown in the zoomed wind
 ## Additional Resources
 - Exercises
 ```
+Crafted by shyama7004 with help of OpenCV Docs:)
