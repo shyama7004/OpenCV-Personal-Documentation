@@ -243,5 +243,158 @@ Below is the result, where some important locations are shown in the zoomed wind
 
 ## Additional Resources
 - Exercises
+<details>
+    <summary>Harris Corner Detection code for video detection,</summary>
+To adapt the Harris Corner Detection code for video detection, you can follow a similar approach as before, processing each frame of the video stream individually. Here’s the modified code and explanation:
+
+**Steps for Video Detection:**
+1. Open a video stream using OpenCV.
+2. Convert each frame to grayscale.
+3. Apply the Harris Corner Detection on each frame.
+4. Highlight the corners on each frame.
+5. Display the processed frames in real-time.
+
+**Updated Code for Harris Corner Detection on Video:**
+
+```python
+import cv2 as cv
+import numpy as np
+
+# Open video capture (0 for webcam, or provide video file path)
+cap = cv.VideoCapture(0)  # Replace 0 with a video file path if needed
+
+# Check if video capture is successful
+if not cap.isOpened():
+    print("Error opening video stream or file")
+    exit()
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if not ret:
+        print("Failed to grab frame")
+        break
+
+    # Convert frame to grayscale
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    gray_frame = np.float32(gray_frame)
+
+    # Apply Harris Corner Detection
+    dst = cv.cornerHarris(gray_frame, 2, 3, 0.04)
+
+    # Dilate the corner markers to make them more visible
+    dst = cv.dilate(dst, None)
+
+    # Threshold to detect and mark corners
+    frame[dst > 0.01 * dst.max()] = [0, 0, 255]
+
+    # Display the resulting frame
+    cv.imshow('Harris Corners', frame)
+
+    # Press 'q' to exit the video window
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture and close windows
+cap.release()
+cv.destroyAllWindows()
+```
+
+**Explanation:**
+- **Video Capture:** The video stream is opened using `cap = cv.VideoCapture(0)`. This code uses the webcam, but you can replace `0` with a file path for a saved video.
+- **Grayscale Conversion:** Each frame is converted to grayscale using `cv.cvtColor` for processing.
+- **Harris Corner Detection:** The `cv.cornerHarris` function is applied to detect corners in the frame.
+- **Marking Corners:** The corners are highlighted by changing the color of pixels meeting a threshold condition.
+- **Displaying Results:** The video stream is shown with the detected corners in real-time.
+
+**To Run the Code:**
+Ensure you have OpenCV installed (`opencv-python`). This approach allows you to apply Harris Corner Detection on live video feeds or any video file.
+</details>
+
+<details>
+<summary>Harris Corner Detection with sub-pixel accuracy on video</summary>
+
+To implement the Harris Corner Detection with sub-pixel accuracy on video, the steps are similar to the static image approach, but applied continuously to each frame. The code below demonstrates how to process video input for Harris corner detection with sub-pixel refinement.
+
+**Updated Code for Video:**
+
+```python
+import cv2 as cv
+import numpy as np
+
+# Open video capture (0 for webcam, or provide a video file path)
+cap = cv.VideoCapture(0)  # Replace 0 with a video file path if needed
+
+# Check if video capture is successful
+if not cap.isOpened():
+    print("Error opening video stream or file")
+    exit()
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if not ret:
+        print("Failed to grab frame")
+        break
+
+    # Convert frame to grayscale
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    gray_frame = np.float32(gray_frame)
+
+    # Detect corners using Harris Corner Detection
+    corner = cv.cornerHarris(gray_frame, 2, 3, 0.04)
+    corner = cv.dilate(corner, None)
+
+    # Threshold to mark the corners
+    ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)
+    corner = np.uint8(corner)
+
+    # Find connected components
+    ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)
+
+    # Define criteria for sub-pixel accuracy
+    stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
+
+    # Refine corner locations to sub-pixel accuracy
+    refined_corners = cv.cornerSubPix(gray_frame, np.float32(centroids), (5, 5), (-1, -1), stop)
+
+    # Concatenate centroids and refined corners
+    result = np.hstack((centroids, refined_corners))
+    result = np.int0(result)
+
+    # Draw the centroids and refined corners on the frame
+    frame[result[:, 1], result[:, 0]] = [0, 0, 255]  # Centroids marked in red
+    frame[result[:, 3], result[:, 2]] = [0, 255, 0]  # Refined corners marked in green
+
+    # Display the resulting frame
+    cv.imshow('Corners & Centroids', frame)
+
+    # Press 'q' to exit the video window
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture and close windows
+cap.release()
+cv.destroyAllWindows()
+```
+
+### Explanation:
+- **Video Capture:** The video stream is opened using `cap = cv.VideoCapture(0)`. This uses the webcam by default, but you can replace `0` with a file path for saved video.
+- **Processing:** For each frame:
+  - The frame is converted to grayscale.
+  - Harris Corner Detection is applied to find initial corners.
+  - The corners are refined using sub-pixel accuracy with `cv.cornerSubPix`.
+  - Centroids and refined corners are drawn on the frame with different colors (red for centroids and green for refined corners).
+- **Display and Exit:** The processed frames are displayed continuously in real-time. Pressing 'q' stops the video.
+
+### Additional Notes:
+- The code uses sub-pixel refinement, which improves the accuracy of corner localization.
+- Make sure OpenCV is installed with `pip install opencv-python`.
+- This code works for both live webcam feeds and pre-recorded videos.
+
+This setup allows real-time corner detection with enhanced accuracy, making it suitable for dynamic video input.
+
+<details>
+
 ```
 Crafted by shyama7004 with help of OpenCV Docs:)
