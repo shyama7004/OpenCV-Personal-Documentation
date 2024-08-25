@@ -50,4 +50,72 @@ print(des.shape)
 
 <div align ="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/25.png"></div>
 
+## Video implemention
+
+To convert the given code from detecting keypoints and descriptors in an image to performing video detection using BRIEF, you need to modify the code to process video frames instead of a static image. Here’s a brief explanation and the updated code:
+
+**Steps for Video Detection:**
+1. Open a video stream using OpenCV.
+2. Loop through each frame in the video.
+3. Apply the keypoint detection and descriptor extraction on each frame.
+4. Display the keypoints on the video in real-time.
+
+**Updated Code for Video Detection with BRIEF:**
+
+```python
+import cv2 as cv
+
+# Open video capture (0 for webcam, or provide video file path)
+cap = cv.VideoCapture(0)  # Replace 0 with a video file path if needed
+
+# Check if video capture is successful
+if not cap.isOpened():
+    print("Error opening video stream or file")
+    exit()
+
+# Initiate SIFT detector (since STAR is outdated)
+star = cv.SIFT_create()
+
+# Initiate BRIEF extractor
+brief = cv.xfeatures2d.BriefDescriptorExtractor_create()
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if not ret:
+        print("Failed to grab frame")
+        break
+
+    # Convert frame to grayscale
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+    # Find the keypoints with STAR
+    kp = star.detect(gray_frame, None)
+
+    # Compute the descriptors with BRIEF
+    kp, des = brief.compute(gray_frame, kp)
+
+    # Draw keypoints on the frame
+    frame_kp = cv.drawKeypoints(frame, kp, None, flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+    # Display the resulting frame with keypoints
+    cv.imshow("Keypoints", frame_kp)
+
+    # Press 'q' to exit the video window
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture and close windows
+cap.release()
+cv.destroyAllWindows()
+```
+
+**Explanation:**
+- **Video Capture:** `cap = cv.VideoCapture(0)` opens the default webcam. You can replace `0` with a video file path to process a saved video.
+- **Looping through frames:** Each frame is grabbed and processed in a loop until the video ends or the user exits.
+- **Processing:** The keypoint detection and descriptor computation happen for each frame.
+- **Displaying Results:** The keypoints are drawn on each frame and displayed in real-time.
+
+**To Run the Code:**
+Ensure you have OpenCV with extra modules installed (`opencv-contrib-python`) for the BRIEF extractor.
 ---
