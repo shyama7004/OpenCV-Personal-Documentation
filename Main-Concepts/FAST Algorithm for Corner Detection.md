@@ -161,6 +161,82 @@ else:
 
 By following these steps and addressing any errors from the debug statements, you should be able to identify and fix the issues, ensuring the script runs successfully.
 </details>
+<details>
+   <summary>FAST feature detection on a video</summary>
+   To implement FAST feature detection on a video, you'll need to modify the code to process video frames instead of a single image. Here’s how you can adapt the code for video processing:
+
+1. **Read the video**: Use `cv.VideoCapture` to load the video file.
+2. **Process each frame**: Apply the FAST detector to each frame.
+3. **Save or display the processed frames**: You can either display the frames in a window or save them to a new video file.
+
+Here's the modified code for video processing:
+
+```python
+import numpy as np
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+# Check if video opened successfully
+if not cap.isOpened():
+    print("Error opening video file")
+    exit()
+
+# Create a VideoWriter object to save the processed video
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+out = cv.VideoWriter('processed_video.avi', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
+
+# Initiate FAST object with default values
+fast = cv.FastFeatureDetector_create()
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Convert frame to grayscale
+    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+    # Find keypoints
+    kp = fast.detect(gray, None)
+
+    # Draw keypoints
+    img_with_keypoints = cv.drawKeypoints(frame, kp, None, color=(255, 0, 0))
+
+    # Write the frame into the output video
+    out.write(img_with_keypoints)
+
+    # Display the resulting frame (optional)
+    cv.imshow('Frame', img_with_keypoints)
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release everything if job is finished
+cap.release()
+out.release()
+cv.destroyAllWindows()
+
+# Print FAST parameters
+print("Threshold: {}".format(fast.getThreshold()))
+print("nonmaxSuppression: {}".format(fast.getNonmaxSuppression()))
+print("Neighborhood: {}".format(fast.getType()))
+print("Total Keypoints with nonmaxSuppression: {}".format(len(kp)))
+```
+
+### Key Points:
+
+1. **Video Capture and Write**: `cv.VideoCapture` reads the video, and `cv.VideoWriter` saves the processed video frames.
+2. **Processing Frames**: Each frame is converted to grayscale, keypoints are detected, and keypoints are drawn on the frame.
+3. **Display and Save**: Frames are displayed (optional) and saved to a new video file.
+
+### Things to Replace:
+
+- **`your_video.mp4`**: Replace with the path to your video file.
+- **`processed_video.avi`**: The output video file path. You can change the format if needed (e.g., `.mp4`).
+
+Make sure you have the necessary codecs installed to handle video files and the `opencv-python` package is installed in your environment.
+</details>
+
 ## Additional Resources
 - Edward Rosten and Tom Drummond, "Machine learning for high-speed corner detection" in 9th European Conference on Computer Vision, vol. 1, 2006, pp. 430–443.
 - Edward Rosten, Reid Porter, and Tom Drummond, "Faster and better: a machine learning approach to corner detection" in IEEE Trans. Pattern Analysis and Machine Intelligence, 2010, vol 32, pp. 105-119.
