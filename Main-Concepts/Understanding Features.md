@@ -30,7 +30,7 @@
 - **Feature Detection**:
   - Corners and other features with maximum variation when moved are good features.
   - This process is called Feature Detection.
-Sure! Here’s a more detailed explanation of **Feature Description**:
+
 
 ### Feature Description
 - **What is Feature Description?**
