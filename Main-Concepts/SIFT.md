@@ -195,3 +195,71 @@ points. By passing the flag `cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS`, you can
 ### Next Steps:
 - **Matching Keypoints**:
   - Once you have keypoints and descriptors from multiple images, the next step is to match these keypoints across images. This process will be covered in the following chapters.
+
+<details>
+  <summary>Code for SIFT in Video Detection</summary>
+To implement SIFT (Scale-Invariant Feature Transform) for video detection, you need to process each video frame, detect the keypoints, and display the results in real-time. Here is the updated code that applies SIFT to video input:
+
+**Code for SIFT in Video Detection:**
+
+```python
+import cv2 as cv
+
+# Open video capture (0 for webcam, or provide a video file path)
+cap = cv.VideoCapture(0)  # Replace 0 with a video file path if needed
+
+# Check if video capture is successful
+if not cap.isOpened():
+    print("Error opening video stream or file")
+    exit()
+
+# Create SIFT object
+sift = cv.SIFT_create()
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if not ret:
+        print("Failed to grab frame")
+        break
+
+    # Convert frame to grayscale
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+    # Detect keypoints
+    kp = sift.detect(gray_frame, None)
+
+    # Draw keypoints on the frame
+    frame_with_kp = cv.drawKeypoints(frame, kp, None, flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+    # Display the resulting frame
+    cv.imshow('SIFT Keypoints', frame_with_kp)
+
+    # Press 'q' to exit the video window
+    if cv.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the video capture and close windows
+cap.release()
+cv.destroyAllWindows()
+```
+
+### Explanation:
+- **Video Capture:** The video stream is opened using `cap = cv.VideoCapture(0)`. It uses the default webcam, but you can replace `0` with a video file path to use a saved video.
+- **Processing:** Each frame is:
+  - Converted to grayscale.
+  - Processed using SIFT to detect keypoints.
+  - Keypoints are drawn on the frame with rich visualization.
+- **Displaying Results:** The processed frame is shown in real-time, displaying the keypoints detected by SIFT.
+- **Exiting the Loop:** Press 'q' to exit the video loop.
+
+### Key Components:
+- **SIFT Creation:** `sift = cv.SIFT_create()` initializes the SIFT detector.
+- **Keypoint Detection:** `kp = sift.detect(gray_frame, None)` detects keypoints in each frame.
+- **Drawing Keypoints:** `cv.drawKeypoints` draws the detected keypoints on the original frame with additional flags for richer visualization.
+
+### Running the Code:
+1. Make sure you have OpenCV installed: `pip install opencv-python`.
+2. This implementation supports both live video feeds and pre-recorded videos.
+
+This approach allows you to visualize keypoint detection dynamically as the video plays, making it suitable for real-time SIFT-based applications.
