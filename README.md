@@ -82,7 +82,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 5. **Video Analysis**
    - **Video Capture**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Getting%20Started%20with%20Videos.md)	|	[OpenCV Docs](https://docs.opencv.org/5.x/dd/d43/tutorial_py_video_display.html)
    - **Background Subtraction**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/How%20to%20Use%20Background%20Subtraction%20Methods.md)	|	[OpenCV Docs](https://docs.opencv.org/5.x/d1/dc5/tutorial_background_subtraction.html)
-   - [Motion Detection](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
+   - **Face & Hand Detection**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Face%20detection%20%26%20Hand%20Detection.md)
    - [Object Tracking](https://docs.opencv.org/5.x/d7/d00/tutorial_meanshift.html)
    - [Optical Flow](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html)
 - [Motion Analysis and Object Tracking](https://docs.opencv.org/5.x/d7/df3/group__imgproc__motion.html)
@@ -144,8 +144,8 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 3. **SIFT (Scale-Invariant Feature Transform)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SIFT.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/da/df5/tutorial_py_sift_intro.html)
 4. **SURF (Speeded-Up Robust Features)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/SURF.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/df/dd2/tutorial_py_surf_intro.html)
 5. **FAST (Features from Accelerated Segment Test)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/FAST%20Algorithm%20for%20Corner%20Detection.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/df/d0c/tutorial_py_fast.html)
-6. **BRIEF (Binary Robust Independent Elementary Features)**: [BRIEF](https://docs.opencv.org/4.x/dc/d7d/tutorial_py_brief.html)
-7. **ORB (Oriented FAST and Rotated BRIEF)**: [ORB](https://docs.opencv.org/4.x/d1/d89/tutorial_py_orb.html) 
+6. **BRIEF (Binary Robust Independent Elementary Features)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/BRIEF.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/dc/d7d/tutorial_py_brief.html)
+7. **ORB (Oriented FAST and Rotated BRIEF)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/ORB%20(Oriented%20FAST%20and%20Rotated%20BRIEF).md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/d1/d89/tutorial_py_orb.html) 
 
 
 ## 🔄 Tutorials for Contrib Modules
