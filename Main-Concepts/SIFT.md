@@ -61,8 +61,21 @@
    - **Edge Response Removal**:
      - The DoG function often has strong responses along edges. However, keypoints detected on edges are not as stable as those on corners or blobs.
      - To remove these edge points, the algorithm uses a concept similar to the Harris Corner Detector. It computes the principal curvatures of the 2x2 Hessian matrix (H) at the keypoint.
-     - If the ratio of the principal curvatures (eigenvalues) exceeds a threshold (`edgeThreshold`), the keypoint is discarded.
-     - This step ensures that only strong, stable keypoints remain.
+
+<details>
+  <summary>Click to see explanation of above point</summary>
+
+  - The algorithm removes edge points using a technique similar to the Harris Corner Detector.
+- It computes the **Hessian matrix** at each keypoint to capture the image's intensity curvature.
+- The **principal curvatures** (eigenvalues of the Hessian matrix) are calculated at the keypoint.
+- Based on these curvatures, the algorithm determines whether the keypoint is on an edge or a corner.
+- If the curvatures suggest an edge, the keypoint is discarded.
+- This process ensures that only strong corner points are retained.
+
+</details>
+
+  - If the ratio of the principal curvatures (eigenvalues) exceeds a threshold (`edgeThreshold`), the keypoint is discarded.
+  - This step ensures that only strong, stable keypoints remain.
 
 3. **Orientation Assignment**:
    - **Purpose**: To make the keypoints invariant to image rotation, an orientation is assigned to each keypoint.
