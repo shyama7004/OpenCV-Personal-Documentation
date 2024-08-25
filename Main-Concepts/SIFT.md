@@ -29,6 +29,8 @@
      - The Laplacian of Gaussian (LoG) is applied to the image at various scales (different values of σ). This process acts as a blob detector, identifying regions that look like blobs at different sizes.
      - LoG can detect both small and large blobs depending on the value of σ, with σ acting as a scaling factor.
      - For instance, in the image above, a small Gaussian kernel (low σ) detects small corners, while a large Gaussian kernel (high σ) is needed for larger corners.
+
+For more information about LoG [Click Here](https://homepages.inf.ed.ac.uk/rbf/HIPR2/log.htm)
    
    - **Difference of Gaussians (DoG)**: 
      - Computing LoG directly is computationally expensive. Instead, SIFT uses the Difference of Gaussians (DoG), which is an efficient approximation of LoG.
@@ -57,7 +59,11 @@
    - **Taylor Series Expansion**: 
      - A more precise location of the keypoint is found by fitting a 3D quadratic function (using Taylor series expansion) to the scale-space around the detected keypoint.
      - If the intensity difference at the keypoint location is below a certain threshold (0.03 as per the original paper), it is discarded. This threshold is called `contrastThreshold` in OpenCV.
-   
+   <details>
+     <summary>Click here to see the taylor series</summary>
+     <div align ="center"><img src="https://machinelearningmastery.com/wp-content/uploads/2021/07/tayloreq2-1024x216.png"></div>
+   </details>
+
    - **Edge Response Removal**:
      - The DoG function often has strong responses along edges. However, keypoints detected on edges are not as stable as those on corners or blobs.
      - To remove these edge points, the algorithm uses a concept similar to the Harris Corner Detector. It computes the principal curvatures of the 2x2 Hessian matrix (H) at the keypoint.
@@ -82,7 +88,9 @@
    - **Process**:
      - A neighborhood around each keypoint is taken, and the gradient magnitude and direction of each pixel in this neighborhood are calculated.
      - An orientation histogram with 36 bins (covering 360 degrees) is created, weighted by the gradient magnitudes and a Gaussian window with σ proportional to the scale of the keypoint.
-     - The peak of this histogram indicates the dominant orientation of the keypoint. If there are multiple peaks above 80% of the highest peak, additional orientations are assigned, resulting in multiple keypoints with the same location and scale but different orientations.
+     - The highest point in the histogram shows the main direction of the keypoint.
+     - If there are other points in the histogram that are at least 80% as high as the main peak, extra orientations are assigned.
+     - This means there could be multiple keypoints with the same position and size but different directions.
    
    - **Result**: The keypoints are now rotation-invariant, meaning they can be detected and matched even if the image is rotated.
 
