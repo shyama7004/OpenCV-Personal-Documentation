@@ -192,3 +192,60 @@ False
 >>> print(des.shape)
 (47, 128)
 ```
+<details>
+<summary>Code for video Detection using SURF</summary>
+
+To save an image using OpenCV in Python, you can use the `cv.imwrite` function. This function allows you to specify the filename and file format in which you want to save the image.
+
+Here’s how you can modify the previous code to save the image with the drawn keypoints:
+
+```python
+import numpy as np
+import cv2 as cv
+from matplotlib import pyplot as plt
+
+# Load the image
+img = cv.imread('images/messi.jpg', cv.IMREAD_GRAYSCALE)
+
+# Check if image is loaded
+if img is None:
+    print("Error loading image")
+    exit()
+
+# Initiate STAR detector
+star = cv.SIFT_create()
+
+# Initiate BRIEF extractor
+brief = cv.xfeatures2d.BriefDescriptorExtractor_create()
+
+# Find the keypoints with STAR
+kp = star.detect(img, None)
+
+# Compute the descriptors with BRIEF
+kp, des = brief.compute(img, kp)
+
+print("Descriptor size:", brief.descriptorSize())
+print("Descriptors shape:", des.shape)
+
+# Draw keypoints on the image
+img_kp = cv.drawKeypoints(img, kp, None, flags=cv.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+# Display images
+cv.imshow("messi", img)
+cv.imshow("Keypoints", img_kp)
+
+# Save the image with keypoints
+cv.imwrite('images/messi_with_keypoints.jpg', img_kp)
+
+# Wait and close windows
+cv.waitKey(0)
+cv.destroyAllWindows()
+```
+
+### Key Points:
+
+1. **`cv.imwrite(filename, image)`**: This function saves the image to the specified filename. In this case, it saves the image with the drawn keypoints to `'images/messi_with_keypoints.jpg'`.
+
+2. **File Format**: The file format is inferred from the file extension. For example, `.jpg` saves the image in JPEG format, and `.png` would save it in PNG format.
+
+3. **Directory Path**: Make sure the directory (`images/` in this case) exists before running the script, or use an absolute path to ensure the file is saved correctly.
