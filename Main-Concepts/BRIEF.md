@@ -45,3 +45,9 @@ kp, des = brief.compute(img, kp)
 
 print(brief.descriptorSize())
 print(des.shape)
+```
+### Checkout the results below:
+
+<div align ="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/25.png"></div>
+
+---
