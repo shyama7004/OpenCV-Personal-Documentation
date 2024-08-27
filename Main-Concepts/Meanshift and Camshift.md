@@ -7,15 +7,29 @@ We will learn about the Meanshift and Camshift algorithms to track objects in vi
 
 ## Meanshift
 
-The intuition behind the meanshift is simple. Consider you have a set of points. (It can be a pixel distribution like histogram backprojection). You are given a small window (may be a circle) and you have to move that window to the area of maximum pixel density (or maximum number of points). It is illustrated in the simple image given below:
+### Meanshift
 
+- Meanshift involves a set of points, which could be a pixel distribution like a histogram backprojection.
+- You start with a small window (like a circle).
+- The goal is to move this window to the area with the highest pixel density or the most points.
+
+`Note`: Backprojection in histograms refers to a technique used in computer vision and image processing to highlight regions in an image that have a similar color distribution to a given target histogram. 
 <div align ="center'><img src = "https://docs.opencv.org/5.x/meanshift_basics.jpg"></div>
 
-The initial window is shown in blue circle with the name "C1". Its original center is marked in blue rectangle, named "C1_o". But if you find the centroid of the points inside that window, you will get the point "C1_r" (marked in small blue circle) which is the real centroid of the window. Surely they don't match. So move your window such that the circle of the new window matches with the previous centroid. Again find the new centroid. Most probably, it won't match. So move it again, and continue the iterations such that the center of window and its centroid falls on the same location (or within a small desired error). So finally what you obtain is a window with maximum pixel distribution. It is marked with a green circle, named "C2". As you can see in the image, it has maximum number of points. The whole process is demonstrated on a static image below:
+- The initial window is shown as a blue circle labeled "C1".
+- The original center of this window is marked as "C1_o" with a blue rectangle.
+- The centroid of the points inside this window is marked as "C1_r" with a small blue circle.
+- The original center and the centroid don't match, so move the window to align with the centroid.
+- Repeat this process until the window's center matches the centroid (or is very close).
+- The final window with the maximum pixel distribution is marked as a green circle labeled "C2," which contains the most points.
+
+This process is demonstrated on a static image below:
 
 <div align ="center"><img src ="https://docs.opencv.org/5.x/meanshift_face.gif"></div>
 
-So we normally pass the histogram backprojected image and initial target location. When the object moves, obviously the movement is reflected in the histogram backprojected image. As a result, the meanshift algorithm moves our window to the new location with maximum density.
+- The histogram backprojected image and the initial target location are usually provided.
+- When the object moves, this movement is reflected in the histogram backprojected image.
+- The meanshift algorithm then moves the window to the new location with the highest pixel density.
 
 ## Meanshift in OpenCV
 To use meanshift in OpenCV, first we need to setup the target, find its histogram so that we can backproject the target on each frame for calculation of meanshift. We also need to provide an initial location of window. For histogram, only Hue is considered here. Also, to avoid false values due to low light, low light values are discarded using `cv.inRange()` function.
