@@ -2,7 +2,7 @@
 
 Welcome to my personal documentation for OpenCV! This repository is a collection of my notes, tutorials, and projects related to OpenCV, a powerful open-source library for computer vision and image processing. This documentation aims to help me (and others) understand and utilize OpenCV effectively.
 
-## 📋 Table of Contents
+<!--## 📋 Table of Contents
 
 - [Introduction](#introduction)
 - [OpenCV Tutorials](#opencv-tutorials)
@@ -14,7 +14,7 @@ Welcome to my personal documentation for OpenCV! This repository is a collection
 - [Community and Contributions](#community-and-contributions)
 - [Contact](#contact)
 - [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/tree/main/Numpy)
-
+-->
 ## 📖 Introduction
 
 Welcome to my OpenCV documentation repository! Here you'll find a comprehensive collection of tutorials, projects, and notes aimed at mastering OpenCV for computer vision and image processing.
