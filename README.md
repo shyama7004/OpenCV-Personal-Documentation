@@ -150,23 +150,38 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 
 ## 🔄 Tutorials for Contrib Modules
 
-- **xfeatures2d**: [Link](https://docs.opencv.org/5.x/d5/d39/group__xfeatures2d.html)
-- **Tracking**: [Link](https://docs.opencv.org/5.x/d9/df8/group__tracking.html)
-- **Text**: [Link](https://docs.opencv.org/5.x/d7/d1f/group__text.html)
-- **Surface Matching**: [Link](https://docs.opencv.org/5.x/d5/d1d/group__surface__matching.html)
-- **Structured Light**: [Link](https://docs.opencv.org/5.x/d9/d25/group__structured__light.html)
-- **SFM (Structure from Motion)**: [Link](https://docs.opencv.org/5.x/d2/d3a/group__sfm.html)
-- **Fuzzy Logic**: [Link](https://docs.opencv.org/5.x/d8/d58/group__fuzzy.html)
-- **Text Detection**: [Link](https://docs.opencv.org/5.x/d0/d0a/group__text__detect.html)
+1. **Core (core) Module**:
+   - [Core Module Documentation](https://docs.opencv.org/master/d1/dfb/intro.html)
+   - [Core Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/core)
 
-# ⛓️ Additional Resources
+2. **Image Processing (imgproc) Module**:
+   - [Image Processing Module Documentation](https://docs.opencv.org/master/de/df2/imgproc_imgproc.html)
+   - [Image Processing Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/imgproc)
 
-- **OpenCV Official Documentation**: [OpenCV Official Documentation](https://docs.opencv.org/5.x/)
-- **OpenCV Forum**: [Forum](https://forum.opencv.org/)
-- **OpenCV GitHub Repository**: [Repo](https://github.com/opencv/opencv)
-- **OpenCV Python Tutorials**: [Tutorials](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html)
-- **OpenCV YouTube Channel**: [Link](https://www.youtube.com/channel/UC6uUvV3n-bEsg5k8J0Fqvhg)
+3. **Video Analysis (video) Module**:
+   - [Video Analysis Module Documentation](https://docs.opencv.org/master/d7/d8b/tutorial_py_lucas_kanade.html)
+   - [Video Analysis Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/video)
 
+4. **Camera Calibration and 3D Reconstruction (calib3d) Module**:
+   - [Camera Calibration and 3D Reconstruction Documentation](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
+   - [Camera Calibration and 3D Reconstruction GitHub Code](https://github.com/opencv/opencv/tree/master/modules/calib3d)
+
+5. **Machine Learning (ml) Module**:
+   - [Machine Learning Module Documentation](https://docs.opencv.org/master/dc/dd6/ml_intro.html)
+   - [Machine Learning Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/ml)
+
+6. **Object Detection (objdetect) Module**:
+   - [Object Detection Module Documentation](https://docs.opencv.org/master/d5/d54/group__objdetect.html)
+   - [Object Detection Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/objdetect)
+
+7. **Deep Learning (dnn) Module**:
+   - [Deep Learning Module Documentation](https://docs.opencv.org/master/d2/d58/tutorial_table_of_content_dnn.html)
+   - [Deep Learning Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/dnn)
+
+8. **Contributing to OpenCV**:
+   - [How to Contribute to OpenCV](https://github.com/opencv/opencv/wiki/How_to_contribute)
+
+<!--
 # 🧑‍🏫 Contributors and Community
 
 - **OpenCV Team**: The dedicated team behind OpenCV.
@@ -177,3 +192,4 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 ## 🚀 Start Your OpenCV Journey Now!
 
 Visit the [OpenCV GitHub Repository](https://github.com/opencv/opencv) to get started. Join the [OpenCV Forum](https://forum.opencv.org/) to discuss and share your projects, and don't forget to check out the latest updates on the # OpenCV Personal Documentation
+-->
