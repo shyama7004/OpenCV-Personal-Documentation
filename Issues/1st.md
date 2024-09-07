@@ -53,11 +53,7 @@ gsize data_size = info.size;  // Size of the raw data
 // Convert the raw data into OpenCV Mat (assuming RGB format)
 cv::Mat frame(height, width, CV_8UC3, data);
 
-// Use the frame (e.g., display or process it)
-cv::imshow("Frame", frame);
-cv::waitKey(1);
-
-// Remember to unmap the buffer after processing if you haven't already
+// unmap the buffer after processing if you haven't already
 gst_buffer_unmap(buffer, &info);
 
 ```
