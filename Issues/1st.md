@@ -1,93 +1,63 @@
-<div align = "center"><h2>Steps - 1 to Steps - 10</h2></div>
-
-### Step 1 to 2: **Understand the problem**.
-
-### Step 3: **Search for GStreamer-related Code in OpenCV**
-
-1. **Locate Video I/O Modules in OpenCV**:
-   - OpenCV has a module called **`videoio`** which handles video input/output operations, including streaming with GStreamer.
-   - You'll find these files in the OpenCV source repository, likely in `modules/videoio`.
-
-2. **Look for GStreamer Code in `videoio`**:
-   - GStreamer integration usually happens through specific backends in OpenCV.
-   - Look for files related to GStreamer, such as:
-     - `cap_gstreamer.cpp` or `gstreamer_capture.cpp`
-   - These files are often responsible for the capture pipeline with GStreamer.
-
-### Step 4: **Search for `GstBuffer *buffer` & `gst_buffer_map`  Code in OpenCV**
-  - Initially  I did this 
-
 ```cpp
-// Assuming width and height are 640x480 and 3 channels (RGB)
-int width = 640;
-int height = 480;
-int channels = 3;
-
-// Calculate the size of the buffer
-gsize size = width * height * channels;  // Size for RGB image
-
-// Create a new buffer for GStreamer
-GstBuffer *buffer = gst_buffer_new_allocate(NULL, size, NULL);
-
-// Map the buffer for reading
-GstMapInfo info;
-gst_buffer_map(buffer, &info, (GstMapFlags)GST_MAP_READ);
-
-// If you are copying data from an existing image (like OpenCV image)
-memcpy(info.data, (guint8*)image->imageData, size);  // Ensure `size` matches
-
-// Unmap after copying the data
-gst_buffer_unmap(buffer, &info);
-
-// Set the GStreamer buffer properties
-GST_BUFFER_DURATION(buffer) = duration;
-GST_BUFFER_PTS(buffer) = timestamp;
-GST_BUFFER_DTS(buffer) = timestamp;
-GST_BUFFER_OFFSET(buffer) = num_frames;
-
-// Now, if you want to access the raw data from GStreamer buffer
-
-guint8 *data = info.data;  // Pointer to raw data
-gsize data_size = info.size;  // Size of the raw data
-
-// Convert the raw data into OpenCV Mat (assuming RGB format)
-cv::Mat frame(height, width, CV_8UC3, data);
-
-// unmap the buffer after processing if you haven't already
-gst_buffer_unmap(buffer, &info);
-
-```
-
-   - After some enhancements, I wrote this 
-```cpp
-// I have assumed that teh width and height are 640x480 and 3 channels (RGB)
-
-    int width = 640;
-    int height = 480;
-    int channels = 3;
-
-    // Calculation of the size of the buffer
-    gsize size = width * height * channels;
-
-    //gst_app_src_push_buffer takes ownership of the buffer, so we need to supply it a copy
-    GstBuffer *buffer = gst_buffer_new_allocate(NULL, size, NULL);
+/*!
+ * \brief processGStreamerBuffer processes the buffer from GStreamer and integrates it with OpenCV
+ * \param buffer Pointer to the GStreamer buffer containing the video frame data
+ *
+ * This function maps the GStreamer buffer to access its raw data, extracts the video metadata
+ * such as width, height, and number of channels, and then converts this data into an OpenCV
+ * UMat or Mat for further processing.
+ */
+void processGStreamerBuffer(GstBuffer *buffer, cl_command_queue queue, cl_mem source_buffer, cl_mem destination_buffer)
+{
     GstMapInfo info;
-    gst_buffer_map(buffer, &info, GST_MAP_READ);
-    GST_BUFFER_DURATION(buffer) = duration;
-    GST_BUFFER_PTS(buffer) = timestamp;
-    GST_BUFFER_DTS(buffer) = timestamp;
-    //set the current number in the frame
-    GST_BUFFER_OFFSET(buffer) = num_frames;
 
-    // This is the code to access teh raw data from Gstreamer buffer
+    //to get the video metadata from the GStreamer buffer
+    GstVideoMeta *meta = gst_buffer_get_video_meta(buffer);
 
-    guint8 *data = info.data; //this is the pointer to the raw data
-    gsize data_size = info.size; // this is the size of the raw data
+    if (meta) {
+        guint width = meta->width;
+        guint height = meta->height;
+        guint channels = GST_VIDEO_INFO_N_COMPONENTS(gst_video_meta_get_info(meta));  // Get number of channels from metadata
 
-    //Conversion of the raw data into OpenCV Mat
-    //No memcpy here, directly use the mapped data
-    cv::Mat frame(height, width, CV_8UC3, info.data);
+        //this is a attempt to map the buffer to access raw data
+        if (gst_buffer_map(buffer, &info, GST_MAP_READ)) 
+        {
 
-    //unmaped the GStreamer buffer  
-    gst_buffer_unmap(buffer, &info);
+            //use  of opencv UMat for handling the  GPU memory
+            cv::UMat frame_umat(height, width, CV_8UC3, info.data, cv::USAGE_ALLOCATE_DEVICE_MEMORY);
+            cv::Mat frame(height, width, CV_8UC3, info.data);
+
+            // Create OpenCL events and memory transfers
+            cl_event event;
+
+            // Non-blocking copy using OpenCL from source_buffer to destination_buffer
+            cl_int err = clEnqueueCopyBuffer(queue, source_buffer, destination_buffer, 0, 0, width * height * channels, 0, nullptr, &event);
+            if (err != CL_SUCCESS) {
+                std::cerr << "Failed to enqueue OpenCL buffer copy. Error: " << err << std::endl;
+            }
+
+            clWaitForEvents(1, &event);
+            clReleaseEvent(event);
+
+            //unmapping the GStreamer buffer when the task is done
+            gst_buffer_unmap(buffer, &info);
+        } else {
+            std::cerr << "Failed to map GStreamer buffer." << std::endl;
+        }
+    } else {
+        std::cerr << "Failed to get video metadata from buffer." << std::endl;
+    }
+}
+
+/*!
+ * \brief gst_pipeline_process_buffer processes the buffer in the GStreamer pipeline
+ * \param buffer Pointer to the GStreamer buffer
+ *
+ * This function is part of the GStreamer pipeline processing and calls the processGStreamerBuffer
+ * function to handle the GStreamer buffer and integrate it with OpenCV.
+ */
+void gst_pipeline_process_buffer(GstBuffer *buffer, cl_command_queue queue, cl_mem source_buffer, cl_mem destination_buffer)
+{
+    processGStreamerBuffer(buffer, queue, source_buffer, destination_buffer);
+}
 ```
