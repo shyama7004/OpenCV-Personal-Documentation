@@ -110,8 +110,8 @@ add_library(libB libB.cpp libB.h)
 **`app/main.cpp`:**
 ```cpp
 #include <iostream>
-#include "libA.h"
-#include "libB.h"
+#include "libA.h"//include the full path
+#include "libB.h"//include the full path
 
 int main() {
     std::cout << "Hello from MyApp" << std::endl;
@@ -153,6 +153,10 @@ void libBFunction() {
 #pragma once
 
 void libBFunction();
+```
+`Note` : Use this to print
+```cpp
+./app/MyApp
 ```
 
 In this example, `add_subdirectory()` is used to include the `app`, `libA`, and `libB` directories. Each directory has its own `CMakeLists.txt` file, keeping the project modular and organized.
