@@ -140,9 +140,30 @@ Both functions and macros accept arguments. However, they differ in how argument
 
   Output: `-- Hello!!!`
 
-  <details>
+
+  
+#### **Keyword-Based Argument Handling**
+To handle arguments more flexibly, CMake provides `cmake_parse_arguments()`, allowing you to define keyword arguments and named lists.
+
+Example:
+
+```cmake
+include(CMakeParseArguments)
+
+function(my_function)
+  set(prefix ARG)
+  set(noValues ENABLE_FEATURE)
+  set(singleValues TARGET)
+  set(multiValues SOURCES)
+
+  cmake_parse_arguments(${prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
+endfunction()
+```
+
+<details>
   <summary>Line by Line Explanation</summary>
-    ```cmake
+    
+```cmake
 include(CMakeParseArguments)
 ```
 - This line includes the `CMakeParseArguments` module, which provides the `cmake_parse_arguments` function used to parse arguments passed to custom functions and macros in CMake.
@@ -204,24 +225,6 @@ my_function(ENABLE_FEATURE TARGET MyApp SOURCES main.cpp utils.cpp)
 The function `cmake_parse_arguments` helps in managing complex function argument parsing in a structured and maintainable way.
 
   </details>
-  
-#### **Keyword-Based Argument Handling**
-To handle arguments more flexibly, CMake provides `cmake_parse_arguments()`, allowing you to define keyword arguments and named lists.
-
-Example:
-
-```cmake
-include(CMakeParseArguments)
-
-function(my_function)
-  set(prefix ARG)
-  set(noValues ENABLE_FEATURE)
-  set(singleValues TARGET)
-  set(multiValues SOURCES)
-
-  cmake_parse_arguments(${prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
-endfunction()
-```
 
 You can call this function with a keyword-based syntax:
 
@@ -298,27 +301,89 @@ First, verify that you have created and built the `mylib` library. If not, you'l
 
 Assuming `mylib` is a static or shared library you've created, here is an example of how to define and link it in your `CMakeLists.txt`:
 
+<details>
+<summary>More about Static v/s Shared Library</summary>
+
+In the context of the sentence "Assuming mylib is a static or shared library you've created," the word "static" refers to a type of library in CMake and more broadly in software development.
+
+### Static Library
+A **static library** is a collection of object files that are linked into the program during the linking phase of compilation. It is a compiled library that is included directly into the executable file. Here are some key points about static libraries:
+
+- **File Extension:** Typically, static libraries have the file extension `.lib` on Windows and `.a` on Unix-like systems (including Linux and macOS).
+- **Linking:** The code from the static library is copied into the executable at compile time. This means the resulting executable file contains all the code it needs, including the code from the static library.
+- **Performance:** Because the code is included directly into the executable, there is no runtime overhead of locating and loading the library. This can sometimes result in slightly faster execution.
+- **Portability:** The executable is self-contained, so it can run on any compatible system without needing to ensure that the library is present.
+- **Size:** The executable can be larger because it includes all the necessary code from the static libraries.
+
+### Shared Library
+In contrast, a **shared library** (also known as a dynamic library) is a collection of object files that are not included in the executable but are loaded at runtime. Key points about shared libraries:
+
+- **File Extension:** Shared libraries typically have the file extension `.dll` on Windows and `.so` on Unix-like systems (including Linux and macOS).
+- **Linking:** Only a reference to the shared library is included in the executable. The actual code is loaded into memory at runtime.
+- **Performance:** There is a small runtime overhead to locate and load the shared library when the executable is run.
+- **Portability:** The executable depends on the presence of the shared library on the system where it is run.
+- **Size:** The executable is usually smaller because it does not include the code from the shared library. Additionally, multiple programs can share a single copy of the shared library in memory.
+
+### Example CMakeLists.txt
+
+Here's an example of how you might define and link `mylib` as either a static or shared library in your `CMakeLists.txt`:
+
+```cmake
+# Define a static library
+add_library(mylib STATIC mylib.cpp)
+
+# Or define a shared library
+add_library(mylib SHARED mylib.cpp)
+
+# Set the properties for the shared library (optional)
+set_target_properties(mylib PROPERTIES VERSION 1.0 SOVERSION 1)
+
+# Add an executable that links to the library
+add_executable(myapp main.cpp)
+
+# Link the executable to the library
+target_link_libraries(myapp PRIVATE mylib)
+```
+
+In this example:
+- `add_library(mylib STATIC mylib.cpp)` creates a static library from `mylib.cpp`.
+- `add_library(mylib SHARED mylib.cpp)` creates a shared library from `mylib.cpp`.
+- `target_link_libraries(myapp PRIVATE mylib)` links the `mylib` library to the `myapp` executable.
+
+You would choose between `STATIC` and `SHARED` based on your specific needs for portability, performance, and deployment.
+
+</details>
+
 #### **Step 1: Define `mylib`**
 
 Add the following lines to your `CMakeLists.txt` to create the `mylib` library:
 
 ```cmake
 cmake_minimum_required(VERSION 3.10)
-project(SimpleTestManager)
 
-# Define the library
-add_library(mylib STATIC mylib.cpp)
+project(funmac)
 
-# Define a function to add test executables and link libraries
-function(add_mytest targetName)
-  add_executable(${targetName} ${ARGN})  # Creates an executable
-  target_link_libraries(${targetName} PRIVATE mylib)  # Links the executable to 'mylib'
-  add_test(NAME ${targetName} COMMAND ${targetName})  # Registers the executable as a test
-endfunction()
+# Enable testing
+enable_testing()
 
-# Add test executables
-add_mytest(test1 test1.cpp)
-add_mytest(test2 test2.cpp)
+# Define the library mylib
+add_library(mylib STATIC /Users/sankarsanbisoyi/Desktop/Cmake/funmac/mylib/mylib.cpp)
+
+# Define the function myFunction
+function(myFunction targetName)
+    # Create an executable for the given target name with the provided sources (ARGN)
+    add_executable(${targetName} ${ARGN})
+    
+    # Link the mylib library to the target executable
+    target_link_libraries(${targetName} PRIVATE mylib)
+    
+    # Add a test for the target executable
+    add_test(NAME ${targetName} COMMAND ${targetName})
+endfunction(myFunction)
+
+# Call the myFunction function for test1 and test2
+myFunction(test1 /Users/sankarsanbisoyi/Desktop/Cmake/funmac/test1/test1.cpp)
+myFunction(test2 /Users/sankarsanbisoyi/Desktop/Cmake/funmac/test2/test2.cpp)
 ```
 
 #### **Step 2: Create `mylib.cpp`**
