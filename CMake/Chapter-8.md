@@ -53,6 +53,61 @@ print_message_macro()
 
 **Key Difference**: Functions introduce local variable scope, while macros operate within the same scope as the caller.
 
+<details>
+  <summary>More about function v/s macros </summary>
+
+  Yes, you can think of functions and macros in these terms, but it's important to understand the differences and nuances more precisely.
+
+### Functions
+- **Local Scope:** Functions indeed provide local scope. Variables declared within a function are local to that function and cannot be accessed outside of it.
+- **Runtime:** Functions are evaluated at runtime. When a function is called, control transfers to the function code, which executes and then returns control back to the calling location.
+- **Type Safety:** Functions provide type checking at compile time (for statically typed languages like C++), which helps catch errors.
+- **Reusability:** Functions promote code reusability and modularity, making the code easier to understand and maintain.
+
+### Macros
+- **No Local Scope:** Macros, on the other hand, do not provide a local scope in the traditional sense. Macros are essentially text replacements performed by the preprocessor before compilation.
+- **Preprocessing:** Macros are expanded by the preprocessor before the actual compilation begins. This means they are substituted directly into the code wherever they are used, which can lead to potential issues if not used carefully.
+- **No Type Checking:** Since macros are just textual replacements, they do not offer type checking, which can lead to subtle bugs.
+- **Performance:** Macros can be faster than functions because they avoid the overhead of a function call. However, this can make the code harder to debug and maintain.
+- **Code Bloat:** Excessive use of macros can lead to code bloat because each macro expansion increases the code size.
+
+### Example
+
+#### Function Example
+```cpp
+int add(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    int result = add(5, 3);
+    return 0;
+}
+```
+
+In this example, the function `add` provides a local scope for its parameters `a` and `b`. The function is called from `main`, and the result is returned.
+
+#### Macro Example
+```cpp
+#define ADD(a, b) ((a) + (b))
+
+int main() {
+    int result = ADD(5, 3);
+    return 0;
+}
+```
+
+In this example, `ADD` is a macro. Before the code is compiled, the preprocessor replaces `ADD(5, 3)` with `((5) + (3))`.
+
+### Summary
+- **Functions** provide local scope and type safety, are evaluated at runtime, and are better for maintainable and reusable code.
+- **Macros** do not provide local scope, are expanded at preprocessing time, do not provide type safety, and can lead to code bloat and harder-to-debug code.
+
+Understanding these differences can help you decide when to use functions and when to use macros, though modern practice often favors functions for their safety and clarity.
+
+</details>
+
+
 ---
 
 ### **3. Argument Handling in Functions and Macros**
@@ -85,6 +140,71 @@ Both functions and macros accept arguments. However, they differ in how argument
 
   Output: `-- Hello!!!`
 
+  <details>
+  <summary>Line by Line Explanation</summary>
+    ```cmake
+include(CMakeParseArguments)
+```
+- This line includes the `CMakeParseArguments` module, which provides the `cmake_parse_arguments` function used to parse arguments passed to custom functions and macros in CMake.
+
+```cmake
+function(my_function)
+```
+- This defines a custom function in CMake named `my_function`. The function will contain the commands between `function` and `endfunction`.
+
+```cmake
+  set(prefix ARG)
+```
+- This line sets the variable `prefix` to the string `ARG`. This `prefix` will be used as a prefix for the parsed arguments when using `cmake_parse_arguments`.
+
+```cmake
+  set(noValues ENABLE_FEATURE)
+```
+- This line defines a list of arguments that do not have values associated with them (boolean flags). In this case, `ENABLE_FEATURE` is such an argument. When `cmake_parse_arguments` encounters `ENABLE_FEATURE` in the argument list, it will be treated as a flag.
+
+```cmake
+  set(singleValues TARGET)
+```
+- This line defines a list of arguments that have a single value associated with them. In this case, `TARGET` is such an argument. When `cmake_parse_arguments` encounters `TARGET` in the argument list, it expects it to be followed by a single value.
+
+```cmake
+  set(multiValues SOURCES)
+```
+- This line defines a list of arguments that can have multiple values associated with them. In this case, `SOURCES` is such an argument. When `cmake_parse_arguments` encounters `SOURCES` in the argument list, it will collect all subsequent values until it encounters another recognized argument or the end of the argument list.
+
+```cmake
+  cmake_parse_arguments(${prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
+```
+- This line calls the `cmake_parse_arguments` function to parse the arguments passed to `my_function`. Here's a breakdown:
+  - `${prefix}`: The prefix for the parsed arguments. In this case, it's `ARG`.
+  - `"${noValues}"`: The list of arguments that do not have associated values (flags).
+  - `"${singleValues}"`: The list of arguments that have a single associated value.
+  - `"${multiValues}"`: The list of arguments that have multiple associated values.
+  - `${ARGN}`: This special variable contains all the arguments passed to `my_function` that were not explicitly specified as parameters.
+
+The `cmake_parse_arguments` function will parse the arguments passed to `my_function` and populate the variables `ARG_ENABLE_FEATURE`, `ARG_TARGET`, and `ARG_SOURCES` (and their respective `UNPARSED_ARGUMENTS` counterparts, if any) with the corresponding values.
+
+```cmake
+endfunction()
+```
+- This ends the definition of the `my_function`.
+
+### Example Usage
+
+Suppose you call `my_function` like this in your CMakeLists.txt:
+
+```cmake
+my_function(ENABLE_FEATURE TARGET MyApp SOURCES main.cpp utils.cpp)
+```
+
+- `ENABLE_FEATURE` is a flag, so `ARG_ENABLE_FEATURE` will be set to `TRUE`.
+- `TARGET` is followed by `MyApp`, so `ARG_TARGET` will be set to `MyApp`.
+- `SOURCES` is followed by `main.cpp` and `utils.cpp`, so `ARG_SOURCES` will be set to `main.cpp;utils.cpp` (a semicolon-separated list).
+
+The function `cmake_parse_arguments` helps in managing complex function argument parsing in a structured and maintainable way.
+
+  </details>
+  
 #### **Keyword-Based Argument Handling**
 To handle arguments more flexibly, CMake provides `cmake_parse_arguments()`, allowing you to define keyword arguments and named lists.
 
