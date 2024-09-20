@@ -1,183 +1,244 @@
-Let's create a simple C++ project using CMake and explain the use of variables throughout the project setup. The project will have two source files and a utility function. We’ll use CMake to organize the build system efficiently.
+## Chapter 5. Variables
 
-### **Project Structure**
+### 5.1 Variable Basics
+Variables are a central aspect of CMake's scripting. CMake treats all variables as strings, but they can represent different types based on context (e.g., boolean values or lists).
 
-We'll create a project that prints a simple message and includes a utility to print another line. Here's the project structure:
+- **Variable Scope:** Variables have a scope in CMake, which can either be global (applying throughout a CMakeLists.txt) or local, restricted to functions, macros, or subdirectories. The `PARENT_SCOPE` keyword can promote a variable’s scope to its enclosing context.
+  
+- **Multiple Values:** When setting multiple values, they are separated by semicolons by default. Use quotes to handle spaces properly.
 
-```
-MyCMakeProject/
-│
-├── CMakeLists.txt
-├── main.cpp
-├── utils.cpp
-├── utils.h
-└── build/ (CMake will create this during the build process)
-```
-
-### **1. Step-by-Step CMake Setup**
-
-#### **Step 1: Creating the CMakeLists.txt File**
-
-Here’s the content of the `CMakeLists.txt` file:
+Example:
 
 ```cmake
-# Minimum CMake version
+set(myVar a b c)    # myVar = "a;b;c"
+set(myVar "a b c")  # myVar = "a b c"
+```
+
+- **Recursive Variables:** CMake allows recursive variable evaluation. You can define a variable using another variable’s value, enabling complex dependencies.
+
+```cmake
+set(foo ab)               
+set(bar ${foo}cd)         # bar = "abcd"
+set(big "${${myVar}r}ef") # big = "abcdef"
+```
+
+- **Multi-line Strings and Bracket Syntax:** CMake allows multi-line strings using bracket syntax `[[ ]]`. This is especially helpful when defining scripts or avoiding quote escaping.
+
+```cmake
+set(shellScript [=[
+#!/bin/bash
+[[ -n "${USER}" ]] && echo "Have USER"
+]=])
+```
+
+- **Unsetting Variables:** Variables can be unset with `unset()` or `set()` with no value.
+
+```cmake
+unset(myVar)
+```
+
+### 5.2 Environment Variables
+You can retrieve and set environment variables using the form `$ENV{varName}`.
+
+Example:
+```cmake
+set(ENV{PATH} "$ENV{PATH}:/opt/myDir")
+```
+Note that setting an environment variable this way only affects the current CMake instance and does not persist beyond the configuration phase.
+
+### 5.3 Cache Variables
+Cache variables are persistent across CMake runs and stored in `CMakeCache.txt`. These variables are typically used to store user or system settings that do not change often.
+
+Example:
+```cmake
+set(myVar foo CACHE STRING "A cache variable")
+```
+
+Cache variables can be of the following types:
+- **BOOL:** Boolean values, often displayed as checkboxes in GUI tools.
+- **FILEPATH/PATH:** A file or directory path.
+- **STRING:** A generic string.
+
+CMake treats all cache variable values as strings, but the type provides a hint for user interfaces. Cache variables can be forced to overwrite previous values using the `FORCE` option.
+
+### 5.4 Manipulating Cache Variables
+Cache variables can be manipulated directly from the command line using the `-D` option or through GUI tools like `cmake-gui` and `ccmake`.
+
+Command-line example:
+```sh
+cmake -Dfoo:BOOL=ON -Dbar:STRING="Some value"
+```
+
+To remove variables:
+```sh
+cmake -U 'foo*'
+```
+
+### 5.5 Debugging Variables and Diagnostics
+Use the `message()` command to print the value of variables for debugging purposes. The `message()` command accepts different modes for logging, such as STATUS, WARNING, SEND_ERROR, and FATAL_ERROR.
+
+Example:
+```cmake
+set(myVar "Hello, CMake!")
+message(STATUS "The value of myVar is: ${myVar}")
+```
+
+### 5.6 String Handling
+CMake provides the `string()` command for common string operations such as finding, replacing, or comparing substrings. For example, to find a substring within a string:
+
+```cmake
+string(FIND "hello world" "world" index)
+message(STATUS "Index of 'world' is: ${index}")
+```
+
+### 5.7 Lists
+Lists in CMake are simply strings separated by semicolons. You can manipulate lists using the `list()` command, which allows appending, removing, or reversing elements.
+
+Example:
+```cmake
+list(APPEND myList a b c)
+message(STATUS "myList: ${myList}")
+```
+
+### 5.8 Math
+The `math(EXPR)` command allows you to perform basic arithmetic operations on variables.
+
+Example:
+```cmake
+set(x 5)
+set(y 3)
+math(EXPR result "${x} + ${y}")
+message(STATUS "Result: ${result}")
+```
+
+### 5.9 Recommended Practices
+- **Use Cache Variables for Optional Features:** Instead of relying on environment variables, prefer cache variables for optional build components. This makes them more accessible and manageable in CMake GUI tools.
+- **Naming Conventions:** Establish a clear naming convention, especially for cache variables. Group related variables using a common prefix, which helps in tools like `cmake-gui` that group variables automatically.
+- **Use `message()` with Modes:** Always use appropriate modes when logging messages with `message()`. For logs intended to remain part of the project, prefer `STATUS` mode for clarity.
+
+## Project
+
+### Beginner-Friendly CMake Project
+
+This project will guide you through setting up a simple CMake project that includes defining and using variables, handling environment and cache variables, and debugging variables.
+
+#### Project Structure
+
+Create a directory structure for your project:
+
+```
+CMakeProject/
+├── CMakeLists.txt
+└── src/
+    └── main.cpp
+```
+
+#### Step 1: Writing the `CMakeLists.txt` File
+
+Create a `CMakeLists.txt` file in the `CMakeProject` directory.
+
+```cmake
 cmake_minimum_required(VERSION 3.10)
 
-# Project name and language
-project(MyCMakeProject VERSION 1.0 LANGUAGES CXX)
+# Project name and version
+project(MyCMakeProject VERSION 1.0)
 
-# Set source files in a variable
-set(SOURCE_FILES main.cpp utils.cpp)
+# Define variables
+set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+set(MY_MESSAGE "Hello, CMake!")
+set(CPP_STANDARD 11)
 
-# Define an executable using the variable
-add_executable(MyApp ${SOURCE_FILES})
+# Set C++ standard
+set(CMAKE_CXX_STANDARD ${CPP_STANDARD})
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Optional: Add include directories
-target_include_directories(MyApp PRIVATE ${CMAKE_SOURCE_DIR})
-```
+# Add executable
+add_executable(MyApp ${SRC_DIR}/main.cpp)
 
-- **`cmake_minimum_required(VERSION 3.10)`**: Ensures that we are using CMake version 3.10 or newer.
-- **`project(MyCMakeProject VERSION 1.0 LANGUAGES CXX)`**: Declares the project name, version, and programming language (C++).
-- **`set(SOURCE_FILES main.cpp utils.cpp)`**: This defines a variable `SOURCE_FILES` that holds the list of source files. We will pass this variable to `add_executable()`.
-- **`${CMAKE_SOURCE_DIR}`**: This variable refers to the root directory of the project. It’s useful when you want to include files like headers from the main directory.
+# Debugging message
+message(STATUS "Source directory: ${SRC_DIR}")
+message(STATUS "C++ Standard: ${CPP_STANDARD}")
+message(STATUS "Custom message: ${MY_MESSAGE}")
 
-#### **Step 2: Creating `main.cpp`**
-
-Here's the content of `main.cpp`:
-
-```cpp
-#include <iostream>
-#include "utils.h"
-
-int main() {
-    std::cout << "Hello from MyCMakeProject!" << std::endl;
-    print_util_message();
-    return 0;
-}
-```
-
-This file prints a message and calls a function from `utils.cpp`.
-
-#### **Step 3: Creating `utils.cpp`**
-
-```cpp
-#include "utils.h"
-#include <iostream>
-
-void print_util_message() {
-    std::cout << "This is a message from the utils function!" << std::endl;
-}
-```
-
-#### **Step 4: Creating `utils.h`**
-
-```cpp
-#ifndef UTILS_H
-#define UTILS_H
-
-void print_util_message();
-
-#endif
-```
-
-### **2. Using Variables in CMake**
-
-- **Setting Variables**: In the `CMakeLists.txt`, we used the `set()` command to define the `SOURCE_FILES` variable:
-  ```cmake
-  set(SOURCE_FILES main.cpp utils.cpp)
-  ```
-  This variable holds the source files and is passed to `add_executable()` to create the executable `MyApp`.
-
-- **Using Cache Variables**: Suppose we want to allow the user to specify where the project should be installed. We can use a cache variable for this:
-  
-  ```cmake
-  set(INSTALL_DIR "/usr/local/bin" CACHE PATH "Installation directory")
-  ```
-
-  You can also modify this on the command line during the build process:
-
-  ```bash
-  cmake -DINSTALL_DIR=/custom/install/path ..
-  ```
-
-### **3. Building the Project**
-
-1. **Navigate to the project directory**:
-   ```bash
-   cd MyCMakeProject
-   ```
-
-2. **Create the `build/` directory**:
-   ```bash
-   mkdir build && cd build
-   ```
-
-3. **Run CMake to configure the project**:
-   ```bash
-   cmake ..
-   ```
-
-4. **Build the project**:
-   ```bash
-   cmake --build .
-   ```
-
-Once built, the executable `MyApp` will be created in the `build/` directory. You can run it:
-
-```bash
-./MyApp
-```
-
-### **4. Adding More CMake Variables**
-
-Let’s introduce a variable to control whether we build with a debug message:
-
-```cmake
-option(ENABLE_DEBUG "Enable debug mode" ON)
-
-if(ENABLE_DEBUG)
-    add_definitions(-DDEBUG)
+# Environment variable
+if(NOT DEFINED ENV{MY_ENV_VAR})
+    set(ENV{MY_ENV_VAR} "default_value")
 endif()
+message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")
+
+# Cache variable
+set(MY_CACHE_VAR "DefaultCacheValue" CACHE STRING "A cache variable example")
+message(STATUS "Cache variable MY_CACHE_VAR: ${MY_CACHE_VAR}")
 ```
 
-- **`option(ENABLE_DEBUG "Enable debug mode" ON)`**: Defines a cache variable called `ENABLE_DEBUG` with the default value `ON`.
-- **`add_definitions(-DDEBUG)`**: If `ENABLE_DEBUG` is `ON`, it adds a preprocessor definition to the compilation process.
+#### Step 2: Writing the `main.cpp` File
 
-### **5. Modifying the Code for Debug Mode**
-
-Modify `main.cpp` to print a debug message when `ENABLE_DEBUG` is `ON`:
+Create a `main.cpp` file in the `src` directory.
 
 ```cpp
 #include <iostream>
-#include "utils.h"
 
 int main() {
-    #ifdef DEBUG
-    std::cout << "Debug mode is enabled!" << std::endl;
-    #endif
-    
-    std::cout << "Hello from MyCMakeProject!" << std::endl;
-    print_util_message();
+    std::cout << "Welcome to My CMake Project!" << std::endl;
     return 0;
 }
 ```
 
-Now you can enable or disable debug mode from the command line:
+#### Step 3: Building the Project
 
-```bash
-cmake -DENABLE_DEBUG=OFF ..
-cmake --build .
+Open a terminal and navigate to the `CMakeProject` directory. Run the following commands to configure and build the project:
+
+```sh
+mkdir build
+cd build
+cmake -D MY_CACHE_VAR="MyCustomCacheValue" ..
+make
+```
+
+- `mkdir build`: Creates a build directory for an out-of-source build.
+- `cd build`: Navigates into the build directory.
+- `cmake -D MY_CACHE_VAR="MyCustomCacheValue" ..`: Configures the project with a custom cache variable value.
+- `make`: Builds the project.
+
+#### Step 4: Running the Project
+
+After building, you can run the executable:
+
+```sh
 ./MyApp
 ```
 
----
+You should see the output:
 
-### **Summary of Key Concepts**:
+```
+Welcome to My CMake Project!
+```
 
-1. **Variables**: Use `set()` to define variables and reuse them in the project.
-2. **Cache Variables**: Define user-configurable options that persist across builds using cache variables.
-3. **Conditional Logic**: Use `option()` and `if()` for toggling features like debug mode.
-4. **Organizing Source Files**: Define variables to hold source files and pass them to CMake commands like `add_executable()`.
+#### Explanation
 
-This simple project demonstrates how to use CMake variables effectively to manage builds and add flexibility to the project. Let me know if you have any questions or need further clarification!
+1. **Project Setup:**
+    - `cmake_minimum_required(VERSION 3.10)` specifies the minimum CMake version required.
+    - `project(MyCMakeProject VERSION 1.0)` sets the project name and version.
+
+2. **Defining Variables:**
+    - `set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")` defines the source directory.
+    - `set(MY_MESSAGE "Hello, CMake!")` sets a custom message.
+    - `set(CPP_STANDARD 11)` defines the C++ standard.
+
+3. **Using Variables:**
+    - `set(CMAKE_CXX_STANDARD ${CPP_STANDARD})` sets the C++ standard for the project.
+    - `add_executable(MyApp ${SRC_DIR}/main.cpp)` adds an executable target.
+
+4. **Debugging Variables:**
+    - `message(STATUS "Source directory: ${SRC_DIR}")` prints the source directory.
+    - `message(STATUS "C++ Standard: ${CPP_STANDARD}")` prints the C++ standard.
+    - `message(STATUS "Custom message: ${MY_MESSAGE}")` prints the custom message.
+
+5. **Environment Variables:**
+    - `if(NOT DEFINED ENV{MY_ENV_VAR})` checks if the environment variable is not defined.
+    - `set(ENV{MY_ENV_VAR} "default_value")` sets a default value for the environment variable.
+    - `message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")` prints the environment variable.
+
+6. **Cache Variables:**
+    - `set(MY_CACHE_VAR "DefaultCacheValue" CACHE STRING "A cache variable example")` sets a cache variable.
+    - `message(STATUS "Cache variable MY_CACHE_VAR: ${MY_CACHE_VAR}")` prints the cache variable.
