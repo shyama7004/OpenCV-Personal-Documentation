@@ -22,6 +22,11 @@ set(bar ${foo}cd)         # bar = "abcd"
 set(big "${${myVar}r}ef") # big = "abcdef"
 ```
 
+The `$` is used for variable substitution. It replaces the variable with its value. In your example:
+
+- `${foo}` is replaced with the value of `foo` (`"ab"`), so `bar` becomes `"abcd"`.
+- `${myVar}` is replaced with `"abc"`, making `big = "abcdef"`.
+
 - **Multi-line Strings and Bracket Syntax:** CMake allows multi-line strings using bracket syntax `[[ ]]`. This is especially helpful when defining scripts or avoiding quote escaping.
 
 ```cmake
@@ -31,6 +36,10 @@ set(shellScript [=[
 ]=])
 ```
 
+The command sets a variable `shellScript` to a multi-line string that contains a Bash script. The script checks if the `USER` variable is non-empty (`-n "${USER}"`) and prints "Have USER" if it is. The `[=[ ... ]=]` syntax allows for multi-line strings without escaping.
+
+A `Bash script` is a text file containing a series of commands that are executed by the Bash shell (a Unix shell). It allows users to automate tasks, manage system processes, and run sequences of commands efficiently. Bash scripts typically have a `.sh` extension and can include control structures like loops and conditionals, making them powerful for scripting tasks in a Unix-like environment.
+
 - **Unsetting Variables:** Variables can be unset with `unset()` or `set()` with no value.
 
 ```cmake
@@ -39,6 +48,16 @@ unset(myVar)
 
 ### 5.2 Environment Variables
 You can retrieve and set environment variables using the form `$ENV{varName}`.
+
+This line means that you can access and modify environment variables in a specific syntax:
+
+- **`$ENV{varName}`**: This is a way to retrieve the value of an environment variable named `varName`. The `$ENV` prefix indicates that it is an environment variable.
+- You can also set an environment variable using the same syntax, typically in programming languages like Perl.
+
+For example:
+- To retrieve the value: `value = $ENV{HOME}` gets the home directory.
+- To set a value: `$ENV{MY_VAR} = "some_value"` assigns "some_value" to the environment variable `MY_VAR`.
+
 
 Example:
 ```cmake
@@ -62,6 +81,23 @@ Cache variables can be of the following types:
 CMake treats all cache variable values as strings, but the type provides a hint for user interfaces. Cache variables can be forced to overwrite previous values using the `FORCE` option.
 
 ### 5.4 Manipulating Cache Variables
+
+In CMake, cache variables are used to store the values of variables across multiple runs of the CMake configuration process. Here’s what they mean:
+
+1. **Persistence**: Cache variables allow you to keep settings between CMake runs, so you don’t have to re-enter them each time you configure your project.
+
+2. **User-Editable**: These variables can be modified by the user through the CMake GUI or by editing the `CMakeCache.txt` file directly.
+
+3. **Definition**: Cache variables are typically defined using the `set` command with the `CACHE` option, like this:
+   ```cmake
+   set(MY_VAR "default_value" CACHE STRING "Description of MY_VAR")
+   ```
+
+4. **Visibility**: They can be set to different types (e.g., `STRING`, `BOOL`, etc.) and are visible to all CMake scripts and commands.
+
+5. **Usage**: Cache variables are often used for configuration options, such as specifying library paths or enabling/disabling features in the build process.
+
+
 Cache variables can be manipulated directly from the command line using the `-D` option or through GUI tools like `cmake-gui` and `ccmake`.
 
 Command-line example:
