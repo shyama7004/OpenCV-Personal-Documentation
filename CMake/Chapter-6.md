@@ -1,142 +1,231 @@
-## **Chapter 6: Flow Control** 
+### 6.1 The `if()` Command
 
-### 1. **Understanding the `if()` Command**
+The `if()` command in CMake allows conditional execution of commands, similar to traditional programming languages.
 
-The **`if()`** command in CMake works similarly to `if` statements in other programming languages. It helps you conditionally run specific commands based on an expression or condition.
+#### 6.1.1 Basic Expressions
 
-#### Syntax:
+**Syntax**:
 ```cmake
-if(expression)
-   # Commands to execute if expression is true
-elseif(expression)
-   # Commands to execute if the elseif expression is true
+if(expression1)
+    # commands ...
+elseif(expression2)
+    # commands ...
 else()
-   # Commands to execute if none of the above are true
+    # commands ...
 endif()
 ```
 
----
+- **True and False Constants**:
+  - **True**: `1`, `ON`, `YES`, `TRUE`, `Y`, any non-zero number.
+  - **False**: `0`, `OFF`, `NO`, `FALSE`, `N`, `IGNORE`, `NOTFOUND`, empty string, or a string ending with `-NOTFOUND`.
 
-### 2. **Basic Expressions in `if()`**
+- **Variables and Strings**: If the expression does not match any of the true/false constants, it is treated as a variable name or string.
 
-CMake considers the following values as **true**:
-- 1, ON, YES, TRUE, Y, or any non-zero number.
-
-And the following values as **false**:
-- 0, OFF, NO, FALSE, N, IGNORE, NOTFOUND, an empty string, or a string that ends in `-NOTFOUND`.
-
-**Example:**
-
+**Example**:
 ```cmake
-set(VAR TRUE)
-if(${VAR})  # This evaluates to true
-   message("Variable is true!")
+set(VAR "ON")
+if(${VAR})
+    message("VAR is ON")
 endif()
 ```
 
----
+- If `VAR` contains a string that matches the true constants (e.g., `ON`), the block executes.
 
-### 3. **Using Logic Operators**
+#### 6.1.2 Logic Operators
 
-CMake supports the usual logical operators, like **AND**, **OR**, and **NOT**, to form more complex conditions.
+CMake provides standard logic operators to combine expressions:
 
-**Example:**
+- **AND**: Both conditions must be true.
+- **OR**: At least one condition must be true.
+- **NOT**: Inverts the condition.
 
+**Example**:
 ```cmake
-if(NOT VAR1 AND VAR2 OR VAR3)
-   message("The condition is true!")
+set(VALUE 5)
+if(VALUE GREATER 3 AND VALUE LESS 10)
+    message("VALUE is between 3 and 10")
 endif()
 ```
 
----
+- This will output the message since 5 is greater than 3 and less than 10.
 
-### 4. **Comparison Tests**
+#### 6.1.3 Comparison Tests
 
-CMake offers multiple comparison operators for numbers, strings, and versions.
+CMake supports numerical and string comparison tests:
+- **Numerical Comparisons**: `EQUAL`, `LESS`, `GREATER`, `LESS_EQUAL`, `GREATER_EQUAL`.
+- **String Comparisons**: `STREQUAL`, `STRLESS`, `STRGREATER`.
 
-#### Numeric Comparison:
+**Example**:
 ```cmake
-if(2 GREATER 1)  # True
-if(${MY_NUMBER} EQUAL 42)  # True if MY_NUMBER is 42
-```
+set(NUM 8)
+if(NUM EQUAL 8)
+    message("NUM is 8")
+endif()
 
-#### String Comparison:
-```cmake
-if("Hello" STREQUAL "Hello")  # True
-```
-
-#### Version Comparison:
-```cmake
-if(CMAKE_VERSION VERSION_GREATER "3.10")  # True if CMake version is greater than 3.10
-```
-
----
-
-### 5. **File System Tests**
-
-You can also use `if()` to check the existence of files and directories.
-
-**Common file system tests**:
-- **`EXISTS pathToFileOrDir`**: Checks if a file or directory exists.
-- **`IS_DIRECTORY pathToDir`**: Checks if the path is a directory.
-
-**Example:**
-```cmake
-if(EXISTS "${CMAKE_SOURCE_DIR}/myfile.txt")
-   message("File exists!")
+set(STR1 "hello")
+set(STR2 "world")
+if(STR1 STRLESS STR2)
+    message("${STR1} comes before ${STR2}")
 endif()
 ```
 
+- The first condition checks if `NUM` is equal to 8, and the second checks if `STR1` is lexicographically less than `STR2`.
+
+#### 6.1.4 File System Tests
+
+Check the existence of files or directories:
+
+**Example**:
+```cmake
+if(EXISTS "CMakeLists.txt")
+    message("CMakeLists.txt exists")
+endif()
+
+if(IS_DIRECTORY "src")
+    message("src is a directory")
+endif()
+```
+
+- `EXISTS` checks if a file or directory exists, while `IS_DIRECTORY` checks if the given path is a directory.
+
+#### 6.1.5 Existence Tests
+
+These tests check if a variable or command exists in the current context.
+
+- **Variable Existence**:
+  ```cmake
+  if(DEFINED MY_VAR)
+      message("MY_VAR is defined")
+  endif()
+  ```
+
+- **Command Existence**:
+  ```cmake
+  if(COMMAND my_custom_command)
+      message("my_custom_command is available")
+  endif()
+  ```
+
 ---
 
-### 6. **Loops in CMake**
+### 6.2 Looping
 
-#### **`foreach()` Loop**
+CMake provides two looping mechanisms: `foreach()` and `while()`.
 
-The **`foreach()`** loop allows you to iterate over a list of items in CMake.
+#### 6.2.1 `foreach()`
 
-**Syntax:**
+Used to iterate over a list of items or a numerical range.
+
+**Syntax**:
 ```cmake
-foreach(item IN ITEMS a b c)
-   message("Item: ${item}")
+foreach(var RANGE start stop [step])
+    # commands ...
 endforeach()
 ```
 
-**Example:**
+- The `foreach()` command can iterate over ranges or explicit lists.
+
+**Range Example**:
 ```cmake
-set(MY_LIST a b c)
-foreach(item IN LISTS MY_LIST)
-   message("Item: ${item}")
+foreach(i RANGE 1 5)
+    message("i is ${i}")
 endforeach()
 ```
 
-This will print:
-```
-Item: a
-Item: b
-Item: c
-```
-
-#### **`while()` Loop**
-
-The **`while()`** loop repeats a block of commands as long as a condition is true.
-
-**Syntax:**
+**List Example**:
 ```cmake
-set(COUNTER 0)
-while(${COUNTER} LESS 5)
-   message("Counter: ${COUNTER}")
-   math(EXPR COUNTER "${COUNTER} + 1")
+foreach(item IN LISTS listVar)
+    message("Item: ${item}")
+endforeach()
+```
+
+- You can loop through ranges (`RANGE`) or lists (`IN LISTS`).
+
+#### 6.2.2 `while()`
+
+Executes a block of code repeatedly as long as the condition is true.
+
+**Syntax**:
+```cmake
+while(condition)
+    # commands ...
 endwhile()
 ```
 
-This will print:
+**Example**:
+```cmake
+set(counter 0)
+while(counter LESS 3)
+    message("Counter is ${counter}")
+    math(EXPR counter "${counter}+1")
+endwhile()
 ```
-Counter: 0
-Counter: 1
-Counter: 2
-Counter: 3
-Counter: 4
+
+- This loop prints the value of `counter` from 0 to 2.
+
+#### 6.2.3 Interrupting Loops
+
+- **break()**: Exit the loop early.
+- **continue()**: Skip to the next iteration.
+
+**Example**:
+```cmake
+foreach(letter IN ITEMS a b c d)
+    if(letter STREQUAL "c")
+        continue() # Skip "c"
+    endif()
+    message("Processing ${letter}")
+endforeach()
+```
+
+- This loop will skip the item `"c"` and process the others.
+
+**Nested Loops with Break**:
+```cmake
+foreach(x IN ITEMS 1 2 3)
+    foreach(y IN ITEMS a b c)
+        if(x EQUAL 2 AND y STREQUAL "b")
+            break() # Exit inner loop
+        endif()
+        message("${x}-${y}")
+    endforeach()
+endforeach()
+```
+
+---
+
+### 6.3 Recommended Practices
+
+Here are some recommended practices for using flow control in CMake:
+
+- **Use Readable Constructs**: Avoid repeating conditions or expressions in control structures:
+  ```cmake
+  if(CONDITION)
+      # some code
+  endif() # Don't repeat the condition
+  ```
+
+- **Use Foreach for Lists**: Prefer `foreach()` when iterating over lists or ranges, and use `while()` only when the loop's end condition is dynamic.
+
+- **Avoid Complex Nesting**: Keep your loops and conditionals simple to enhance readability. For complex conditions, consider breaking logic into separate helper functions.
+
+**Example**:
+```cmake
+# Bad Practice
+if(VAR1 EQUAL 1 AND VAR2 EQUAL 2 AND VAR3 EQUAL 3)
+    # complex logic here
+endif()
+
+# Better Practice
+function(check_conditions var1 var2 var3)
+    if(var1 EQUAL 1 AND var2 EQUAL 2 AND var3 EQUAL 3)
+        return(1)
+    else()
+        return(0)
+    endif()
+endfunction()
+
+check_conditions(${VAR1} ${VAR2} ${VAR3})
 ```
 
 ---
