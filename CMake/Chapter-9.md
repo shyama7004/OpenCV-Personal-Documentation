@@ -1,216 +1,277 @@
+### Chapter 9: Properties (Detailed Notes)
 
-### Chapter 9: Properties in CMake
-
-#### Overview
-In CMake, properties are essential for controlling the build process and defining behaviors for different build entities. These properties can be attached to various elements like targets, source files, directories, and even cache variables, unlike variables, which have broader scope. This chapter will guide you through the core concepts, commands, and best practices regarding properties in CMake.
+#### Introduction to Properties
+Properties in CMake influence almost all aspects of the build process, from compiling source files to installation locations. They are attached to specific entities such as directories, targets, source files, test cases, and cache variables. Properties differ from variables in that they are entity-specific and predefined by CMake, often having distinct purposes within the build system. These properties provide vital control over various stages of the build and are key to customizing behavior.
 
 ---
 
-### 9.1 General Property Commands
+#### Difference Between Properties and Variables
+Both properties and variables store information but have fundamental differences:
+- **Variables**: These are not tied to any specific entity and are more flexible. Projects can define their own variables.
+- **Properties**: These are typically predefined by CMake and are associated with a specific entity (e.g., a target or directory). The confusion between properties and variables arises because property defaults are often initialized by variables, which have similar names prefixed with `CMAKE_` (e.g., `CMAKE_CXX_FLAGS` is a variable that influences the `COMPILE_FLAGS` property).
 
-#### set_property
-The `set_property` command allows you to define or modify properties for different CMake entities, such as targets, directories, and source files. Its syntax is flexible, allowing properties to be appended or replaced.
+---
+
+#### 9.1 General Property Commands
+CMake provides several commands to manage properties across different entities. These commands allow setting, getting, and manipulating properties for various entity types such as `GLOBAL`, `TARGET`, `SOURCE`, etc.
+
+##### **`set_property()`**:
+- **Purpose**: Sets properties for global entities, directories, targets, sources, and more.
+- **Syntax**:
+  ```cmake
+  set_property(GLOBAL|DIRECTORY|TARGET|SOURCE|INSTALL|TEST|CACHE ...)
+  ```
+  The first argument specifies the entity type. The remaining arguments define the property name and its values.
+  
+  - **Options**:
+    - **`APPEND`**: Appends values to an existing list property.
+    - **`APPEND_STRING`**: Concatenates values to an existing string property.
+  
+##### **`get_property()`**:
+- **Purpose**: Retrieves properties for a specific entity.
+- **Syntax**:
+  ```cmake
+  get_property(resultVar GLOBAL|DIRECTORY|TARGET|SOURCE|...)
+  ```
+
+##### **Usage Example**:
+```cmake
+set_property(TARGET MyTarget PROPERTY COMPILE_FLAGS "-Wall")
+get_property(myVar TARGET MyTarget PROPERTY COMPILE_FLAGS)
+```
+
+---
+
+#### 9.2 Global Properties
+Global properties apply to the entire build process. They influence how tools are launched, define the structure of projects, and more. CMake offers a specific command for querying global properties, beyond just the generic `set_property()` and `get_property()` commands.
+
+##### **`get_cmake_property()`**:
+- **Purpose**: Retrieves information about CMake's global state, such as defined variables and commands.
+- **Syntax**:
+  ```cmake
+  get_cmake_property(resultVar property)
+  ```
+  Example pseudo properties:
+  - **VARIABLES**: List of all regular (non-cache) variables.
+  - **CACHE_VARIABLES**: List of all cache variables.
+  - **COMMANDS**: List of all defined commands, functions, and macros.
+  - **COMPONENTS**: List of components defined by `install()` commands.
+
+---
+
+#### 9.3 Directory Properties
+Directory properties apply to specific directories and can override global properties within that scope. These properties mainly provide defaults for target properties and can introspect the current state of the build within a directory.
+
+##### **Setting Directory Properties**:
+```cmake
+set_directory_properties(PROPERTIES prop1 val1)
+```
+
+##### **Getting Directory Properties**:
+```cmake
+get_directory_property(resultVar DIRECTORY dir PROPERTY propName)
+```
+
+---
+
+#### 9.4 Target Properties
+Target properties are central to defining how targets (e.g., executables, libraries) are built. They manage compiler flags, include directories, binary output locations, and more. CMake provides both general and target-specific commands to work with these properties.
+
+##### **Setting Target Properties**:
+```cmake
+set_target_properties(MyTarget PROPERTIES COMPILE_FLAGS "-O2")
+```
+
+##### **Retrieving Target Properties**:
+```cmake
+get_target_property(resultVar MyTarget COMPILE_FLAGS)
+```
+
+##### **Common Target Properties**:
+- **INCLUDE_DIRECTORIES**: Specifies include paths.
+- **COMPILE_OPTIONS**: Defines additional compiler flags.
+- **INTERFACE_LINK_LIBRARIES**: For managing libraries linked during building.
+
+---
+
+#### 9.5 Source Properties
+Source properties allow for fine-grained control over how individual source files are handled by the compiler, such as setting specific compile flags for particular files.
+
+##### **Setting Source Properties**:
+```cmake
+set_source_files_properties(file1 PROPERTIES COMPILE_FLAGS "-Wall")
+```
+
+##### **Retrieving Source Properties**:
+```cmake
+get_source_file_property(resultVar file1 COMPILE_FLAGS)
+```
+
+##### **Note**: Modifying source file properties can cause all sources in a target to be recompiled when using certain generators (e.g., Unix Makefiles). This is important to keep in mind for performance reasons.
+
+---
+
+#### 9.6 Cache Variable Properties
+Cache variable properties mostly affect how variables are displayed and handled in CMake GUIs (e.g., CMake GUI or `ccmake`). These properties define the type, help strings, and whether a variable is marked as "advanced."
+
+- **TYPE**: Defines the type of a cache variable (`BOOL`, `FILEPATH`, `STRING`, etc.).
+- **HELPSTRING**: Sets the help text shown in the GUI.
+- **STRINGS**: Provides a list of valid values for the variable in a combo box.
+
+---
+
+#### 9.7 Other Property Types
+CMake also provides properties for specific entities like tests and installed files:
+
+##### **Test Properties**:
+```cmake
+set_tests_properties(test1 PROPERTIES ENABLED ON)
+get_test_property(resultVar test1 ENABLED)
+```
+
+##### **Installed File Properties**: These are used to control how files are handled during installation and packaging.
+
+---
+
+#### 9.8 Recommended Practices
+- **Use Properties Appropriately**: Properties should be used for specific, targeted tasks within a build. Avoid overuse of file-specific properties as they can slow down the build process.
+- **Consistent Use of Prefixes**: Projects defining their own properties should use unique prefixes to avoid conflicts with standard CMake properties.
+- **Leverage Target Properties**: Whenever possible, use target-level properties instead of directory-level properties for managing build settings as they offer more control and consistency across the build system.
+
+# Project Overview
+We'll build a small C++ program that calculates the sum of two numbers. Here's how we'll structure the project:
+
+- **Directory Structure**:
+  ```
+  CMakePropertiesExample/
+  ├── CMakeLists.txt
+  ├── src/
+  │   ├── main.cpp
+  └── include/
+      └── sum.h
+  ```
+
+### Step 1: Create the C++ Files
+
+1. **Create `main.cpp`** inside the `src/` folder:
+   ```cpp
+   // src/main.cpp
+   #include <iostream>
+   #include "sum.h"
+   
+   int main() {
+       int a = 5, b = 7;
+       std::cout << "Sum of " << a << " and " << b << " is " << sum(a, b) << std::endl;
+       return 0;
+   }
+   ```
+
+2. **Create `sum.h`** inside the `include/` folder:
+   ```cpp
+   // include/sum.h
+   #ifndef SUM_H
+   #define SUM_H
+   
+   int sum(int a, int b);
+   
+   #endif
+   ```
+
+3. **Create `sum.cpp`** inside the `src/` folder:
+   ```cpp
+   // src/sum.cpp
+   #include "sum.h"
+   
+   int sum(int a, int b) {
+       return a + b;
+   }
+   ```
+
+### Step 2: Create `CMakeLists.txt`
+
+The **CMakeLists.txt** file will define the project and how to build it. We'll use properties to set custom flags and include directories.
 
 ```cmake
-set_property(
-  TARGET | SOURCE | DIRECTORY | INSTALL | TEST | CACHE 
-  [APPEND | APPEND_STRING]
-  PROPERTY <propName> [value1 [value2 ...]]
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.10)
+project(CMakePropertiesExample)
+
+# Set directory properties (optional, e.g., showing variables in the CMake GUI)
+set_directory_properties(PROPERTIES TEST_VARIABLE "Hello, CMake!")
+
+# Create a target for the executable
+add_executable(CMakePropertiesExample src/main.cpp src/sum.cpp)
+
+# Set a custom compile flag for the target (e.g., enabling all warnings)
+set_target_properties(CMakePropertiesExample PROPERTIES
+    COMPILE_FLAGS "-Wall"
 )
+
+# Include the 'include' directory for headers
+target_include_directories(CMakePropertiesExample PRIVATE include)
+
+# Set global property for variables (optional, used for demonstration)
+set_property(GLOBAL PROPERTY MY_GLOBAL_PROPERTY "MyGlobalValue")
+
+# Print a message using the set global property
+get_property(globalValue GLOBAL PROPERTY MY_GLOBAL_PROPERTY)
+message(STATUS "Global Property MY_GLOBAL_PROPERTY is: ${globalValue}")
 ```
 
-- **TARGET**: Apply properties to one or more build targets.
-- **SOURCE**: Set properties on specific source files.
-- **DIRECTORY**: Define properties for the current directory or a specified one.
-- **INSTALL**: Configure properties for installed files.
-- **TEST**: Manage properties related to testing.
-- **CACHE**: Modify properties of cache variables.
+### Step 3: Build the Project
 
-The `APPEND` or `APPEND_STRING` options allow you to add values to a property without overwriting the existing ones.
+1. **Navigate** to the project directory:
+   ```
+   cd CMakePropertiesExample
+   ```
 
-#### get_property
-The `get_property` command retrieves the current value of a property for an entity. This is useful for checking if a property has been set or for dynamically reacting to its value.
+2. **Create a build directory** to keep the source directory clean:
+   ```
+   mkdir build && cd build
+   ```
 
-```cmake
-get_property(<resultVar> 
-  TARGET | SOURCE | DIRECTORY | INSTALL | TEST | CACHE 
-  PROPERTY <propName>
-)
+3. **Generate the build files** using CMake:
+   ```
+   cmake ..
+   ```
+
+   You should see a message like:
+   ```
+   -- Global Property MY_GLOBAL_PROPERTY is: MyGlobalValue
+   ```
+
+4. **Build the project**:
+   ```
+   cmake --build .
+   ```
+
+   This will create the executable `CMakePropertiesExample`.
+
+### Step 4: Run the Program
+
+Once the build is complete, run the program:
+
+```
+./CMakePropertiesExample
 ```
 
----
-
-### 9.2 Global Properties
-
-Global properties affect the entire project. They control higher-level settings and can be accessed and modified using specific commands. Some common global properties include:
-
-- **VARIABLES**: Lists all non-cache variables.
-- **CACHE_VARIABLES**: Lists all cache variables.
-- **COMMANDS**: Lists all available CMake commands.
-- **COMPONENTS**: Provides details on components used in `install()` commands.
-
-```cmake
-get_cmake_property(<resultVar> VARIABLES)
+You should see the output:
 ```
-
-This command retrieves the value of the `VARIABLES` global property into `<resultVar>`.
-
----
-
-### 9.3 Directory Properties
-
-Directory properties allow you to manage properties at the directory level. They can define default behaviors for targets within a specific directory and its subdirectories.
-
-#### set_directory_properties
-
-```cmake
-set_directory_properties(PROPERTIES <prop1> <val1> [<prop2> <val2> ...])
-```
-
-This command sets multiple properties for the current directory.
-
-#### get_directory_property
-
-```cmake
-get_directory_property(<resultVar> [DIRECTORY <dir>] PROPERTY <propName>)
-```
-
-Retrieve the value of a property for a given directory, which can be either the current directory or another specified directory.
-
----
-
-### 9.4 Target Properties
-
-Target properties are crucial as they influence how individual build targets are compiled and linked. These properties can control settings such as compiler flags, output directories, and more.
-
-#### set_target_properties
-
-```cmake
-set_target_properties(<target1> [<target2> ...]
-  PROPERTIES <propName1> <value1> [<propName2> <value2> ...]
-)
-```
-
-Set multiple properties on one or more targets, such as compiler flags or version information.
-
-#### get_target_property
-
-```cmake
-get_target_property(<resultVar> <target> <propName>)
-```
-
-Retrieve the value of a property for a specified target.
-
----
-
-### 9.5 Source Properties
-
-Source properties allow you to manage specific behaviors for individual source files, such as applying special compiler flags only to certain files.
-
-#### set_source_files_properties
-
-```cmake
-set_source_files_properties(<file1> [<file2> ...]
-  PROPERTIES <propName1> <value1> [<propName2> <value2> ...]
-)
-```
-
-#### get_source_file_property
-
-```cmake
-get_source_file_property(<resultVar> <sourceFile> PROPERTY <propName>)
-```
-
-This command retrieves the property of a specific source file.
-
----
-
-### 9.6 Cache Variable Properties
-
-Cache variables store values persistently across CMake runs and can have properties attached to them, such as type, advanced status, or help strings.
-
-Common properties for cache variables:
-- **TYPE**: The data type of the cache variable (e.g., BOOL, FILEPATH, STRING).
-- **ADVANCED**: Marks the variable as advanced.
-- **HELPSTRING**: A description of the variable for users in CMake GUIs.
-- **STRINGS**: Lists valid options for STRING-type variables.
-
----
-
-### 9.7 Other Property Types
-
-In addition to the main types (global, directory, target, source, and cache), CMake allows you to set properties on tests and installed files.
-
-#### set_tests_properties
-
-```cmake
-set_tests_properties(<test1> [<test2> ...]
-  PROPERTIES <propName1> <value1> [<propName2> <value2> ...]
-)
-```
-
-#### get_test_property
-
-```cmake
-get_test_property(<resultVar> <test> PROPERTY <propName>)
+Sum of 5 and 7 is 12
 ```
 
 ---
 
-### 9.8 Recommended Practices
+### Key Concepts Demonstrated
 
-1. **Use `target_...()` commands when available**: It's generally better to use higher-level commands like `target_compile_options()` rather than manipulating properties directly.
-2. **Minimize directory property usage**: Directory properties can have unexpected side effects, especially in large projects. Where possible, set properties on targets directly.
-3. **Avoid global property overuse**: Global properties should be used sparingly, as they affect the entire project and can lead to hard-to-diagnose issues.
-4. **Clear property usage**: When modifying properties, ensure you understand the implications, particularly in larger and multi-target projects.
+1. **Setting Target Properties**:
+   - We used `set_target_properties()` to add compiler flags (`-Wall`) to the target.
+   
+2. **Including Directories**:
+   - `target_include_directories()` adds the `include/` directory to the project's include path, allowing `sum.h` to be found.
+
+3. **Global and Directory Properties**:
+   - We set a global property (`MY_GLOBAL_PROPERTY`) and printed its value using `get_property()`.
+   - We also demonstrated how to set directory properties (`TEST_VARIABLE`), though it wasn't actively used in this project.
 
 ---
-
-### Example: Managing Properties in a Simple CMake Project
-
-This example demonstrates how to control target and source properties in a CMake project.
-
-#### Project Structure
-```
-CustomLibrary/
-├── CMakeLists.txt
-├── src/
-│   ├── main.cpp
-│   └── library.cpp
-├── include/
-│   └── library.h
-```
-
-#### CMakeLists.txt
-
-```cmake
-cmake_minimum_required(VERSION 3.15)
-project(CustomLibrary)
-
-# Include directories
-include_directories(include)
-
-# Add library
-add_library(custom_lib src/library.cpp)
-set_target_properties(custom_lib PROPERTIES
-  VERSION 1.0
-  SOVERSION 1
-)
-
-# Set source file properties
-set_source_files_properties(src/library.cpp PROPERTIES
-  COMPILE_FLAGS "-Wall -Wextra"
-)
-
-# Add executable
-add_executable(main_exec src/main.cpp)
-target_link_libraries(main_exec PRIVATE custom_lib)
-
-# Set target properties
-set_target_properties(main_exec PROPERTIES
-  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
-```
-
-By organizing your project this way, you can manage properties effectively, ensuring flexibility and control over the build process.
-
