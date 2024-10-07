@@ -1,179 +1,207 @@
-### Context of the Problem
+Link to the problem [26206](https://github.com/opencv/opencv/issues/26206)
 
-From the issue screenshot, it seems that the OpenCV build system shows a message about using the "Release" build type by default. However, when using Visual Studio or Xcode, this message is misleading because the default behavior is different for those generators—they default to "Debug" builds, not "Release." The goal here is to modify the CMake configuration so that the correct build type is displayed based on the generator used.
+Context of the Problem
 
-### Step-by-Step Guide
+The OpenCV build system defaults to displaying the “Release” build type. However, this can be misleading for users of Visual Studio or Xcode, as these generators default to a “Debug” build. The objective is to modify the CMake configuration so that the build type defaults to “Debug” for Visual Studio and Xcode, while keeping “Release” as the default for other generators.
 
-1. **Understanding the Tools Involved:**
-    - **Git:** Git is a version control system used to track changes in code. Open-source projects like OpenCV are hosted on platforms like GitHub, which use Git to manage contributions.
-    - **CMake:** CMake is a build system generator. It helps to configure your project to work with different platforms (e.g., macOS, Windows) and generators (e.g., Makefiles, Xcode, Visual Studio).
+Step-by-Step Guide to Fix the Issue
 
-2. **Forking the Repository:**
-    - Forking a repository means creating a personal copy of the project on your GitHub account. This is the first step to contributing to any open-source project.
-    - Go to the OpenCV GitHub page [here](https://github.com/opencv/opencv), and click the "Fork" button on the top right. This creates a copy of OpenCV under your account.
-    - Once forked, you'll clone the repository locally using the command:
+1. Tools Involved:
 
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/opencv.git
-    cd opencv
-    ```
+	•	Git: Version control system for tracking code changes.
+	•	CMake: Build system generator for configuring the project on various platforms (e.g., Unix Makefiles, Xcode, Visual Studio).
 
-3. **Creating a New Branch:**
-    - It's good practice to make changes in a new branch so that your `main` branch remains clean. You can create a new branch like this:
+2. Fork the Repository:
 
-    ```bash
-    git checkout -b fix-build-type-message
-    ```
+	•	Navigate to the OpenCV GitHub repository and click the “Fork” button in the top-right corner to create your copy.
+	•	Clone your forked repository to your local machine:
 
-4. **Modifying the CMake Script:**
-    - CMake uses a file called `CMakeLists.txt` to configure the build process. In this file, you'll be adding logic to set the default build type based on whether Visual Studio or Xcode is the selected generator.
-    - **Understanding the Change**:
-      - Right now, the CMake configuration defaults to "Release" unless otherwise specified.
-      - For Xcode or Visual Studio, we want to default to "Debug" instead.
-      
-    Here's the exact code change you'll make in `CMakeLists.txt`:
+git clone https://github.com/YOUR_USERNAME/opencv.git
+cd opencv
 
-    ```cmake
-    # Default to Release build type if not specified
-    if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-      set(default_build_type "Release")
-      if(CMAKE_GENERATOR STREQUAL "Xcode" OR CMAKE_GENERATOR MATCHES "Visual Studio")
+
+
+3. Create a New Branch for Your Changes:
+
+	•	Create a new branch to keep your work organized:
+
+git checkout -b fix-build-type-message
+
+
+
+4. Modify the CMake Script:
+
+You’ll be editing the CMakeLists.txt file to change the default build type.
+
+	1.	Locate the CMakeLists.txt file in the root of your OpenCV repository.
+	2.	Find the section around line 108, where it checks the build type (CMAKE_BUILD_TYPE):
+
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
+endif()
+
+
+	3.	Replace this section with the following logic:
+
+# Default to Release build type if not specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(default_build_type "Release")
+    if(CMAKE_GENERATOR STREQUAL "Xcode" OR CMAKE_GENERATOR MATCHES "Visual Studio")
         set(default_build_type "Debug")
-      endif()
-      set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
-      # Message indicating the default build type
-      message(STATUS "'${CMAKE_BUILD_TYPE}' build type is used by default. Use CMAKE_BUILD_TYPE to specify build type (Release or Debug)")
     endif()
-    ```
-
-    - This code checks the generator type being used (`CMAKE_GENERATOR`) and sets the default build type accordingly:
-      - For Xcode or Visual Studio, it sets the default to "Debug".
-      - For everything else (e.g., Unix Makefiles), it uses "Release" as the default.
-
-5. **Testing the Changes:**
-    - After making your changes, you should test whether the behavior is correct for different generators. For example:
-    
-    ```bash
-    # For Unix Makefiles
-    cmake -G "Unix Makefiles" ..
-
-    # For Xcode
-    cmake -G "Xcode" ..
-
-    # For Visual Studio
-    cmake -G "Visual Studio 16 2019" ..
-    ```
-
-    - After running CMake, check if the correct build type message is displayed for each generator.
+    set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+    # Message indicating the default build type
+    message(STATUS "'${CMAKE_BUILD_TYPE}' build type is used by default. Use CMAKE_BUILD_TYPE to specify build type (Release or Debug)")
+endif()
 
 
 
-### Step 6: **Committing the Changes**
+	•	Explanation:
+	•	The CMAKE_GENERATOR is used to determine the build system.
+	•	If it matches “Xcode” or “Visual Studio,” the default build type is set to “Debug.”
+	•	For other generators like “Unix Makefiles,” it defaults to “Release.”
 
-After you’ve tested your changes, it’s time to commit them to your local repository.
+5. Test the Changes:
 
-#### Here’s How to Do It:
+	1.	Remove the Existing Build Directory (if it exists):
+	•	If you have an existing build directory from a previous configuration, remove it to avoid cached settings:
 
-1. **Check the Status of Your Changes**:
-   Run this command to see which files have been modified:
-   ```bash
-   git status
-   ```
+rm -rf build
 
-   You should see something like:
-   ```bash
-   On branch fix-build-type-message
-   Changes not staged for commit:
-     modified:   CMakeLists.txt
-   ```
 
-2. **Stage Your Changes**:
-   You need to stage the modified files for commit (i.e., tell Git you want to include these changes in your commit). You do this by running:
-   ```bash
-   git add CMakeLists.txt
-   ```
+	2.	Create a New Build Directory:
+	•	Create a new directory for CMake configuration and build:
 
-3. **Commit the Changes**:
-   Now, create a commit with a descriptive message about what you've done. For example:
-   ```bash
-   git commit -m "Fix default build type message for Visual Studio and Xcode generators"
-   ```
+mkdir build
+cd build
 
-   This will create a commit in your local Git repository.
 
----
+	3.	Run CMake for Different Generators:
+	•	For each generator type, run the CMake command and verify the output message reflects the correct default build type.
+	•	For Unix Makefiles:
 
-### Step 7: **Pushing the Changes to GitHub**
+cmake -G "Unix Makefiles" ..
 
-Now that the changes are committed locally, you’ll want to **push** them to your fork of the OpenCV repository on GitHub.
+	•	Expected Output:
 
-#### Steps to Push:
+'Release' build type is used by default. Use CMAKE_BUILD_TYPE to specify build type (Release or Debug)
 
-1. **Make Sure You’re on the Right Branch**:
-   If you created a new branch earlier (like `fix-build-type-message`), check that you're still on it:
-   ```bash
-   git branch
-   ```
 
-   You should see your current branch highlighted. If not, switch to it:
-   ```bash
-   git checkout fix-build-type-message
-   ```
+	•	For Visual Studio:
 
-2. **Push the Changes**:
-   Push your local changes to your forked repository on GitHub:
-   ```bash
-   git push origin fix-build-type-message
-   ```
+cmake -G "Visual Studio 16 2019" ..
 
-   This will upload your changes to your fork on GitHub, under the branch `fix-build-type-message`.
+	•	Expected Output:
 
----
+'Debug' build type is used by default. Use CMAKE_BUILD_TYPE to specify build type (Release or Debug)
 
-### Step 8: **Creating a Pull Request (PR)**
 
-Now that your changes are pushed to GitHub, the next step is to submit a **Pull Request (PR)** to the main OpenCV repository.
+	•	For Xcode:
 
-#### Steps to Create a PR:
+cmake -G "Xcode" ..
 
-1. **Go to Your Forked Repo**:
-   - Open your web browser and go to your GitHub account.
-   - Navigate to your forked version of the OpenCV repository.
+	•	Expected Output:
 
-2. **Open the Pull Request Tab**:
-   - On your forked repo’s page, you’ll see a notification that your branch has recent commits. You’ll likely see a button to "Compare & Pull Request" on the repository page itself. Click that.
-   
-   - Alternatively, click on the **"Pull Requests"** tab, then click **"New Pull Request"**.
+'Debug' build type is used by default. Use CMAKE_BUILD_TYPE to specify build type (Release or Debug)
 
-3. **Fill in the Pull Request Details**:
-   - Write a clear title and description for your PR. For example:
-     - **Title**: `Fix default build type message for Visual Studio and Xcode generators`
-     - **Description**: 
-       ```
-       This PR fixes the default build type message in CMakeLists.txt. 
-       For Visual Studio and Xcode generators, the default build type is set to 'Debug' instead of 'Release'.
-       Tested with Unix Makefiles, Xcode, and Visual Studio.
-       ```
-   - Make sure the base repository is the **main OpenCV repository** and the compare branch is your branch (`fix-build-type-message`).
 
-4. **Submit the PR**:
-   - Once you're satisfied with your description, click **"Create Pull Request"**.
 
----
+6. Commit Your Changes:
 
-### Step 9: **Respond to Feedback**
+Once you’ve tested and confirmed your changes work:
 
-Now that your PR is submitted, the OpenCV maintainers and community will review it. They may request changes or ask questions.
+	1.	Check the status of the modified files:
 
-#### Tips for Responding:
-- **Keep an Eye on Notifications**: Watch for any comments or feedback on your PR. You’ll receive notifications via GitHub.
-- **Make Updates if Necessary**: If they request changes, make the updates in your local repository and push the changes again. They will automatically update your PR.
-- **Be Patient**: Reviewers are usually busy, so it might take some time before your PR is reviewed and merged.
+git status
 
----
+Example output:
 
-### Summary of the Next Steps:
-1. **Commit your changes** locally (`git commit`).
-2. **Push your changes** to your fork on GitHub (`git push`).
-3. **Create a pull request** on the main OpenCV repository.
-4. **Respond to feedback** from reviewers.
+On branch fix-build-type-message
+Changes not staged for commit:
+  modified:   CMakeLists.txt
+
+
+	2.	Stage the modified files:
+
+git add CMakeLists.txt
+
+
+	3.	Commit the changes with a descriptive message:
+
+git commit -m "Fix default build type message for Visual Studio and Xcode generators"
+
+
+
+7. Push the Changes to Your Fork:
+
+Now that the changes are committed locally, push them to your GitHub fork:
+
+	1.	Ensure you’re on the right branch:
+
+git branch
+
+If you’re not on fix-build-type-message, switch to it:
+
+git checkout fix-build-type-message
+
+
+	2.	Push the changes to GitHub:
+
+git push origin fix-build-type-message
+
+
+
+8. Create a Pull Request (PR):
+
+Once your changes are pushed, create a Pull Request on the main OpenCV repository:
+
+	1.	Navigate to your fork on GitHub.
+	2.	Click on “Compare & Pull Request” or go to the “Pull Requests” tab and click “New Pull Request”.
+	3.	Fill in the details:
+	•	Title: Fix default build type message for Visual Studio and Xcode generators
+	•	Description:
+
+This PR addresses the issue of misleading default build type messages in the OpenCV build system.
+
+- For Visual Studio and Xcode generators, the default build type is now set to 'Debug' instead of 'Release'.
+- For other generators, the default remains 'Release'.
+
+### Changes
+
+- Modified \`CMakeLists.txt\` to set the default build type based on the generator used.
+- Added logic to display a message indicating the selected default build type.
+
+### Testing
+
+- Tested the changes with the following generators:
+  - Unix Makefiles: Default is 'Release'
+  - Visual Studio: Default is 'Debug'
+  - Xcode: Default is 'Debug'
+
+### Related Issue
+
+Fixes [#26206](https://github.com/opencv/opencv/issues/26206)
+
+### System Information
+
+- **OpenCV version:** 4.11-pre, 5.0-pre
+- **Operating System:** macOS or Windows
+- **Compiler & compiler version:** Default supplied by Visual Studio or Xcode
+
+
+	4.	Submit the PR by clicking the “Create Pull Request” button.
+
+9. Respond to Feedback:
+
+After submitting, the OpenCV maintainers will review your changes. Be prepared for feedback:
+
+	•	Watch for comments or requests for changes.
+	•	If changes are requested, make them locally, commit, and push to your branch. The PR will automatically update.
+
+Summary of Next Steps:
+
+	1.	Modify CMakeLists.txt to handle build type for different generators.
+	2.	Commit your changes locally (git commit).
+	3.	Push your changes to your fork on GitHub (git push).
+	4.	Create a pull request on the OpenCV repository.
+	5.	Respond to feedback and make adjustments as necessary.
