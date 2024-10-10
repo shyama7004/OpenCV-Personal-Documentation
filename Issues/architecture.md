@@ -228,105 +228,47 @@ By following these steps, you should have a properly initialized Conda environme
 <details>
   <summary>Openxr issue</summary>
 
-  Let's go ahead and initialize Conda for `zsh`. Here's the detailed process to ensure everything is set up correctly.
+  The error you're encountering is related to missing symbols for the OpenEXR library (the EXR image format) during the linking process for your OpenCV build. Specifically, it seems the symbols related to EXR (`Imf_3_2::Header` and `Imf_3_2::Chromaticities`) are missing for your architecture (arm64, which is typical for M1/M2 Macs).
 
-### 1. Initialize Conda for `zsh`
+Here are some steps to troubleshoot and resolve the issue:
 
-Run the following command to initialize Conda for `zsh`:
+### 1. **Check OpenEXR Installation**
+   - Make sure that OpenEXR is installed and properly linked on your system. You can try installing or reinstalling it via Homebrew:
+     ```bash
+     brew install openexr
+     ```
 
-```sh
-~/miniforge3/bin/conda init zsh
-```
+### 2. **Ensure Compatibility with arm64**
+   - It’s possible that your OpenEXR version isn't built for arm64. Ensure that Homebrew installed the correct version for your architecture:
+     ```bash
+     brew reinstall openexr --build-from-source
+     ```
 
-### 2. Add the File Descriptor Limit to `.zshrc`
+### 3. **Disable OpenEXR Support (Temporary Workaround)**
+   - If OpenEXR is not crucial for your task, you can disable EXR support in OpenCV by configuring CMake with the following flag:
+     ```bash
+     cmake -D WITH_OPENEXR=OFF ..
+     ```
+   - Then, rebuild OpenCV:
+     ```bash
+     make clean
+     make -j$(sysctl -n hw.ncpu)
+     ```
 
-Open your `.zshrc` file in a text editor:
+### 4. **Check for Zlib Duplicate Warning**
+   - You are also getting a warning about duplicate libraries for zlib (`libzlib.a`). This could also interfere with your build. Try resolving it by ensuring you have only one instance of zlib being linked. You might also reinstall zlib:
+     ```bash
+     brew reinstall zlib
+     ```
 
-```sh
-nano ~/.zshrc
-```
+### 5. **Rebuild OpenCV with Updated Dependencies**
+   - After addressing these issues, ensure that OpenCV links with the correct dependencies:
+     ```bash
+     cmake ..
+     make -j$(sysctl -n hw.ncpu)
+     ```
 
-Add the following line to set the file descriptor limit:
-
-```sh
-ulimit -n 4096
-```
-
-Save and close the file (in nano, press `CTRL + X`, then `Y`, and `Enter`).
-
-### 3. Source the Updated `.zshrc`
-
-Apply the changes by sourcing the `.zshrc` file:
-
-```sh
-source ~/.zshrc
-```
-
-### 4. Verify the File Descriptor Limit
-
-Ensure the new file descriptor limit is applied:
-
-```sh
-ulimit -n
-```
-
-It should output `4096`.
-
-### 5. Create and Activate the Conda Environment
-
-Create a new Conda environment and activate it:
-
-```sh
-conda create --name opencv_arm64 --platform osx-arm64 python=3.9
-conda activate opencv_arm64
-```
-
-### 6. Install Required Libraries
-
-Install the required libraries:
-
-```sh
-conda install -c conda-forge openexr ilmbase
-```
-
-### 7. Verify the Installation
-
-Check if the necessary libraries are correctly installed:
-
-```sh
-file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXR.31.3.2.2.dylib
-file ~/miniforge3/envs/opencv_arm64/lib/libIlmThread.31.3.2.2.dylib
-file ~/miniforge3/envs/opencv_arm64/lib/libIex.31.3.2.2.dylib
-file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXRCore.31.3.2.2.dylib
-file ~/miniforge3/envs/opencv_arm64/lib/libImath.29.10.0.dylib
-```
-
-### 8. Build Your Project with CMake
-
-Use CMake to build your project:
-
-```sh
-cmake -D CMAKE_OSX_ARCHITECTURES=arm64 -D CMAKE_PREFIX_PATH=~/miniforge3/envs/opencv_arm64 ..
-make
-```
-
-### Troubleshooting Tips
-
-- **Ensure Conda is Activated Properly:**
-
-  Make sure that the Conda environment is active and all environment variables are set correctly:
-
-  ```sh
-  echo $CONDA_PREFIX
-  ```
-
-  This should point to your `opencv_arm64` environment.
-
-- **Restart Terminal:**
-
-  If you encounter any issues, try restarting the terminal to ensure all changes are applied.
-
-By following these steps, you should have a properly initialized Conda environment with the necessary file descriptor limit set in `zsh`. If you encounter any further issues, please provide the specific error messages for more detailed assistance.
+Try these steps and let me know if the issue persists!
 
 </details>
   
