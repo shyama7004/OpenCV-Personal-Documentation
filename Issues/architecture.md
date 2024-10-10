@@ -1,3 +1,5 @@
+## To tackle problems regarding architecture
+
 <details>
   <summary>Gstreamer approach</summary>
   
