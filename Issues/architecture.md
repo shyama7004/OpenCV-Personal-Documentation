@@ -1,4 +1,8 @@
+<details>
+  <summary>Gstreamer approach</summary>
+  
 ### 1. **Understanding the Error: "Incorrect Architecture"**
+
 I was on a **Mac M1** (which uses ARM architecture), but my error shows it’s targeting **x86_64** (Intel architecture). This mismatch can happen if:
 - Some libraries or binaries I am linking with (like GStreamer) were compiled for **x86_64** instead of ARM.
 - The toolchain (compiler, linker) is targeting the wrong architecture.
@@ -114,4 +118,214 @@ Finally, if I’re using any additional libraries, make sure they’re also comp
 
 6. **Ensure other libraries are also ARM-compatible**, using the `file` command to verify.
 
+</details>
+
+<details>
+  <summary>Miniforge approach</summary>
+  Let's go ahead and initialize Conda for `zsh`. Here's the detailed process to ensure everything is set up correctly.
+
+### 1. Initialize Conda for `zsh`
+
+Run the following command to initialize Conda for `zsh`:
+
+```sh
+~/miniforge3/bin/conda init zsh
+```
+
+### 2. Add the File Descriptor Limit to `.zshrc`
+
+Open your `.zshrc` file in a text editor:
+
+```sh
+nano ~/.zshrc
+```
+
+Add the following line to set the file descriptor limit:
+
+```sh
+ulimit -n 4096
+```
+
+Save and close the file (in nano, press `CTRL + X`, then `Y`, and `Enter`).
+
+### 3. Source the Updated `.zshrc`
+
+Apply the changes by sourcing the `.zshrc` file:
+
+```sh
+source ~/.zshrc
+```
+
+### 4. Verify the File Descriptor Limit
+
+Ensure the new file descriptor limit is applied:
+
+```sh
+ulimit -n
+```
+
+It should output `4096`.
+
+### 5. Create and Activate the Conda Environment
+
+Create a new Conda environment and activate it:
+
+```sh
+conda create --name opencv_arm64 --platform osx-arm64 python=3.9
+conda activate opencv_arm64
+```
+
+### 6. Install Required Libraries
+
+Install the required libraries:
+
+```sh
+conda install -c conda-forge openexr ilmbase
+```
+
+### 7. Verify the Installation
+
+Check if the necessary libraries are correctly installed:
+
+```sh
+file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXR.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libIlmThread.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libIex.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXRCore.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libImath.29.10.0.dylib
+```
+
+### 8. Build Your Project with CMake
+
+Use CMake to build your project:
+
+```sh
+cmake -D CMAKE_OSX_ARCHITECTURES=arm64 -D CMAKE_PREFIX_PATH=~/miniforge3/envs/opencv_arm64 ..
+make
+```
+
+### Troubleshooting Tips
+
+- **Ensure Conda is Activated Properly:**
+
+  Make sure that the Conda environment is active and all environment variables are set correctly:
+
+  ```sh
+  echo $CONDA_PREFIX
+  ```
+
+  This should point to your `opencv_arm64` environment.
+
+- **Restart Terminal:**
+
+  If you encounter any issues, try restarting the terminal to ensure all changes are applied.
+
+By following these steps, you should have a properly initialized Conda environment with the necessary file descriptor limit set in `zsh`. If you encounter any further issues, please provide the specific error messages for more detailed assistance.
+</details>
+
+<details>
+  <summary>Openxr issue</summary>
+
+  Let's go ahead and initialize Conda for `zsh`. Here's the detailed process to ensure everything is set up correctly.
+
+### 1. Initialize Conda for `zsh`
+
+Run the following command to initialize Conda for `zsh`:
+
+```sh
+~/miniforge3/bin/conda init zsh
+```
+
+### 2. Add the File Descriptor Limit to `.zshrc`
+
+Open your `.zshrc` file in a text editor:
+
+```sh
+nano ~/.zshrc
+```
+
+Add the following line to set the file descriptor limit:
+
+```sh
+ulimit -n 4096
+```
+
+Save and close the file (in nano, press `CTRL + X`, then `Y`, and `Enter`).
+
+### 3. Source the Updated `.zshrc`
+
+Apply the changes by sourcing the `.zshrc` file:
+
+```sh
+source ~/.zshrc
+```
+
+### 4. Verify the File Descriptor Limit
+
+Ensure the new file descriptor limit is applied:
+
+```sh
+ulimit -n
+```
+
+It should output `4096`.
+
+### 5. Create and Activate the Conda Environment
+
+Create a new Conda environment and activate it:
+
+```sh
+conda create --name opencv_arm64 --platform osx-arm64 python=3.9
+conda activate opencv_arm64
+```
+
+### 6. Install Required Libraries
+
+Install the required libraries:
+
+```sh
+conda install -c conda-forge openexr ilmbase
+```
+
+### 7. Verify the Installation
+
+Check if the necessary libraries are correctly installed:
+
+```sh
+file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXR.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libIlmThread.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libIex.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libOpenEXRCore.31.3.2.2.dylib
+file ~/miniforge3/envs/opencv_arm64/lib/libImath.29.10.0.dylib
+```
+
+### 8. Build Your Project with CMake
+
+Use CMake to build your project:
+
+```sh
+cmake -D CMAKE_OSX_ARCHITECTURES=arm64 -D CMAKE_PREFIX_PATH=~/miniforge3/envs/opencv_arm64 ..
+make
+```
+
+### Troubleshooting Tips
+
+- **Ensure Conda is Activated Properly:**
+
+  Make sure that the Conda environment is active and all environment variables are set correctly:
+
+  ```sh
+  echo $CONDA_PREFIX
+  ```
+
+  This should point to your `opencv_arm64` environment.
+
+- **Restart Terminal:**
+
+  If you encounter any issues, try restarting the terminal to ensure all changes are applied.
+
+By following these steps, you should have a properly initialized Conda environment with the necessary file descriptor limit set in `zsh`. If you encounter any further issues, please provide the specific error messages for more detailed assistance.
+
+</details>
+  
 Be careful as this can take away Ir sleep:)
