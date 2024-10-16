@@ -657,3 +657,131 @@ In the context of your OpenCV project, regression testing is implemented as foll
 Regression testing is a vital practice in software development that helps maintain software quality and stability after changes. In your OpenCV project, it's implemented through a dedicated test script that verifies the correct functionality of the `drawContours` method after modifications, ensuring that new changes do not disrupt existing capabilities. This approach leads to more reliable software and a smoother development process.
 
 </details>
+
+<details>
+<summary>Dockers-Cache</summary>
+
+  
+# Clearing Docker Cache
+
+Clearing Docker cache can be necessary to free up disk space or resolve issues caused by stale images, containers, or other cached data. Here are some steps you can follow to clear different types of Docker cache:
+
+## 1. Remove Unused Containers, Networks, Images, and Build Cache
+
+Docker provides a prune command to remove unused data:
+
+```bash
+docker system prune -a
+```
+
+- **-a**: Remove all unused images, not just dangling ones.
+- **--volumes**: Remove all unused volumes (add this option if you want to remove unused volumes as well).
+
+## 2. Remove Specific Docker Objects
+
+### Remove Unused Containers
+
+List all containers (including stopped ones):
+```bash
+docker ps -a
+```
+Remove all stopped containers:
+```bash
+docker container prune
+```
+Remove a specific container:
+```bash
+docker rm <container_id>
+```
+
+### Remove Unused Images
+
+List all images:
+```bash
+docker images -a
+```
+Remove all unused images:
+```bash
+docker image prune -a
+```
+Remove a specific image:
+```bash
+docker rmi <image_id>
+```
+
+### Remove Unused Networks
+
+List all networks:
+```bash
+docker network ls
+```
+Remove all unused networks:
+```bash
+docker network prune
+```
+Remove a specific network:
+```bash
+docker network rm <network_id>
+```
+
+### Remove Unused Volumes
+
+List all volumes:
+```bash
+docker volume ls
+```
+Remove all unused volumes:
+```bash
+docker volume prune
+```
+Remove a specific volume:
+```bash
+docker volume rm <volume_name>
+```
+
+## 3. Remove Docker Build Cache
+
+Remove the build cache:
+```bash
+docker builder prune
+```
+To remove all build cache:
+```bash
+docker builder prune --all
+```
+
+## 4. Remove Everything (Use with Caution)
+
+If you want to remove all Docker data, you can use the following command. This will remove all images, containers, volumes, and networks:
+```bash
+docker system prune -a --volumes
+```
+
+## Summary of Commands
+
+1. **Prune unused data**:
+```bash
+docker system prune -a --volumes
+```
+
+2. **Remove specific containers, images, networks, or volumes**:
+```bash
+docker rm <container_id>
+docker rmi <image_id>
+docker network rm <network_id>
+docker volume rm <volume_name>
+```
+
+3. **Prune specific types of unused data**:
+```bash
+docker container prune
+docker image prune -a
+docker network prune
+docker volume prune
+docker builder prune
+```
+
+By using these commands, you can manage and clear your Docker cache effectively.
+
+
+</details>
