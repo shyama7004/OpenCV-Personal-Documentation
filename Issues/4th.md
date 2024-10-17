@@ -1,4 +1,8 @@
+Target issues 
+
 ### Issue Link : [Click-Here](https://github.com/opencv/opencv/issues/25974)
+### Issue Link : [Click-Here](https://github.com/opencv/opencv/issues/26179)
+### Issue Link : [Click-Here](https://github.com/opencv/opencv/issues/26315)
 
 <details>
   <summary>Issue-solving-approach(enhanced by GPT-40:) )</summary>
