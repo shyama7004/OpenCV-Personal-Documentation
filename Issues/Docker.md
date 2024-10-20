@@ -165,6 +165,61 @@ CMD ["sh", "-c", "cd /app/opencv/build && ./runTests /app/opencv/images/tsukuba.
 
 - Click here : [Link](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html) : )
 
+<details>
+  <summary>`libgtest.so` problem</summary>
+
+#### 1. Verify if libgtest.so exists in the container
+
+First, check if libgtest.so was successfully built and copied to the correct directory:
+
+```bash
+docker run -it --rm opencv-test bash
+```
+
+#### Once inside the container, run:
+
+```bash
+ls /usr/lib | grep gtest
+```
+
+This should show libgtest.so and other related files. If libgtest.so is not there, then the GoogleTest build step may have failed.
+
+#### 2. While still inside the container, navigate to your build directory and try running the test executable:
+
+```bash
+cd /app/opencv/build
+```
+#### 3. Create the symbolic link inside the container
+
+Once you're inside the container's bash shell, use ln with elevated privileges to create the symbolic link:
+
+```bash
+ln -s /usr/lib/libgtest.so /usr/lib/libgtest.so.1.15.2
+```
+#### 4. Verify the link
+
+After creating the symlink, confirm that it exists and points to the correct file:
+
+```bash
+ls -l /usr/lib | grep gtest
+```
+
+#### You should see an output like:
+
+```javascript
+libgtest.so.1.15.2 -> /usr/lib/libgtest.so
+```
+
+#### Run this
+
+```bash
+./runTests
+```
+
+  </details>
+
+---
+
 </details>
 
 <details>
