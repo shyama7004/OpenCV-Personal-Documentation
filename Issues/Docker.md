@@ -76,6 +76,98 @@ CMD ["python3", "/app/index.py"]
 </details>
 
 <details>
+<summary>Dockerfile with google test</summary>
+
+```bash
+# Base image
+FROM ubuntu:22.04
+
+# Set non-interactive mode for apt-get
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package lists and install required packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    python3 \
+    python3-pip \
+    libgtk-3-dev \
+    pkg-config \
+    libavcodec-dev \
+    libavformat-dev \
+    libswscale-dev \
+    libtbbmalloc2 \
+    libtbb-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff-dev \
+    libv4l-dev \
+    libxvidcore-dev \
+    libx264-dev \
+    libatlas-base-dev \
+    gfortran \
+    libgtest-dev \
+    libopencv-dev \
+    && apt-get clean
+
+# Confirm Python version
+RUN python3 --version
+
+# Manually build GoogleTest with shared libraries
+RUN if [ ! -d "/usr/src/googletest" ]; then \
+        mkdir -p /usr/src/googletest; \
+    fi && \
+    cd /usr/src/googletest && \
+    rm -rf * && \
+    git clone https://github.com/google/googletest.git . && \
+    cmake -DBUILD_SHARED_LIBS=ON . && \
+    make && \
+    cp lib/*.so /usr/lib && \
+    cp -r googletest/include/gtest /usr/include
+
+# Set the working directory to /app/opencv
+WORKDIR /app/opencv
+
+# Copy the local OpenCV repository into the Docker container
+COPY . /app/opencv/
+
+# Clean any previous builds and create a new build directory
+RUN rm -rf build && mkdir build && cd build \
+    && cmake -D CMAKE_BUILD_TYPE=Release \
+             -D CMAKE_INSTALL_PREFIX=/usr/local \
+             -D BUILD_opencv_python3=ON \
+             -D BUILD_opencv_gapi=OFF \
+             -D BUILD_opencv_java=OFF \
+             -D BUILD_opencv_objc=OFF \
+             -D PYTHON_EXECUTABLE=$(which python3) \
+             -D BUILD_TESTS=ON \
+             -D CMAKE_VERBOSE_MAKEFILE=ON .. \
+    && make -j$(nproc) \
+    && make install
+
+# Copy the test file and the image for the test
+COPY test_orb.cpp /app/opencv/build/
+COPY images/tsukuba.png /app/opencv/images/
+
+# Compile the test executable with OpenCV and GoogleTest, explicitly linking the necessary libraries
+RUN cd /app/opencv/build && \
+    g++ -o runTests /app/opencv/build/test_orb.cpp -lgtest -lgtest_main -lpthread -L/usr/lib -I/usr/include/gtest `pkg-config --cflags --libs opencv4`
+
+# Set LD_LIBRARY_PATH to include the path for GoogleTest shared libraries
+ENV LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
+
+# Entry point to run the tests
+CMD ["sh", "-c", "cd /app/opencv/build && ./runTests /app/opencv/images/tsukuba.png"]
+
+
+```
+
+- Click here : [Link](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html) : )
+
+</details>
+
+<details>
   <summary>Linux x64 Debug</summary>
 
   ```
