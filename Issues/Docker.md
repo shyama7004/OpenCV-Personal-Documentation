@@ -124,7 +124,9 @@ RUN if [ ! -d "/usr/src/googletest" ]; then \
     cmake -DBUILD_SHARED_LIBS=ON . && \
     make && \
     cp lib/*.so /usr/lib && \
-    cp -r googletest/include/gtest /usr/include
+    cp -r googletest/include/gtest /usr/include && \
+    ln -s /usr/lib/libgtest.so /usr/lib/libgtest.so.1.15.2 && \
+    ln -s /usr/lib/libgtest_main.so /usr/lib/libgtest_main.so.1.15.2
 
 # Set the working directory to /app/opencv
 WORKDIR /app/opencv
@@ -147,18 +149,18 @@ RUN rm -rf build && mkdir build && cd build \
     && make install
 
 # Copy the test file and the image for the test
-COPY test_orb.cpp /app/opencv/build/
+COPY test_orb.cpp /app/opencv/
 COPY images/tsukuba.png /app/opencv/images/
 
 # Compile the test executable with OpenCV and GoogleTest, explicitly linking the necessary libraries
 RUN cd /app/opencv/build && \
-    g++ -o runTests /app/opencv/build/test_orb.cpp -lgtest -lgtest_main -lpthread -L/usr/lib -I/usr/include/gtest `pkg-config --cflags --libs opencv4`
+    g++ -o runTests /app/opencv/test_orb.cpp -lgtest -lgtest_main -lpthread -L/usr/lib -I/usr/include/gtest `pkg-config --cflags --libs opencv4`
 
 # Set LD_LIBRARY_PATH to include the path for GoogleTest shared libraries
-ENV LD_LIBRARY_PATH=/usr/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/lib:/usr/local/lib:$LD_LIBRARY_PATH
 
 # Entry point to run the tests
-CMD ["sh", "-c", "cd /app/opencv/build && ./runTests /app/opencv/images/tsukuba.png"]
+CMD ["sh", "-c", "cd /app/opencv/build && ./runTests"]
 
 
 ```
