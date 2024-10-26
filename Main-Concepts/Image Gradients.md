@@ -108,6 +108,4 @@ Generated on Sat Aug 3, 2024 23:25:58 for OpenCV by doxygen 1.9.8
 [OpenCV Documentation](https://docs.opencv.org/5.x/d5/d0f/tutorial_py_gradients.html)
 
 [Image Processing in OpenCV](https://docs.opencv.org/5.x/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d)
-```
 
-You can save this text into a `.md` file using any text editor.
