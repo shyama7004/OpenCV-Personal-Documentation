@@ -923,11 +923,11 @@ docker volume rm <volume_name>
 
 3. **Prune specific types of unused data**:
 ```bash
-docker container prune
-docker image prune -a
-docker network prune
-docker volume prune
-docker builder prune
+sudo docker container prune
+sudo docker image prune -a
+sudo docker network prune
+sudo docker volume prune
+sudo docker builder prune
 ```
 
 By using these commands, you can manage and clear your Docker cache effectively.
