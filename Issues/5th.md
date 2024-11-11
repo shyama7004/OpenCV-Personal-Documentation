@@ -1,209 +1,512 @@
-#### Issue Link : [Click-Here](https://github.com/opencv/opencv/issues/26393)
+Issue : [25990](https://github.com/opencv/opencv/issues/25990)
 
 <details>
-<summary>Issue complete details</summary>
+<summary>Dockerfile for reproduce_issue.cpp</summary>
 
-### Overview of ML Concepts
+```bash
+FROM ubuntu:22.04
 
-Before we dive into the details of the `parseExpandDims` function, let's briefly explain some terms:
-- **Tensor**: In ML, a tensor is a multi-dimensional array of numbers. Depending on the number of dimensions, it can be a scalar (0D), vector (1D), matrix (2D), or a higher-dimensional structure (e.g., 3D or 4D).
-- **Data Layout**: This refers to how data is organized in a tensor. Two common formats are:
-  - **NHWC**: The data is organized as (batch, height, width, channels). Commonly used in TensorFlow.
-  - **NCHW**: The data is organized as (batch, channels, height, width). Often used in frameworks like PyTorch and in OpenCV's DNN module.
-- **ExpandDims**: An operation that adds a new dimension to a tensor at a specified axis, effectively reshaping the data.
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git wget libgtk2.0-dev libavcodec-dev \
+    libavformat-dev libswscale-dev libv4l-dev libatlas-base-dev \
+    gfortran python3-dev python3-numpy libsuitesparse-dev \
+    libeigen3-dev libhdf5-dev libprotobuf-dev protobuf-compiler \
+    libgl1-mesa-glx libgl1-mesa-dev libglib2.0-dev libjpeg-dev \
+    libpng-dev libtiff-dev && \
+    rm -rf /var/lib/apt/lists/*
 
----
+# Install Google Test
+RUN apt-get update && apt-get install -y libgtest-dev && \
+    cd /usr/src/gtest && \
+    cmake . && \
+    make && \
+    cp lib/libgtest*.a /usr/lib/
 
-### Step-by-Step Explanation of the Code
+# Set up OpenCV build
+WORKDIR /opencv
+COPY . .
 
-#### 1. **Function Signature and Initial Setup**
-```cpp
-void TFImporter::parseExpandDims(tensorflow::GraphDef& net, const tensorflow::NodeDef& layer, LayerParams& layerParams)
+RUN rm -rf build && mkdir build && cd build && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D BUILD_TESTS=ON \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_EXAMPLES=OFF \
+          -D PYTHON_EXECUTABLE=$(which python3) .. && \
+    make -j4 && make install && ldconfig
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the issue reproduction code
+COPY reproduce_issue.cpp .
+
+RUN g++ -o reproduce reproduce_issue.cpp \
+    `pkg-config --cflags --libs opencv4` \
+    -I/usr/local/include/opencv4 \
+    -L/usr/local/lib \
+    -lopencv_core -lopencv_imgproc
+
+CMD ["./reproduce"]
+
 ```
-- **Purpose**: This function is part of the `TFImporter` class. It handles the conversion of a TensorFlow `ExpandDims` operation into a format that OpenCV's DNN module can understand and use.
-- **Inputs**:
-  - `tensorflow::GraphDef& net`: The entire TensorFlow graph definition, which contains all layers and connections.
-  - `const tensorflow::NodeDef& layer`: The current layer being processed.
-  - `LayerParams& layerParams`: Stores the parameters for the current layer.
+</details>
 
----
+<details>
+  <summary>For all tests </summary>
+  
+  ```bash
+  FROM ubuntu:22.04
 
-### Initial Checks and Preparations
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git wget libgtk2.0-dev libgtk-3-dev libavcodec-dev \
+    libavformat-dev libswscale-dev libv4l-dev libatlas-base-dev \
+    gfortran python3-dev python3-numpy libsuitesparse-dev \
+    libeigen3-dev libhdf5-dev libprotobuf-dev protobuf-compiler \
+    libgl1-mesa-glx libgl1-mesa-dev libglib2.0-dev libjpeg-dev \
+    libpng-dev libtiff-dev xvfb && \
+    rm -rf /var/lib/apt/lists/*
 
-#### 2. **Retrieving Basic Information and Ensuring Inputs Exist**
-```cpp
-const std::string& name = layer.name(); // Gets the name of the layer.
-const int num_inputs = layer.input_size(); // Gets the number of inputs to this layer.
+# Install Google Test
+RUN apt-get update && apt-get install -y libgtest-dev && \
+    cd /usr/src/gtest && \
+    cmake . && \
+    make && \
+    cp lib/libgtest*.a /usr/lib/
 
-CV_Assert(!netInputShapes.empty()); // Asserts that input shapes are defined.
-CV_CheckGT(num_inputs, 0, ""); // Checks that the layer has more than 0 inputs.
+# Set up OpenCV build
+WORKDIR /opencv
+COPY . .
+
+RUN rm -rf build && mkdir build && cd build && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D BUILD_TESTS=ON \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_EXAMPLES=OFF \
+          -D PYTHON_EXECUTABLE=$(which python3) .. && \
+    make -j4 && make install && ldconfig
+
+# Create a directory for logs in the container
+RUN mkdir -p /test_logs
+
+# Run tests and save logs (continue even if tests fail)
+WORKDIR /opencv/build
+
+# Run gapi tests
+RUN ./bin/opencv_test_gapi --gtest_filter=* 2>&1 | tee /test_logs/test_gapi.log || true
+
+# Run photo tests
+RUN ./bin/opencv_test_photo --gtest_filter=* 2>&1 | tee /test_logs/test_photo.log || true
+
+# Run Python3 tests
+RUN ./bin/opencv_test_python3 --gtest_filter=* 2>&1 | tee /test_logs/test_python3.log || true
+
+# Run imgproc tests
+RUN ./bin/opencv_test_imgproc --gtest_filter=* 2>&1 | tee /test_logs/test_imgproc.log || true
+
+# Run videoio tests
+RUN ./bin/opencv_test_videoio --gtest_filter=* 2>&1 | tee /test_logs/test_videoio.log || true
+
+# Run gapi performance tests
+RUN ./bin/opencv_perf_gapi --gtest_filter=* 2>&1 | tee /test_logs/perf_gapi.log || true
+
+# Run imgproc performance tests
+RUN ./bin/opencv_perf_imgproc --gtest_filter=* 2>&1 | tee /test_logs/perf_imgproc.log || true
+
+# Print the logs to the console
+RUN cat /test_logs/test_gapi.log
+RUN cat /test_logs/test_photo.log
+RUN cat /test_logs/test_python3.log
+RUN cat /test_logs/test_imgproc.log
+RUN cat /test_logs/test_videoio.log
+RUN cat /test_logs/perf_gapi.log
+RUN cat /test_logs/perf_imgproc.log
 ```
-- **Explanation**:
-  - `name`: Stores the name of the current `ExpandDims` layer.
-  - `num_inputs`: The number of inputs to the layer. The `ExpandDims` layer should have at least one input.
-  - `CV_Assert` and `CV_CheckGT`: These are safety checks to ensure that the input shapes are defined and the layer has inputs. If these conditions aren't met, the program will raise an error.
+</details>
 
----
+<details>
+<summary>For testing only pyramid tests</summary>
 
-### Parsing the Input
+```bash
+FROM ubuntu:22.04
 
-#### 3. **Parsing the First Input and Getting Data Layout**
-```cpp
-Pin inpId = parsePin(layer.input(0)); // Parses the identifier of the first input.
-DataLayout inpLayout = getDataLayout(layer.input(0), data_layouts); // Retrieves the data layout (e.g., NHWC or NCHW).
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential cmake git wget libgtk2.0-dev libavcodec-dev \
+    libavformat-dev libswscale-dev libv4l-dev libatlas-base-dev \
+    gfortran python3-dev python3-numpy libsuitesparse-dev \
+    libeigen3-dev libhdf5-dev libprotobuf-dev protobuf-compiler \
+    libgl1-mesa-glx libgl1-mesa-dev libglib2.0-dev libjpeg-dev \
+    libpng-dev libtiff-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Google Test
+RUN apt-get update && apt-get install -y libgtest-dev && \
+    cd /usr/src/gtest && \
+    cmake . && \
+    make && \
+    cp lib/libgtest*.a /usr/lib/
+
+# Set up OpenCV build
+WORKDIR /opencv
+COPY . .
+
+RUN rm -rf build && mkdir build && cd build && \
+    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+          -D CMAKE_INSTALL_PREFIX=/usr/local \
+          -D BUILD_TESTS=ON \
+          -D OPENCV_ENABLE_NONFREE=ON \
+          -D BUILD_EXAMPLES=OFF \
+          -D PYTHON_EXECUTABLE=$(which python3) .. && \
+    make -j4 && make install && ldconfig
+
+# Create a directory for logs in the container
+RUN mkdir -p /test_logs
+
+# Check for the existence of the test binary
+RUN ls -la /opencv/build/bin/
+
+# Run only pyramid-related tests in the imgproc module and save the logs
+WORKDIR /opencv/build
+RUN ./bin/opencv_test_imgproc --gtest_filter=*PyrUp*:*PyrDown* 2>&1 | tee /test_logs/pyramid_tests.log
+
+# Print the log file to the console
+RUN cat /test_logs/pyramid_tests.log
+
 ```
-- **Explanation**:
-  - `parsePin`: This function extracts the identifier (`Pin`) of the first input tensor to the `ExpandDims` layer.
-  - `getDataLayout`: Determines the data layout of the input tensor. The data layout is important because operations might need to be adjusted depending on whether the data is organized as NHWC or NCHW.
+</details>
 
-#### 4. **Setting Up Shapes for Input and Output**
+<details>
+<summary>Fix - 1</summary>
+
 ```cpp
-std::vector<MatShape> inShape_, outShape_;
-int inpIdindex = layer_id.find(inpId.name)->second;
-```
-- **Explanation**:
-  - `inShape_` and `outShape_`: Vectors to hold the shapes of the input and output tensors.
-  - `inpIdindex`: Uses the identifier `inpId` to find the index of the input layer in the `layer_id` map. This index is used to look up shapes later.
+void cv::pyrDown(InputArray _src, OutputArray _dst, const Size& _dsz, int borderType)
+{
+    CV_INSTRUMENT_REGION();
 
----
+    CV_Assert(borderType != BORDER_CONSTANT);
 
-### Shape Inference with Error Handling
+    CV_OCL_RUN(_src.dims() <= 2 && _dst.isUMat(),
+               ocl_pyrDown(_src, _dst, _dsz, borderType))
 
-#### 5. **Attempting to Infer Shapes and Handling Errors**
-```cpp
-try {
-    dstNet.getLayerShapes(netInputShapes, inpIdindex, inShape_, outShape_);
-} catch (const cv::Exception& e) {
-    CV_LOG_WARNING(NULL, "Shape inference failed for layer '" << name << "': " << e.what());
-    // Fallback to input shape if shape inference fails
-    outShape_ = {inShape_};
-}
-```
-- **Explanation**:
-  - **Shape Inference**: The code tries to infer the shapes of the input and output tensors using `dstNet.getLayerShapes`. Shape inference is important for understanding how data flows through the network and ensuring compatibility between layers.
-  - **Error Handling**: If shape inference fails, the code catches the exception, logs a warning message, and falls back to using the input shape as the output shape. This ensures the function can proceed even if shape inference isn't perfect.
+    CV_OVX_RUN(_src.dims() <= 2,
+               openvx_pyrDown(_src, _dst, _dsz, borderType))
 
----
+    Mat src = _src.getMat();
+    Size dsz = _dsz.empty() ? Size(src.cols/2, src.rows/2) : _dsz;
+    _dst.create(dsz, src.type());
+    Mat dst = _dst.getMat();
+    int depth = src.depth();
 
-### Working with Input and Output Shapes
-
-#### 6. **Initializing Input and Output Shapes**
-```cpp
-MatShape inpShape = outShape_[0]; // Uses the inferred shape as the input shape.
-std::vector<int> outShape = inpShape; // Initializes the output shape to be the same as the input shape.
-int outShapeSize = outShape.size();
-```
-- **Explanation**:
-  - `inpShape`: The shape of the input tensor. This is set to the first element of `outShape_` (inferred shapes).
-  - `outShape`: Initializes the output shape to match the input shape. This will later be modified to account for the new dimension added by `ExpandDims`.
-  - `outShapeSize`: The size (number of dimensions) of the output shape.
-
----
-
-### Determining the Axis for Expansion
-
-#### 7. **Handling the Axis Parameter**
-```cpp
-int axis;
-if (layer.input_size() > 1 && value_id.find(layer.input(1)) != value_id.end()) {
-    // Axis provided as a constant input
-    axis = getConstBlob(layer, value_id, 1).int_val().Get(0);
-} else if (layerParams.has("axis")) {
-    // Axis provided as an attribute
-    axis = layerParams.get<int>("axis");
-} else {
-    CV_Error(Error::StsBadArg, "ExpandDims layer " + name + " requires axis parameter");
-}
-```
-- **Explanation**:
-  - The `axis` specifies where to add the new dimension. For example, in a 3D tensor with shape (2, 3, 4), adding a new dimension at axis 1 would result in (2, 1, 3, 4).
-  - The code checks if the axis is provided as a constant input (another tensor) or as an attribute in `layerParams`. If neither is available, it raises an error.
-
----
-
-### Converting Negative Axis Values
-
-#### 8. **Handling Negative Axis Values**
-```cpp
-if (axis < 0) {
-    axis = inpShape.size() + axis + 1;
-}
-CV_Assert(0 <= axis && axis <= inpShape.size());
-```
-- **Explanation**:
-  - **Negative Axis Handling**: In TensorFlow and other ML frameworks, negative axis values count from the end. For instance, an axis of -1 would refer to the last dimension. The code converts negative axes to positive values using the formula `inpShape.size() + axis + 1`.
-  - **Safety Check**: Ensures the axis is within a valid range.
-
----
-
-### Layout Conversion Logic
-
-#### 9. **Determining If Layout Conversion Is Needed**
-```cpp
-bool needsLayoutConversion = false;
-
-// After ExpandDims, 3D data will become 4D data, and OpenCV uses NCHW for 4D data.
-if (outShapeSize == 3) {
-    if (axis != outShapeSize) {
-        needsLayoutConversion = true;
-        int order[] = {0, 2, 1};  // Convert NHC (OpenCV's 3D layout) to NCH.
-        addPermuteLayer(order, name + "/nch", inpId, 3);
-        std::swap(outShape[1], outShape[2]);
+    if (src.isSubmatrix() && !(borderType & BORDER_ISOLATED))
+    {
+        Point ofs;
+        Size wsz(src.cols, src.rows);
+        src.locateROI(wsz, ofs);
+        
+        Size parentSize = wsz;
+        Point offset = ofs;
+        
+        Size parentDsz((parentSize.width + 1)/2, (parentSize.height + 1)/2);
+        Point offsetDsz(offset.x/2, offset.y/2);
+        
+        CALL_HAL(pyrDown, cv_hal_pyrdown_offset, src.data, src.step, src.cols, src.rows,
+                 dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(),
+                 offsetDsz.x, offsetDsz.y, 
+                 parentDsz.width - dst.cols - offsetDsz.x,
+                 parentDsz.height - dst.rows - offsetDsz.y,
+                 borderType & (~BORDER_ISOLATED));
     }
-    axis = (axis != 0) ? (axis % outShapeSize + 1) : 2;
+    else
+    {
+        CALL_HAL(pyrDown, cv_hal_pyrdown, src.data, src.step, src.cols, src.rows, 
+                dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(), borderType);
+    }
+
+    PyrFunc func = 0;
+    if (depth == CV_8U)
+        func = pyrDown_< FixPtCast<uchar, 8> >;
+    else if (depth == CV_16S)
+        func = pyrDown_< FixPtCast<short, 8> >;
+    else if (depth == CV_16U)
+        func = pyrDown_< FixPtCast<ushort, 8> >;
+    else if (depth == CV_32F)
+        func = pyrDown_< FltCast<float, 8> >;
+    else if (depth == CV_64F)
+        func = pyrDown_< FltCast<double, 8> >;
+    else
+        CV_Error(cv::Error::StsUnsupportedFormat, "");
+
+    func(src, dst, borderType);
 }
 ```
-- **Explanation**:
-  - **3D to 4D Conversion**: If the input is 3D, adding a new dimension makes it 4D. OpenCV uses the NCHW layout for 4D tensors. The code checks if a layout conversion is needed and adds a `PermuteLayer` if so. The `PermuteLayer` rearranges the data order to match NCHW.
-  - The `std::swap` function swaps dimensions to adjust the shape correctly.
+</details>
 
-#### 10. **Handling 4D Data (NHWC to NCHW Conversion)**
-```cpp
-if (inpShape.size() == 4) {
-    if (inpLayout == DNN_LAYOUT_NHWC) {
-        static const int nhwc_to_nchw[] = {0, 3, 1, 2};
-        if (axis > 0 && axis < 4) {
-            axis = nhwc_to_nchw[axis];
+
+### The key changes I've made to fix the inconsistency issue are:
+
+1. Changed the default destination size calculation:
+
+- Original -> Size((src.cols + 1)/2, (src.rows + 1)/2)
+- New -> Size(src.cols/2, src.rows/2)
+
+This removes the `1`that was causing size inconsistencies between ROI and full image processing, ROI handling is fixed according to this :).
+
+<details>
+  <summary>Test-1 fix </summary>
+
+  ```cpp
+TEST(Imgproc_PyrDown, pyrDown_regression_custom)
+{
+
+    cv::Mat src(16, 16, CV_16UC3, cv::Scalar(0, 0, 0));
+    int swidth = src.cols;
+    int sheight = src.rows;
+    int cn = src.channels();
+    int count = 0;
+
+    for (int y = 0; y < sheight; y++) {
+        ushort *src_c = src.ptr<ushort>(y);
+        for (int x = 0; x < swidth * cn; x++) {
+            src_c[x] = (count++) % 10;
         }
     }
 
-    if (axis == inpShape.size() && inpLayout == DNN_LAYOUT_NHWC) {
-        needsLayoutConversion = true;
-        int order[] =
+    cv::Mat dst_full(swidth / 2 + 1, sheight / 2 + 1, CV_16UC3, cv::Scalar(0, 0, 0));
+    pyrDown(src, dst_full, cv::Size(dst_full.cols, dst_full.rows));
 
- {0, 3, 1, 2};  // NHWC to NCHW conversion
-        addPermuteLayer(order, name + "/nchw", inpId, inpShape.size());
-        std::swap(outShape[1], outShape[3]);
-        std::swap(outShape[2], outShape[3]);
+    cv::Mat src_roi = src(cv::Rect(0, 0, 14, 14));
+    cv::Mat dst_roi(src_roi.cols / 2 + 1, src_roi.rows / 2 + 1, CV_16UC3, cv::Scalar(0, 0, 0));
+    pyrDown(src_roi, dst_roi, cv::Size(dst_roi.cols, dst_roi.rows));
+
+    cv::Mat diff = dst_full(cv::Rect(0, 0, dst_roi.cols, dst_roi.rows)) - dst_roi;
+    double max_diff;
+    cv::minMaxLoc(diff, nullptr, &max_diff);
+
+    ASSERT_EQ(max_diff, 0) << "pyrDown result differs between full image and ROI processing";
+}
+```
+  </details>
+
+  
+<details>
+  <summary>Test-2 (chat gpt enhanced) </summary>
+  
+  ```cpp
+  TEST(Imgproc_PyrDown, roi_consistency_with_borders)
+{
+    // Create source matrix 16x16 with 3 channels (16-bit unsigned)
+    Mat src(16, 16, CV_16UC3, Scalar(0, 0, 0));
+
+    // Fill source matrix with test pattern
+    {
+        int swidth = src.cols;
+        int sheight = src.rows;
+        int cn = src.channels();
+        int count = 0;
+        for (int y = 0; y < sheight; y++)
+        {
+            ushort* src_c = src.ptr<ushort>(y);
+            for (int x = 0; x < swidth * cn; x++)
+            {
+                src_c[x] = (count++) % 10;
+            }
+        }
+    }
+
+    // Test cases with different border types
+    int borderTypes[] = {BORDER_DEFAULT, BORDER_REPLICATE};
+
+    for (int i = 0; i < 2; i++)
+    {
+        int borderType = borderTypes[i];
+
+        // Test 1: Full image pyrDown
+        Mat dst((src.cols + 1)/2, (src.rows + 1)/2, CV_16UC3);
+        pyrDown(src, dst, dst.size(), borderType);
+
+        // Test 2: ROI pyrDown
+        Mat srcp = src(Rect(2, 2, 12, 12));  // Internal ROI
+        Mat dstp((srcp.cols + 1)/2, (srcp.rows + 1)/2, CV_16UC3);
+        pyrDown(srcp, dstp, dstp.size(), borderType);
+
+        // Get corresponding region from full image result
+        Mat dstroi = dst(Rect(1, 1, dstp.cols, dstp.rows));
+
+        // Compare results
+        Mat diff = dstroi - dstp;
+        EXPECT_EQ(countNonZero(diff), 0)
+            << "pyrDown is not consistent between ROI and full image processing with border type "
+            << borderType << std::endl
+            << "Difference matrix:" << std::endl << diff;
     }
 }
 ```
-- **Explanation**:
-  - For 4D data, the code checks if the layout is NHWC. If so, it adjusts the `axis` value to be compatible with NCHW.
-  - If the `axis` is the last dimension and the layout is NHWC, it performs a conversion to NCHW using a `PermuteLayer`.
+</details>
+<details>
+  <summary> Improved the previously used test</summary>
 
----
+  ```cpp
+TEST(Imgproc_PyrDown, pyrDown_regression_custom)
+{
+    Mat src(16, 16, CV_16UC3, Scalar(0, 0, 0));
+    int swidth = src.cols;
+    int sheight = src.rows;
+    int cn = src.channels();
+    int count = 0;
 
-### Final Adjustments and Layer Registration
+    for (int y = 0; y < sheight; y++)
+    {
+        ushort* src_c = src.ptr<ushort>(y);
+        for (int x = 0; x < swidth * cn; x++)
+        {
+            src_c[x] = (count++) % 10;
+        }
+    }
 
-#### 11. **Adjusting the Output Shape and Registering the Layer**
-```cpp
-outShape.insert(outShape.begin() + axis, 1);
-layerParams.set("shape", DictValue::arrayInt<int*>(&outShape[0], outShape.size()));
+    Size dstSize((src.cols + 1) / 2, (src.rows + 1) / 2);
+    Mat dst(dstSize, CV_16UC3, Scalar(0, 0, 0));
+    pyrDown(src, dst, dstSize);
 
-if (needsLayoutConversion) {
-    layerParams.set("layout", DictValue::get("NCHW"));
+    Mat srcp = src(Rect(0, 0, 14, 14));
+    Size dstpSize((srcp.cols + 1) / 2, (srcp.rows + 1) / 2);
+    Mat dstp(dstpSize, CV_16UC3, Scalar(0, 0, 0));
+    pyrDown(srcp, dstp, dstpSize);
+
+    int borderOffset = 1;
+    Mat dst_center = dst(Rect(borderOffset, borderOffset, dst.cols - 2 * borderOffset, dst.rows - 2 * borderOffset));
+    Mat dstp_center = dstp(Rect(borderOffset, borderOffset, dstp.cols - 2 * borderOffset, dstp.rows - 2 * borderOffset));
+
+    Mat diff = dst_center - dstp_center;
+    EXPECT_EQ(cv::countNonZero(diff.reshape(1)), 0) << "The central difference between dst and dstp is not zero.";
 }
 
-addLayer(layerParams, inpId, outShape.size(), name, axis);
 ```
-- **Explanation**:
-  - **Adding the New Dimension**: The code inserts a new dimension of size 1 at the specified `axis`.
-  - **Setting Layer Parameters**: Updates `layerParams` to include the new shape and layout information.
-  - **Layer Registration**: Finally, the code registers the `ExpandDims` layer with the updated parameters.
+</details>
+<details>
+<summary>Chat-Gpt fix </summary>
 
----
+```cpp
+void cv::pyrDown(InputArray _src, OutputArray _dst, const Size& _dsz, int borderType)
+{
+    CV_INSTRUMENT_REGION();
 
-### Summary
+    CV_Assert(borderType != BORDER_CONSTANT);
 
-The `parseExpandDims` function carefully handles the conversion of TensorFlow's `ExpandDims` operation into OpenCV's DNN format. It ensures compatibility between different data layouts (NHWC vs. NCHW) and provides error handling for shape inference. The code is complex because it needs to consider various cases, such as different input shapes and layouts, to work correctly across a range of neural network architectures.</details>
+    CV_OCL_RUN(_src.dims() <= 2 && _dst.isUMat(),
+               ocl_pyrDown(_src, _dst, _dsz, borderType))
+
+    CV_OVX_RUN(_src.dims() <= 2,
+               openvx_pyrDown(_src, _dst, _dsz, borderType))
+
+    Mat src = _src.getMat();
+    Size dsz = _dsz.empty() ? Size(src.cols / 2, src.rows / 2) : _dsz;
+    _dst.create(dsz, src.type());
+    Mat dst = _dst.getMat();
+    int depth = src.depth();
+
+    // Check if source is a submatrix and apply BORDER_ISOLATED if needed
+    if (src.isSubmatrix() && !(borderType & BORDER_ISOLATED))
+    {
+        Point ofs;
+        Size wsz(src.cols, src.rows);
+        src.locateROI(wsz, ofs);
+
+        Size parentSize = wsz;
+        Point offset = ofs;
+
+        Size parentDsz((parentSize.width + 1) / 2, (parentSize.height + 1) / 2);
+        Point offsetDsz(offset.x / 2, offset.y / 2);
+
+        // Call HAL function with BORDER_ISOLATED added to borderType
+        CALL_HAL(pyrDown, cv_hal_pyrdown_offset, src.data, src.step, src.cols, src.rows,
+                 dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(),
+                 offsetDsz.x, offsetDsz.y,
+                 parentDsz.width - dst.cols - offsetDsz.x,
+                 parentDsz.height - dst.rows - offsetDsz.y,
+                 borderType | BORDER_ISOLATED);
+    }
+    else
+    {
+        // Apply BORDER_ISOLATED to the normal pyrDown call as well
+        CALL_HAL(pyrDown, cv_hal_pyrdown, src.data, src.step, src.cols, src.rows, 
+                dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(), borderType | BORDER_ISOLATED);
+    }
+
+    PyrFunc func = 0;
+    if (depth == CV_8U)
+        func = pyrDown_< FixPtCast<uchar, 8> >;
+    else if (depth == CV_16S)
+        func = pyrDown_< FixPtCast<short, 8> >;
+    else if (depth == CV_16U)
+        func = pyrDown_< FixPtCast<ushort, 8> >;
+    else if (depth == CV_32F)
+        func = pyrDown_< FltCast<float, 8> >;
+    else if (depth == CV_64F)
+        func = pyrDown_< FltCast<double, 8> >;
+    else
+        CV_Error(cv::Error::StsUnsupportedFormat, "");
+
+    // Apply the function with BORDER_ISOLATED for consistent behavior across ROIs
+    func(src, dst, borderType | BORDER_ISOLATED);
+}
+```
+</details>
+<details>
+<summary>Fix-3</summary>
+
+```cpp
+void cv::pyrDown( InputArray src, OutputArray dst, const Size& _dsz, int borderType )
+{
+    CV_INSTRUMENT_REGION();
+
+    CV_Assert(borderType != BORDER_CONSTANT);
+
+    CV_OCL_RUN(_src.dims() <= 2 && _dst.isUMat(),
+               ocl_pyrDown(_src, dst, dsz, borderType))
+
+    CV_OVX_RUN(_src.dims() <= 2,
+               openvx_pyrDown(_src, dst, dsz, borderType))
+
+    Mat src = _src.getMat();
+    Size dsz = dsz.empty() ? Size((src.cols + 1) / 2, (src.rows + 1) / 2) : dsz;
+    _dst.create(dsz, src.type());
+    Mat dst = _dst.getMat();
+    int depth = src.depth();
+
+    if (src.isSubmatrix() && !(borderType & BORDER_ISOLATED))
+    {
+        Point ofs;
+        Size wsz(src.cols, src.rows);
+        src.locateROI(wsz, ofs);
+        CALL_HAL(pyrDown, cv_hal_pyrdown_offset, src.data, src.step, src.cols, src.rows,
+                 dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(),
+                 ofs.x, ofs.y, wsz.width - src.cols - ofs.x, wsz.height - src.rows - ofs.y, borderType & (~BORDER_ISOLATED));
+    }
+    else
+    {
+        CALL_HAL(pyrDown, cv_hal_pyrdown, src.data, src.step, src.cols, src.rows,
+                 dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(), borderType);
+    }
+
+    PyrFunc func = 0;
+    if (depth == CV_8U)
+        func = pyrDown_<FixPtCast<uchar, 8>>;
+    else if (depth == CV_16S)
+        func = pyrDown_<FixPtCast<short, 8>>;
+    else if (depth == CV_16U)
+        func = pyrDown_<FixPtCast<ushort, 8>>;
+    else if (depth == CV_32F)
+        func = pyrDown_<FltCast<float, 8>>;
+    else if (depth == CV_64F)
+        func = pyrDown_<FltCast<double, 8>>;
+    else
+        CV_Error(cv::Error::StsUnsupportedFormat, "");
+
+    func(src, dst, borderType);
+}
+```
+</details>
