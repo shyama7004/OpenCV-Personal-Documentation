@@ -510,3 +510,73 @@ void cv::pyrDown( InputArray src, OutputArray dst, const Size& _dsz, int borderT
 }
 ```
 </details>
+
+<details>
+<summary>Chat-Gpt Enhanced version of my code </summary>
+
+```cpp
+void cv::pyrDown(InputArray _src, OutputArray _dst, const Size& _dsz, int borderType)
+{
+    CV_INSTRUMENT_REGION();
+
+    CV_Assert(borderType != BORDER_CONSTANT);
+
+    CV_OCL_RUN(_src.dims() <= 2 && _dst.isUMat(),
+               ocl_pyrDown(_src, _dst, _dsz, borderType))
+
+    CV_OVX_RUN(_src.dims() <= 2,
+               openvx_pyrDown(_src, _dst, _dsz, borderType))
+
+    Mat src = _src.getMat();
+    Size dsz = _dsz.empty() ? Size(src.cols / 2, src.rows / 2) : _dsz;
+    _dst.create(dsz, src.type());
+    Mat dst = _dst.getMat();
+    int depth = src.depth();
+
+    // Check if source is a submatrix and apply BORDER_ISOLATED if needed
+    if (src.isSubmatrix() && !(borderType & BORDER_ISOLATED))
+    {
+        Point ofs;
+        Size wsz(src.cols, src.rows);
+        src.locateROI(wsz, ofs);
+
+        Size parentSize = wsz;
+        Point offset = ofs;
+
+        Size parentDsz((parentSize.width + 1) / 2, (parentSize.height + 1) / 2);
+        Point offsetDsz(offset.x / 2, offset.y / 2);
+
+        // Call HAL function with BORDER_ISOLATED added to borderType
+        CALL_HAL(pyrDown, cv_hal_pyrdown_offset, src.data, src.step, src.cols, src.rows,
+                 dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(),
+                 offsetDsz.x, offsetDsz.y,
+                 parentDsz.width - dst.cols - offsetDsz.x,
+                 parentDsz.height - dst.rows - offsetDsz.y,
+                 borderType | BORDER_ISOLATED);
+    }
+    else
+    {
+        // Apply BORDER_ISOLATED to the normal pyrDown call as well
+        CALL_HAL(pyrDown, cv_hal_pyrdown, src.data, src.step, src.cols, src.rows, 
+                dst.data, dst.step, dst.cols, dst.rows, depth, src.channels(), borderType | BORDER_ISOLATED);
+    }
+
+    PyrFunc func = 0;
+    if (depth == CV_8U)
+        func = pyrDown_< FixPtCast<uchar, 8> >;
+    else if (depth == CV_16S)
+        func = pyrDown_< FixPtCast<short, 8> >;
+    else if (depth == CV_16U)
+        func = pyrDown_< FixPtCast<ushort, 8> >;
+    else if (depth == CV_32F)
+        func = pyrDown_< FltCast<float, 8> >;
+    else if (depth == CV_64F)
+        func = pyrDown_< FltCast<double, 8> >;
+    else
+        CV_Error(cv::Error::StsUnsupportedFormat, "");
+
+    // Apply the function with BORDER_ISOLATED for consistent behavior across ROIs
+    func(src, dst, borderType | BORDER_ISOLATED);
+}
+```
+</details>
