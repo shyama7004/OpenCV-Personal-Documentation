@@ -1,16 +1,83 @@
-### Dockerfile Directory Structure:)
+### Directory Structure that I use:)
+
+```
+├── opencv/                       # OpenCV source code repo
+│   ├── Dockerfile                # Dockerfile placed inside the opencv folder
+│   ├── modules/                  # Directory for OpenCV modules
+│   │   └── ...                   # Module files and folders
+│   ├── issue_reproducer.cpp      # C++ file to reproduce an issue
+│   ├── issue_reproducer.py       # Python file to reproduce an issue
+│   └── ...                       # Other OpenCV repo files and folders
+│
+├── opencv_contrib/               # OpenCV contrib modules repo
+│   ├── Dockerfile                # Dockerfile placed inside the opencv_contrib folder
+│   ├── modules/                  # Directory for contrib modules
+│   │   └── ...                   # Module files and folders
+│   ├── issue_reproducer.cpp      # C++ file to reproduce an issue
+│   ├── issue_reproducer.py       # Python file to reproduce an issue
+│   └── ...                       # Other OpenCV contrib repo files and folders
+│
+├── opencv_extra/                 # OpenCV extra modules repo
+│   ├── Dockerfile                # Dockerfile placed inside the opencv_extra folder
+│   ├── modules/                  # Directory for extra modules
+│   │   └── ...                   # Module files and folders
+│   ├── issue_reproducer.cpp      # C++ file to reproduce an issue
+│   ├── issue_reproducer.py       # Python file to reproduce an issue
+│   └── ...                       # Other OpenCV extra repo files and folders
+│
+└── ...                           # Other repositories
 
 ```
 
-├── opencv/               # OpenCV source code repo
-│   ├── Dockerfile        # Dockerfile placed inside the opencv folder
-│   ├── index.py          # Python script to be tested
-│   ├── 32.png            # Image file to be used in the Python script
-│   └── ...               # Other OpenCV repo files and folders
+| **Project** | **Issue Description** | **Issue Link** | **Solution Link** | **Required Files and Changes** |
+|-------------|-----------------------|----------------|-------------------|---------------------------------|
+| OpenCV      | pyrDown is not consistent between different ROIs #25990 | [Issue Link](https://github.com/opencv/opencv/issues/25990) | [Solution Link](https://github.com/opencv/opencv/pull/26439) | [Required Files](https://github.com/opencv/opencv/pull/26439/files) |
+| OpenCV      | Integration of new DNN engine causing test failure | [Issue Link](https://github.com/opencv/opencv/issues/26299) | [Solution Link](https://github.com/opencv/opencv/pull/26300) | [Required Files](https://github.com/opencv/opencv/pull/26300/files) |
+| OpenCV      | Contour detection function improvement in drawContours() | [Issue Link](https://github.com/opencv/opencv/issues/26310) | [Solution Link](https://github.com/opencv/opencv/pull/26311) | [Required Files](https://github.com/opencv/opencv/pull/26311/files) |
+| OpenVINO    | Bug in JK Flip-Flops module in CircuitVerse | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/1201) | [Solution Link](https://github.com/openvinotoolkit/openvino/pull/1202) | [Required Files](https://github.com/openvinotoolkit/openvino/pull/1202/files) |
+| OpenVINO    | Docker setup for OpenVINO and OpenCV projects | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/1210) | [Solution Link](https://github.com/openvinotoolkit/openvino/pull/1211) | [Required Files](https://github.com/openvinotoolkit/openvino/pull/1211/files) |
+
+<details>
+<summary>Docker permission issue </summary>
+
+```bash
+sudo chmod -R 755 /Users/sankarsanbisoyi/.docker
+sudo chown -R $(whoami) /Users/sankarsanbisoyi/.docker
 ```
+</details>
+
+<details>
+<summary>Dockers-Cache</summary>
+
+  1. **Prune unused data**:
+```bash
+docker system prune -a --volumes
+```
+
+2. **Remove specific containers, images, networks, or volumes**:
+```bash
+docker rm <container_id>
+docker rmi <image_id>
+docker network rm <network_id>
+docker volume rm <volume_name>
+```
+
+3. **Prune specific types of unused data**:
+```bash
+sudo docker container prune
+sudo docker image prune -a
+sudo docker network prune
+sudo docker volume prune
+sudo docker builder prune
+```
+</details>
+
+<!--
 <details>
   <summary>Normal testing</summary>
 
+
+  
 ### Dockerfile:
 
 ```Dockerfile
@@ -805,132 +872,7 @@ In the context of your OpenCV project, regression testing is implemented as foll
 ### Summary
 Regression testing is a vital practice in software development that helps maintain software quality and stability after changes. In your OpenCV project, it's implemented through a dedicated test script that verifies the correct functionality of the `drawContours` method after modifications, ensuring that new changes do not disrupt existing capabilities. This approach leads to more reliable software and a smoother development process.
 
-</details>
-
-<details>
-<summary>Dockers-Cache</summary>
-
-  
-# Clearing Docker Cache
-
-Clearing Docker cache can be necessary to free up disk space or resolve issues caused by stale images, containers, or other cached data. Here are some steps you can follow to clear different types of Docker cache:
-
-## 1. Remove Unused Containers, Networks, Images, and Build Cache
-
-Docker provides a prune command to remove unused data:
-
-```bash
-docker system prune -a
-```
-
-- **-a**: Remove all unused images, not just dangling ones.
-- **--volumes**: Remove all unused volumes (add this option if you want to remove unused volumes as well).
-
-## 2. Remove Specific Docker Objects
-
-### Remove Unused Containers
-
-List all containers (including stopped ones):
-```bash
-docker ps -a
-```
-Remove all stopped containers:
-```bash
-docker container prune
-```
-Remove a specific container:
-```bash
-docker rm <container_id>
-```
-
-### Remove Unused Images
-
-List all images:
-```bash
-docker images -a
-```
-Remove all unused images:
-```bash
-docker image prune -a
-```
-Remove a specific image:
-```bash
-docker rmi <image_id>
-```
-
-### Remove Unused Networks
-
-List all networks:
-```bash
-docker network ls
-```
-Remove all unused networks:
-```bash
-docker network prune
-```
-Remove a specific network:
-```bash
-docker network rm <network_id>
-```
-
-### Remove Unused Volumes
-
-List all volumes:
-```bash
-docker volume ls
-```
-Remove all unused volumes:
-```bash
-docker volume prune
-```
-Remove a specific volume:
-```bash
-docker volume rm <volume_name>
-```
-
-## 3. Remove Docker Build Cache
-
-Remove the build cache:
-```bash
-docker builder prune
-```
-To remove all build cache:
-```bash
-docker builder prune --all
-```
-
-## 4. Remove Everything (Use with Caution)
-
-If you want to remove all Docker data, you can use the following command. This will remove all images, containers, volumes, and networks:
-```bash
-docker system prune -a --volumes
-```
-
-## Summary of Commands
-
-1. **Prune unused data**:
-```bash
-docker system prune -a --volumes
-```
-
-2. **Remove specific containers, images, networks, or volumes**:
-```bash
-docker rm <container_id>
-docker rmi <image_id>
-docker network rm <network_id>
-docker volume rm <volume_name>
-```
-
-3. **Prune specific types of unused data**:
-```bash
-sudo docker container prune
-sudo docker image prune -a
-sudo docker network prune
-sudo docker volume prune
-sudo docker builder prune
-```
-
-By using these commands, you can manage and clear your Docker cache effectively.
+</details> 
+-->
 
 
-</details>
