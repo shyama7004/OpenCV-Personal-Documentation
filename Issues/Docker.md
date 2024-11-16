@@ -31,11 +31,11 @@
 
 | **Project** | **Issue Description** | **Issue Link** | **Solution Link** | **Required Files and Changes** |
 |-------------|-----------------------|----------------|-------------------|---------------------------------|
-| OpenCV      | pyrDown is not consistent between different ROIs #25990 | [Issue Link](https://github.com/opencv/opencv/issues/25990) | [Solution Link](https://github.com/opencv/opencv/pull/26439) | [Required Files](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Issues/5th.md) |
-| OpenCV      | Integration of new DNN engine causing test failure | [Issue Link](https://github.com/opencv/opencv/issues/26299) | [Solution Link](https://github.com/opencv/opencv/pull/26300) | [Required Files](https://github.com/opencv/opencv/pull/26300/files) |
-| OpenCV      | Contour detection function improvement in drawContours() | [Issue Link](https://github.com/opencv/opencv/issues/26310) | [Solution Link](https://github.com/opencv/opencv/pull/26311) | [Required Files](https://github.com/opencv/opencv/pull/26311/files) |
-| OpenVINO    | Bug in JK Flip-Flops module in CircuitVerse | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/1201) | [Solution Link](https://github.com/openvinotoolkit/openvino/pull/1202) | [Required Files](https://github.com/openvinotoolkit/openvino/pull/1202/files) |
-| OpenVINO    | Docker setup for OpenVINO and OpenCV projects | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/1210) | [Solution Link](https://github.com/openvinotoolkit/openvino/pull/1211) | [Required Files](https://github.com/openvinotoolkit/openvino/pull/1211/files) |
+| OpenCV      | pyrDown is not consistent between different ROIs #25990 | [Issue Link](https://github.com/opencv/opencv/issues/25990) | [Solution Link](https://github.com/opencv/opencv/pull/26366) | [Required Files](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Issues/5th.md) |
+| OpenCV      |ORB produces different result with different values in mask pixels #25974  | [Issue Link](https://github.com/opencv/opencv/issues/25974) | [Solution Link](https://github.com/opencv/opencv/pull/26366) | [Required Files](https://github.com/opencv/opencv/pull/26300/files)  
+| OpenCV      | ChAruco regression on tough perspective #25850  | [Issue Link](https://github.com/opencv/opencv/issues/25850) | [Solution Link]() | [Required Files]() |
+| OpenVINO    | [Bug]: Memory leak with TBB 2020.3 #24483 | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/24483) | [Solution Link](-) | [Required Files](-) |
+| OpenVINO    | [Bug]: PrePostProcessor.postprocess().convert_color() #26424  | [Issue Link](https://github.com/openvinotoolkit/openvino/issues/26424) | [Solution Link](https://github.com/openvinotoolkit/openvino/pull/1211) | [Required Files](https://github.com/openvinotoolkit/openvino/pull/1211/files) |
 
 <details>
 <summary>Docker permission issue </summary>
