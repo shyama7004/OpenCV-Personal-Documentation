@@ -124,6 +124,7 @@ RUN cat /test_logs/test_imgproc.log
 RUN cat /test_logs/test_videoio.log
 RUN cat /test_logs/perf_gapi.log
 RUN cat /test_logs/perf_imgproc.log
+
 ```
 </details>
 
