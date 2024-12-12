@@ -1,3 +1,5 @@
+> I just wrote the code and told chat gpt  to convert it into informative doc.
+
 ### 1. **Number-Theoretic and Representation Functions**
 
 - **`math.ceil(x)`**: Rounds `x` up to the nearest integer.
@@ -287,5 +289,3 @@
   ```python
   result = math.lgamma(5.0)  # result is 3.1780538303479458
   ```
-
-This guide provides concise examples for each function. Let me know if you'd like any further details!
