@@ -1,50 +1,30 @@
 # OpenCV Personal Documentation
 
-Welcome to my personal documentation for OpenCV! This repository is a collection of my notes, tutorials, and projects related to OpenCV, a powerful open-source library for computer vision and image processing. This documentation aims to help me (and others) understand and utilize OpenCV effectively.
+Welcome to my personal documentation for OpenCV .This repository is a collection of my notes, tutorials, and projects related to OpenCV. This documentation aims to help me (and others) .
 
-<!--## 📋 Table of Contents
+`Note` : I write the docs on my own and then apply ChatGpt enhancements for corrections and readability.
+> I have given the links so you can enjoy opencv like me.<br>
+> This is what I prefer, if you want to do something different, go on.
 
-- [Introduction](#introduction)
-- [OpenCV Tutorials](#opencv-tutorials)
-- [NumPy Tutorials](#numpy-tutorials)
-- [Core OpenCV Modules](#core-opencv-modules)
-- [OpenCV.js Tutorials](#opencvjs-tutorials)
-- [Tutorials for Contrib Modules](#tutorials-for-contrib-modules)
-- [Projects and Examples](#projects-and-examples)
-- [Community and Contributions](#community-and-contributions)
-- [Contact](#contact)
-- [Numpy](https://github.com/shyama7004/OpenCV-Personal-Documentation/tree/main/Numpy)
--->
-## 📖 Introduction
 
-Welcome to my OpenCV documentation repository! Here you'll find a comprehensive collection of tutorials, projects, and notes aimed at mastering OpenCV for computer vision and image processing.
+## OpenCV Tutorials
 
-## 🖥️ OpenCV Tutorials
-
-### Core Learning (Month 1)
+### Core Learning (This is basically how I started)
 1. **Introduction to OpenCV**
    - [Overview of OpenCV](https://opencv.org/about/)
    - [Installation and Setup](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Quick%20Start.md)
    - [Basic Structures (Mat, Scalar, Point, etc.)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Structures.md)
    - [Convolution](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Convolution.md)
-   - **Revision Tips**: Practice by writing small programs to load, display, and manipulate images.
 
 2. **Core Operations**
-   <!-- [Basic Operations on Images](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)
-   - [Pixel Manipulation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)
-   - [Arithmetic Operations](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Arithmetic%20Operations.md)
-   - [Logic Operations](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html#image-blending-using-pyramids)
-   - [Geometric Transformations](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)-->
- 
   - **Basic Operations on Images**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Basic%20Operations%20on%20Images.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d3/df2/tutorial_py_basic_ops.html)
   - **Pixel Manipulation**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Changing%20Colorspaces.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/df/d9d/tutorial_py_colorspaces.html)
   - **Arithmetic Operations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Arithmetic%20Operations.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d0/d86/tutorial_py_image_arithmetics.html)
   - **Image Pyramids**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Blending%20using%20Pyramids.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/dc/dff/tutorial_py_pyramids.html#autotoc_md1437)
   - **Geometric Transformations**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Geometric%20Transformations%20of%20Images.md)   |   [OpenCv Docs](https://docs.opencv.org/5.x/da/d6e/tutorial_py_geometric_transformations.html)
 
-  - **Revision Tips**: Implement small projects like image filters, blending, and basic transformations.
 
-### Advanced Topics and Projects (Month 2)
+### Advanced Topics and Projects
 3. **Image Processing**
    - **Smoothing and Blurring**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Smoothing%20and%20Blurring.md)   |   [OpenCV](https://docs.opencv.org/5.x/d4/d13/tutorial_py_filtering.html)
    - **Image Thresholding**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Thresholding.md) |   [OpenCV Docs](https://docs.opencv.org/5.x/d7/d4d/tutorial_py_thresholding.html)
@@ -71,13 +51,11 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 #### Segmentation
 1. **Watershed Algorithm** :[My docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Image%20Segmentation%20with%20Watershed%20Algorithm.md)   |   [OpenCV Docs](https://docs.opencv.org/5.x/d3/db4/tutorial_py_watershed.html)
 2. [Graph-Based Segmentation (PyTorch Geometric)](https://pytorch-geometric.readthedocs.io/en/latest/notes/segmentation.html)
-   - **Revision Tips**: Create an image processing pipeline that includes smoothing, thresholding, edge detection, and advanced techniques.
 
 4. **Feature Detection and Description**
    - **Feature Detection and Description** :[My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Feature%20Detection%20and%20Description.md)	|	[OpenCv Docs](https://docs.opencv.org/5.x/dc/dc3/tutorial_py_matcher.html)
    - [Feature Matching](https://docs.opencv.org/5.x/dc/dc3/tutorial_py_matcher.html)
    - [Cascade Classifiers](https://docs.opencv.org/5.x/d7/d8b/tutorial_py_face_detection.html)
-   - **Revision Tips**: Develop a simple application for detecting and matching features in images.
 
 5. **Video Analysis**
    - **Video Capture**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/Getting%20Started%20with%20Videos.md)	|	[OpenCV Docs](https://docs.opencv.org/5.x/dd/d43/tutorial_py_video_display.html)
@@ -87,9 +65,8 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [Optical Flow](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html)
 - [Motion Analysis and Object Tracking](https://docs.opencv.org/5.x/d7/df3/group__imgproc__motion.html)
 
-   - **Revision Tips**: Create a program that captures video and implements background subtraction and object tracking.
 
-### Specialization and Contributions (Month 3)
+### Specialization and Contributions
 6. **Core Computer Vision Concepts**
    - [Camera Calibration with OpenCV](https://docs.opencv.org/5.x/dc/dbb/tutorial_py_calibration.html)
    - [Depth Map from Stereo Images](https://docs.opencv.org/5.x/dd/d53/tutorial_py_depthmap.html)
@@ -103,7 +80,6 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - **Hyperparameter Tuning**: [Hyperparameter Tuning Techniques](https://machinelearningmastery.com/hyperparameter-optimization-with-random-search-and-grid-search/)
    - **Model Evaluation**: [Metrics and Methods for Model Evaluation](https://scikit-learn.org/stable/modules/model_evaluation.html)
    - **Deployment**: [Strategies for Deploying Machine Learning Models](https://www.tensorflow.org/tfx/guide/serving)
-   - **Revision Tips**: Implement machine learning models to classify images or perform clustering.
 
 8. **Deep Learning with OpenCV**
    - [Deep Learning with OpenCV](https://docs.opencv.org/5.x/d5/de7/tutorial_dnn_googlenet.html)
@@ -111,7 +87,6 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
    - [Image Classification](https://docs.opencv.org/5.x/d5/de7/tutorial_dnn_googlenet.html)
    - [YOLO, SSD](https://docs.opencv.org/5.x/d5/de7/tutorial_dnn_googlenet.html)
    - [Semantic Segmentation](https://docs.opencv.org/5.x/da/d60/tutorial_bounding_boxes.html)
-   - **Revision Tips**: Develop applications that use pre-trained models for image classification and object detection.
 
 ### Additional Focus Areas (Throughout the Preparation)
 9. **OpenCV Contrib Modules**
@@ -135,7 +110,7 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
       - **Light Field Imaging**: [Light Field Imaging](https://www.openlightfield.org/)
 
 
-## 📦 Core OpenCV Modules
+## Core OpenCV Modules
 
 ### 11. Features Detection and Description
 
@@ -147,49 +122,4 @@ Welcome to my OpenCV documentation repository! Here you'll find a comprehensive 
 6. **BRIEF (Binary Robust Independent Elementary Features)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/BRIEF.md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/dc/d7d/tutorial_py_brief.html)
 7. **ORB (Oriented FAST and Rotated BRIEF)**: [My Docs](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Main-Concepts/ORB%20(Oriented%20FAST%20and%20Rotated%20BRIEF).md)	|	[OpenCV Docs](https://docs.opencv.org/4.x/d1/d89/tutorial_py_orb.html) 
 
-
-## 🔄 Tutorials for Contrib Modules
-
-1. **Core (core) Module**:
-   - [Core Module Documentation](https://docs.opencv.org/master/d1/dfb/intro.html)
-   - [Core Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/core)
-
-2. **Image Processing (imgproc) Module**:
-   - [Image Processing Module Documentation](https://docs.opencv.org/master/de/df2/imgproc_imgproc.html)
-   - [Image Processing Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/imgproc)
-
-3. **Video Analysis (video) Module**:
-   - [Video Analysis Module Documentation](https://docs.opencv.org/master/d7/d8b/tutorial_py_lucas_kanade.html)
-   - [Video Analysis Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/video)
-
-4. **Camera Calibration and 3D Reconstruction (calib3d) Module**:
-   - [Camera Calibration and 3D Reconstruction Documentation](https://docs.opencv.org/master/d9/d0c/group__calib3d.html)
-   - [Camera Calibration and 3D Reconstruction GitHub Code](https://github.com/opencv/opencv/tree/master/modules/calib3d)
-
-5. **Machine Learning (ml) Module**:
-   - [Machine Learning Module Documentation](https://docs.opencv.org/master/dc/dd6/ml_intro.html)
-   - [Machine Learning Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/ml)
-
-6. **Object Detection (objdetect) Module**:
-   - [Object Detection Module Documentation](https://docs.opencv.org/master/d5/d54/group__objdetect.html)
-   - [Object Detection Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/objdetect)
-
-7. **Deep Learning (dnn) Module**:
-   - [Deep Learning Module Documentation](https://docs.opencv.org/master/d2/d58/tutorial_table_of_content_dnn.html)
-   - [Deep Learning Module GitHub Code](https://github.com/opencv/opencv/tree/master/modules/dnn)
-
-8. **Contributing to OpenCV**:
-   - [How to Contribute to OpenCV](https://github.com/opencv/opencv/wiki/How_to_contribute)
-
-<!--
-# 🧑‍🏫 Contributors and Community
-
-- **OpenCV Team**: The dedicated team behind OpenCV.
-- **Community Contributions**: Contributions from developers and researchers around the world.
-- **Your Contributions**: Feel free to contribute by adding tutorials, examples, or improving the documentation.
-
-
-## 🚀 Start Your OpenCV Journey Now!
-
-Visit the [OpenCV GitHub Repository](https://github.com/opencv/opencv) to get started. Join the [OpenCV Forum](https://forum.opencv.org/) to discuss and share your projects, and don't forget to check out the latest updates on the # OpenCV Personal Documentation
--->
+> Thx for reading, I hope you enjoyed it. May the code be with you.
