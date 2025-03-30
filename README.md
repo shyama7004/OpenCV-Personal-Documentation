@@ -1,10 +1,10 @@
 # OpenCV Personal Documentation
 
-Welcome to my personal documentation for OpenCV .This repository is a collection of my notes, tutorials, and projects related to OpenCV. This documentation aims to help me (and others) .
+Welcome to my personal documentation for OpenCV .This repository is a collection of my notes, tutorials, and projects related to OpenCV. This documentation aims to help me and others .
 
 `Note` : I write the docs on my own and then apply ChatGpt enhancements for corrections and readability.
-> I have given the links so you can enjoy opencv like me.<br>
-> This is what I prefer, if you want to do something different, go on.
+> I've shared the links so you can enjoy OpenCV the way I do.
+> This is just my approach—feel free to explore your own path.
 
 
 ## OpenCV Tutorials
