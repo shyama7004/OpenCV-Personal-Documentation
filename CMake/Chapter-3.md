@@ -46,7 +46,7 @@ To build an executable from your source files:
    add_executable(myApp main.cpp)
    ```
    This command instructs CMake to compile **`main.cpp`** and generate an executable named **`myApp`**.
-   
+
 2. **Multiple Source Files**: If your project has multiple source files, list them all:
    ```cmake
    add_executable(myApp main.cpp file1.cpp file2.cpp)
@@ -58,7 +58,7 @@ To build an executable from your source files:
 
 Commenting in CMake is similar to how you comment in most scripting languages:
 - Any line that begins with **`#`** is treated as a comment.
-  
+
 Example:
 ```cmake
 # This is a comment

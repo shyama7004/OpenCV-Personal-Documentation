@@ -7,11 +7,11 @@ The `if()` command in CMake allows conditional execution of commands, similar to
 **Syntax**:
 ```cmake
 if(expression1)
-    # commands ...
+#commands...
 elseif(expression2)
-    # commands ...
+#commands...
 else()
-    # commands ...
+#commands...
 endif()
 ```
 
@@ -119,7 +119,7 @@ Used to iterate over a list of items or a numerical range.
 **Syntax**:
 ```cmake
 foreach(var RANGE start stop [step])
-    # commands ...
+#commands...
 endforeach()
 ```
 
@@ -148,7 +148,7 @@ Executes a block of code repeatedly as long as the condition is true.
 **Syntax**:
 ```cmake
 while(condition)
-    # commands ...
+#commands...
 endwhile()
 ```
 
@@ -201,7 +201,7 @@ Here are some recommended practices for using flow control in CMake:
 - **Use Readable Constructs**: Avoid repeating conditions or expressions in control structures:
   ```cmake
   if(CONDITION)
-      # some code
+#some code
   endif() # Don't repeat the condition
   ```
 
@@ -211,12 +211,12 @@ Here are some recommended practices for using flow control in CMake:
 
 **Example**:
 ```cmake
-# Bad Practice
+#Bad Practice
 if(VAR1 EQUAL 1 AND VAR2 EQUAL 2 AND VAR3 EQUAL 3)
-    # complex logic here
+#complex logic here
 endif()
 
-# Better Practice
+#Better Practice
 function(check_conditions var1 var2 var3)
     if(var1 EQUAL 1 AND var2 EQUAL 2 AND var3 EQUAL 3)
         return(1)
@@ -253,40 +253,42 @@ Create the source files with the following content:
 
 - `main.cpp`:
   ```cpp
-  #include <iostream>
-  #ifdef USE_FEATURE_A
+#include <iostream>
+#ifdef USE_FEATURE_A
   void featureA();
-  #endif
-  #ifdef USE_FEATURE_B
-  void featureB();
-  #endif
+#endif
+#ifdef USE_FEATURE_B
+void featureB();
+#endif
 
-  int main() {
-      std::cout << "Main Function" << std::endl;
-      #ifdef USE_FEATURE_A
-      featureA();
-      #endif
-      #ifdef USE_FEATURE_B
-      featureB();
-      #endif
-      return 0;
-  }
-  ```
+int main() {
+  std::cout << "Main Function" << std::endl;
+#ifdef USE_FEATURE_A
+  featureA();
+#endif
+#ifdef USE_FEATURE_B
+  featureB();
+#endif
+  return 0;
+}
+```
 
-- `featureA.cpp`:
+    - `featureA.cpp`:
   ```cpp
-  #include <iostream>
-  void featureA() {
-      std::cout << "Feature A" << std::endl;
-  }
-  ```
+#include <iostream>
+    void
+    featureA() {
+  std::cout << "Feature A" << std::endl;
+}
+```
 
-- `featureB.cpp`:
+    - `featureB.cpp`:
   ```cpp
-  #include <iostream>
-  void featureB() {
-      std::cout << "Feature B" << std::endl;
-  }
+#include <iostream>
+    void
+    featureB() {
+  std::cout << "Feature B" << std::endl;
+}
   ```
 
 #### Step 3: Write CMakeLists.txt
@@ -297,20 +299,20 @@ Create the `CMakeLists.txt` file in the root directory of your project with the 
 cmake_minimum_required(VERSION 3.10)
 project(ConditionalCompilation)
 
-# Define options to enable/disable features
+#Define options to enable / disable features
 option(USE_FEATURE_A "Enable Feature A" ON)
 option(USE_FEATURE_B "Enable Feature B" OFF)
 
-# Add the main executable
+#Add the main executable
 add_executable(main src/main.cpp)
 
-# Conditionally compile featureA.cpp if USE_FEATURE_A is ON
+#Conditionally compile featureA.cpp if USE_FEATURE_A is ON
 if(USE_FEATURE_A)
     target_compile_definitions(main PRIVATE USE_FEATURE_A)
     target_sources(main PRIVATE src/featureA.cpp)
 endif()
 
-# Conditionally compile featureB.cpp if USE_FEATURE_B is ON
+#Conditionally compile featureB.cpp if USE_FEATURE_B is ON
 if(USE_FEATURE_B)
     target_compile_definitions(main PRIVATE USE_FEATURE_B)
     target_sources(main PRIVATE src/featureB.cpp)

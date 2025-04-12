@@ -138,7 +138,7 @@ get_test_property(resultVar test1 ENABLED)
 - **Consistent Use of Prefixes**: Projects defining their own properties should use unique prefixes to avoid conflicts with standard CMake properties.
 - **Leverage Target Properties**: Whenever possible, use target-level properties instead of directory-level properties for managing build settings as they offer more control and consistency across the build system.
 
-# Project Overview
+#Project Overview
 We'll build a small C++ program that calculates the sum of two numbers. Here's how we'll structure the project:
 
 - **Directory Structure**:
@@ -155,126 +155,143 @@ We'll build a small C++ program that calculates the sum of two numbers. Here's h
 
 1. **Create `main.cpp`** inside the `src/` folder:
    ```cpp
-   // src/main.cpp
-   #include <iostream>
-   #include "sum.h"
+// src/main.cpp
+#include "sum.h"
+#include <iostream>
    
    int main() {
-       int a = 5, b = 7;
-       std::cout << "Sum of " << a << " and " << b << " is " << sum(a, b) << std::endl;
-       return 0;
-   }
-   ```
+  int a = 5, b = 7;
+  std::cout << "Sum of " << a << " and " << b << " is " << sum(a, b)
+            << std::endl;
+  return 0;
+}
+```
 
-2. **Create `sum.h`** inside the `include/` folder:
+    2. *
+    *Create `sum.h`**inside the `include /` folder :
    ```cpp
-   // include/sum.h
-   #ifndef SUM_H
-   #define SUM_H
-   
-   int sum(int a, int b);
-   
-   #endif
-   ```
+// include/sum.h
+#ifndef SUM_H
+#define SUM_H
 
-3. **Create `sum.cpp`** inside the `src/` folder:
+    int
+    sum(int a, int b);
+
+#endif
+```
+
+    3. *
+    *Create `sum.cpp`**inside the `src /` folder :
    ```cpp
-   // src/sum.cpp
-   #include "sum.h"
-   
-   int sum(int a, int b) {
-       return a + b;
-   }
-   ```
+// src/sum.cpp
+#include "sum.h"
 
-### Step 2: Create `CMakeLists.txt`
+    int
+    sum(int a, int b) {
+  return a + b;
+}
+```
 
-The **CMakeLists.txt** file will define the project and how to build it. We'll use properties to set custom flags and include directories.
+    ## #Step 2
+    : Create `CMakeLists
+          .txt`
+
+      The **CMakeLists.txt **file will define the project and how to build it.We'll use properties to set custom flags and include directories.
 
 ```cmake
-# CMakeLists.txt
-cmake_minimum_required(VERSION 3.10)
-project(CMakePropertiesExample)
+#CMakeLists.txt
+      cmake_minimum_required(VERSION 3.10) project(CMakePropertiesExample)
 
-# Set directory properties (optional, e.g., showing variables in the CMake GUI)
-set_directory_properties(PROPERTIES TEST_VARIABLE "Hello, CMake!")
+#Set directory properties(optional, e.g., showing variables in the CMake GUI)
+          set_directory_properties(PROPERTIES TEST_VARIABLE "Hello, CMake!")
 
-# Create a target for the executable
-add_executable(CMakePropertiesExample src/main.cpp src/sum.cpp)
+#Create a target for the executable
+              add_executable(CMakePropertiesExample src / main.cpp src /
+                             sum.cpp)
 
-# Set a custom compile flag for the target (e.g., enabling all warnings)
-set_target_properties(CMakePropertiesExample PROPERTIES
-    COMPILE_FLAGS "-Wall"
-)
+#Set a custom compile flag for the target(e.g., enabling all warnings)
+                  set_target_properties(
+                      CMakePropertiesExample PROPERTIES COMPILE_FLAGS "-Wall")
 
-# Include the 'include' directory for headers
-target_include_directories(CMakePropertiesExample PRIVATE include)
+#Include the 'include' directory for headers
+                      target_include_directories(
+                          CMakePropertiesExample PRIVATE include)
 
-# Set global property for variables (optional, used for demonstration)
-set_property(GLOBAL PROPERTY MY_GLOBAL_PROPERTY "MyGlobalValue")
+#Set global property for variables(optional, used for demonstration)
+                          set_property(GLOBAL PROPERTY MY_GLOBAL_PROPERTY
+                                       "MyGlobalValue")
 
-# Print a message using the set global property
-get_property(globalValue GLOBAL PROPERTY MY_GLOBAL_PROPERTY)
-message(STATUS "Global Property MY_GLOBAL_PROPERTY is: ${globalValue}")
+#Print a message using the set global property
+                              get_property(globalValue GLOBAL PROPERTY
+                                               MY_GLOBAL_PROPERTY)
+                                  message(STATUS
+                                          "Global Property MY_GLOBAL_PROPERTY "
+                                          "is: ${globalValue}")
 ```
 
-### Step 3: Build the Project
+      ## #Step 3 : Build the Project
 
-1. **Navigate** to the project directory:
-   ```
-   cd CMakePropertiesExample
-   ```
-
-2. **Create a build directory** to keep the source directory clean:
-   ```
-   mkdir build && cd build
+                   1. *
+    *Navigate **to the project directory :
+   ``` cd CMakePropertiesExample
    ```
 
-3. **Generate the build files** using CMake:
-   ```
-   cmake ..
-   ```
-
-   You should see a message like:
-   ```
-   -- Global Property MY_GLOBAL_PROPERTY is: MyGlobalValue
+    2. *
+    *Create a build directory **to keep the source directory clean :
+   ``` mkdir build &&cd build
    ```
 
-4. **Build the project**:
+    3. *
+    *Generate the build files **using CMake :
+   ``` cmake..
    ```
-   cmake --build .
+
+    You should see a message like :
+   ``` --Global Property MY_GLOBAL_PROPERTY is : MyGlobalValue
    ```
 
-   This will create the executable `CMakePropertiesExample`.
+                                                  4. *
+    *Build the project ** :
+   ``` cmake-- build
+        .
+   ```
 
-### Step 4: Run the Program
+    This will create the executable `CMakePropertiesExample`.
 
-Once the build is complete, run the program:
+    ## #Step 4 : Run the Program
 
-```
-./CMakePropertiesExample
-```
+                 Once the build is complete,
+    run the program :
 
-You should see the output:
-```
-Sum of 5 and 7 is 12
+``` ./ CMakePropertiesExample
 ```
 
----
-
-### Key Concepts Demonstrated
-
-1. **Setting Target Properties**:
-   - We used `set_target_properties()` to add compiler flags (`-Wall`) to the target.
-   
-2. **Including Directories**:
-   - `target_include_directories()` adds the `include/` directory to the project's include path, allowing `sum.h` to be found.
-
-3. **Global and Directory Properties**:
-   - We set a global property (`MY_GLOBAL_PROPERTY`) and printed its value using `get_property()`.
-   - We also demonstrated how to set directory properties (`TEST_VARIABLE`), though it wasn't actively used in this project.
-
----
-
+            You should see the output :
+``` Sum of 5 and
+        7 is 12
 ```
-Made by shyama7004
+
+            -- -
+
+            ## #Key Concepts Demonstrated
+
+            1. *
+            *Setting Target
+             Properties ** : -We used `set_target_properties()` to add compiler
+                             flags(`- Wall`) to the target.
+
+                             2. *
+            *Including
+            Directories ** : - `target_include_directories()` adds the `include
+            /` directory to the project's include path, allowing `sum.h` to be found.
+
+            3. *
+            *Global and Directory
+            Properties ** : -We set a global property(`MY_GLOBAL_PROPERTY`) and
+        printed its value using `get_property()`.- We also
+            demonstrated how to set directory properties(`TEST_VARIABLE`),
+    though it wasn't actively used in this project.
+
+    -- -
+
+``` Made by shyama7004
