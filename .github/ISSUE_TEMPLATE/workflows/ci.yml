@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format cmake make
+
+    - name: Check Formatting with clang-format
+      run: |
+        # Print clang-format version for logging
+        clang-format --version
+        # Check for C/C++ source files and Markdown files (if applicable)
+        # Adjust the file extensions and directories as needed for your repo.
+        find . -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.md' \) -exec clang-format --dry-run -Werror {} \;
+
+    - name: Configure and Build with CMake
+      run: |
+        mkdir -p build
+        cd build
+        cmake ..
+        cmake --build .

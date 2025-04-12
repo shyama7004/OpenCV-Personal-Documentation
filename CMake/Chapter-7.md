@@ -42,7 +42,7 @@ if(DEFINED cool_stuff_include_guard)
 endif()
 
 set(cool_stuff_include_guard 1)
-# Additional processing...
+#Additional processing...
 ```
 
 Starting with CMake 3.10, `include_guard()` provides a more concise and reliable way to ensure files are only included once:
@@ -85,7 +85,7 @@ MyProject/
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
 
-# Add subdirectories
+#Add subdirectories
 add_subdirectory(app)
 add_subdirectory(libA)
 add_subdirectory(libB)
@@ -109,50 +109,58 @@ add_library(libB libB.cpp libB.h)
 
 **`app/main.cpp`:**
 ```cpp
+#include "libA.h" //include the full path
+#include "libB.h" //include the full path
 #include <iostream>
-#include "libA.h"//include the full path
-#include "libB.h"//include the full path
 
 int main() {
-    std::cout << "Hello from MyApp" << std::endl;
-    libAFunction();
-    libBFunction();
-    return 0;
+  std::cout << "Hello from MyApp" << std::endl;
+  libAFunction();
+  libBFunction();
+  return 0;
 }
 ```
 
-**`libA/libA.cpp`:**
+        **`libA /
+    libA.cpp`: **
 ```cpp
-#include <iostream>
 #include "libA.h"
-
-void libAFunction() {
-    std::cout << "Hello from libA" << std::endl;
-}
-```
-
-**`libA/libA.h`:**
-```cpp
-#pragma once
-
-void libAFunction();
-```
-
-**`libB/libB.cpp`:**
-```cpp
 #include <iostream>
-#include "libB.h"
 
-void libBFunction() {
-    std::cout << "Hello from libB" << std::endl;
+               void
+               libAFunction() {
+  std::cout << "Hello from libA" << std::endl;
 }
 ```
 
-**`libB/libB.h`:**
+        **`libA /
+    libA.h`: **
 ```cpp
 #pragma once
 
-void libBFunction();
+             void
+             libAFunction();
+```
+
+        **`libB /
+    libB.cpp`: **
+```cpp
+#include "libB.h"
+#include <iostream>
+
+               void
+               libBFunction() {
+  std::cout << "Hello from libB" << std::endl;
+}
+```
+
+        **`libB /
+    libB.h`: **
+```cpp
+#pragma once
+
+             void
+             libBFunction();
 ```
 `Note` : Use this to print
 ```cpp
@@ -160,4 +168,3 @@ void libBFunction();
 ```
 
 In this example, `add_subdirectory()` is used to include the `app`, `libA`, and `libB` directories. Each directory has its own `CMakeLists.txt` file, keeping the project modular and organized.
-

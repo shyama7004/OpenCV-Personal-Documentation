@@ -5,7 +5,7 @@
 **Step-by-Step Guide**
 
 1. **Create a New Project**: Start by creating a new directory for your project.
-   
+
 2. **Create `CMakeLists.txt`**: Inside your project directory, create a file named `CMakeLists.txt`.
 
 3. **Minimum Required Version and Project Name**:
@@ -36,186 +36,197 @@ MyFirstProject/
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+  std::cout << "Hello, World!" << std::endl;
+  return 0;
 }
 ```
 
-**CMakeLists.txt**:
-```cmake
-cmake_minimum_required(VERSION 3.10)
-project(MyFirstProject)
+            **CMakeLists
+                .txt ** :
+```cmake cmake_minimum_required(VERSION 3.10) project(MyFirstProject)
 
-add_executable(MyFirstExecutable main.cpp)
+                    add_executable(MyFirstExecutable main.cpp)
 ```
 
-**Build Instructions**:
-```sh
-mkdir build
-cd build
-cmake ..
-make
-./MyFirstExecutable
+                        **Build Instructions ** :
+```sh mkdir build cd build cmake..make./
+        MyFirstExecutable
 ```
 
-#### 4.2. Defining Libraries
+        ####4.2. Defining Libraries
 
-**Step-by-Step Guide**
+            **Step
+    - by -
+    Step Guide * *
 
-1. **Create Library Source Files**:
-    - Create a new file, e.g., `mylib.cpp` and its header `mylib.h`.
+        1. * *Create Library Source Files ** : -Create a new file,
+    e.g., `mylib.cpp` and its header `mylib.h`.
 
-2. **Add Library in `CMakeLists.txt`**:
-    ```cmake
-    add_library(MyLibrary mylib.cpp)
+              2. *
+              *Add Library in `CMakeLists.txt`** :
+    ```cmake add_library(MyLibrary mylib.cpp)
     ```
 
-3. **Link Library to Executable**:
-    - Ensure your executable links to this library.
-    ```cmake
-    target_link_libraries(MyFirstExecutable PRIVATE MyLibrary)
+    3. *
+              *Link Library to
+               Executable ** : -Ensure your executable links to this library.
+    ```cmake target_link_libraries(MyFirstExecutable PRIVATE MyLibrary)
     ```
 
-**Example Project**
+                                   **Example Project **
 
-**Directory Structure**:
-```
-MyFirstProject/
+                                       **Directory Structure ** :
+``` MyFirstProject
+              /
 ├── CMakeLists.txt
 ├── main.cpp
-└── mylib/
+└── mylib /
     ├── mylib.cpp
     └── mylib.h
 ```
 
-**mylib/mylib.cpp**:
+                  **mylib
+              /
+              mylib.cpp ** :
 ```cpp
 #include "mylib.h"
 
-void print_hello() {
-    std::cout << "Hello from MyLibrary!" << std::endl;
+    void print_hello() {
+  std::cout << "Hello from MyLibrary!" << std::endl;
 }
 ```
 
-**mylib/mylib.h**:
+        **mylib /
+    mylib.h ** :
 ```cpp
 #ifndef MYLIB_H
 #define MYLIB_H
 
-void print_hello();
+    void
+    print_hello();
 
 #endif
 ```
 
-**main.cpp**:
+    **main.cpp ** :
 ```cpp
-#include <iostream>
 #include "mylib.h"
+#include <iostream>
 
-int main() {
-    print_hello();
-    return 0;
+    int
+    main() {
+  print_hello();
+  return 0;
 }
 ```
 
-**CMakeLists.txt**:
-```cmake
-cmake_minimum_required(VERSION 3.10)
-project(MyFirstProject)
+            **CMakeLists
+                .txt ** :
+```cmake cmake_minimum_required(VERSION 3.10) project(MyFirstProject)
 
-add_library(MyLibrary mylib/mylib.cpp)
-add_executable(MyFirstExecutable main.cpp)
-target_link_libraries(MyFirstExecutable PRIVATE MyLibrary)
+                    add_library(MyLibrary mylib / mylib.cpp)
+                        add_executable(MyFirstExecutable main.cpp)
+                            target_link_libraries(
+                                MyFirstExecutable PRIVATE MyLibrary)
 ```
 
-**Build Instructions**:
-```sh
-mkdir build
-cd build
-cmake ..
-make
-./MyFirstExecutable
+                                **Build Instructions ** :
+```sh mkdir build cd build cmake..make./
+        MyFirstExecutable
 ```
 
-#### 4.3. Linking Targets
+        ####4.3. Linking Targets
 
-**Step-by-Step Guide**
+            **Step
+    - by -
+    Step Guide * *
 
-1. **Create Multiple Libraries and Executables**:
-    - Define multiple libraries and executables in your `CMakeLists.txt`.
+        1. *
+        *Create Multiple Libraries and Executables *
+             * : -Define multiple libraries and executables in your `CMakeLists
+                     .txt`.
 
-2. **Link Libraries to Executables**:
+                 2. *
+        *Link Libraries to Executables ** :
     ```cmake
-    add_library(LibraryOne libone.cpp)
-    add_library(LibraryTwo libtwo.cpp)
+    add_library(LibraryOne libone.cpp) add_library(LibraryTwo libtwo.cpp)
 
-    add_executable(MyExecutable main.cpp)
-    target_link_libraries(MyExecutable PRIVATE LibraryOne LibraryTwo)
+        add_executable(MyExecutable main.cpp)
+            target_link_libraries(MyExecutable PRIVATE LibraryOne LibraryTwo)
     ```
 
-**Example Project**
+                **Example Project **
 
-**Directory Structure**:
-```
-MyFirstProject/
+                    **Directory Structure ** :
+``` MyFirstProject
+        /
 ├── CMakeLists.txt
 ├── main.cpp
-├── libone/
+├── libone /
 │   ├── libone.cpp
 │   └── libone.h
-└── libtwo/
+└── libtwo /
     ├── libtwo.cpp
     └── libtwo.h
 ```
 
-**libone/libone.cpp**:
+            **libone
+        /
+        libone.cpp ** :
 ```cpp
 #include "libone.h"
 
-void print_one() {
-    std::cout << "Hello from Library One!" << std::endl;
+    void print_one() {
+  std::cout << "Hello from Library One!" << std::endl;
 }
 ```
 
-**libone/libone.h**:
+        **libone /
+    libone.h ** :
 ```cpp
 #ifndef LIBONE_H
 #define LIBONE_H
 
-void print_one();
+    void
+    print_one();
 
 #endif
 ```
 
-**libtwo/libtwo.cpp**:
+        **libtwo /
+    libtwo.cpp ** :
 ```cpp
 #include "libtwo.h"
 
-void print_two() {
-    std::cout << "Hello from Library Two!" << std::endl;
+    void
+    print_two() {
+  std::cout << "Hello from Library Two!" << std::endl;
 }
 ```
 
-**libtwo/libtwo.h**:
+        **libtwo /
+    libtwo.h ** :
 ```cpp
 #ifndef LIBTWO_H
 #define LIBTWO_H
 
-void print_two();
+    void
+    print_two();
 
 #endif
 ```
 
-**main.cpp**:
+    **main.cpp ** :
 ```cpp
-#include <iostream>
 #include "libone/libone.h"
 #include "libtwo/libtwo.h"
+#include <iostream>
 
-int main() {
-    print_one();
-    print_two();
-    return 0;
+    int
+    main() {
+  print_one();
+  print_two();
+  return 0;
 }
 ```
 
@@ -257,7 +268,7 @@ project(MyProject)
 
 add_executable(MyExecutable main.cpp)
 
-# Full path to a library file
+#Full path to a library file
 target_link_libraries(MyExecutable PRIVATE /usr/local/lib/libmylib.a)
 ```
 
@@ -275,7 +286,7 @@ project(MyProject)
 
 add_executable(MyExecutable main.cpp)
 
-# Plain library name
+#Plain library name
 target_link_libraries(MyExecutable PRIVATE m)
 ```
 
@@ -293,7 +304,7 @@ project(MyProject)
 
 add_executable(MyExecutable main.cpp)
 
-# Adding linker flags
+#Adding linker flags
 target_link_libraries(MyExecutable PRIVATE -Wl,--no-as-needed)
 ```
 
@@ -311,7 +322,7 @@ project(MyProject)
 
 add_executable(MyExecutable main.cpp)
 
-# Linking with keywords
+#Linking with keywords
 target_link_libraries(MyExecutable PRIVATE
     debug /usr/local/lib/libmylib_debug.a
     optimized /usr/local/lib/libmylib.a)
@@ -332,57 +343,57 @@ MyProject/
 
 **main.cpp:**
 ```cpp
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 int main() {
-    double result = std::sqrt(16.0);
-    std::cout << "The square root of 16 is " << result << std::endl;
-    return 0;
+  double result = std::sqrt(16.0);
+  std::cout << "The square root of 16 is " << result << std::endl;
+  return 0;
 }
 ```
 
-**CMakeLists.txt:**
+        **CMakeLists
+            .txt
+    : **
 ```cmake
-cmake_minimum_required(VERSION 3.10)
-project(MyProject)
+      cmake_minimum_required(VERSION 3.10) project(MyProject)
 
-add_executable(MyExecutable main.cpp)
+          add_executable(MyExecutable main.cpp)
 
-# Full path to a library file
-target_link_libraries(MyExecutable PRIVATE /usr/local/lib/libmylib.a)
+#Full path to a library file
+              target_link_libraries(MyExecutable PRIVATE / usr / local / lib /
+                                    libmylib.a)
 
-# Plain library name
-target_link_libraries(MyExecutable PRIVATE m)
+#Plain library name
+                  target_link_libraries(MyExecutable PRIVATE m)
 
-# Adding linker flags
-target_link_libraries(MyExecutable PRIVATE -Wl,--no-as-needed)
+#Adding linker flags
+                      target_link_libraries(MyExecutable PRIVATE - Wl,
+                                            --no - as - needed)
 
-# Linking with keywords
-target_link_libraries(MyExecutable PRIVATE
-    debug /usr/local/lib/libmylib_debug.a
-    optimized /usr/local/lib/libmylib.a)
+#Linking with keywords
+                          target_link_libraries(MyExecutable PRIVATE debug /
+                                                usr / local / lib /
+                                                libmylib_debug.a optimized /
+                                                usr / local / lib / libmylib.a)
 ```
 
-**Build Instructions:**
-1. Create a build directory and navigate into it:
-    ```sh
-    mkdir build
-    cd build
+                              **Build Instructions
+    : **1. Create a build directory and navigate into it :
+    ```sh mkdir build cd build
     ```
 
-2. Generate the build system using CMake:
-    ```sh
-    cmake ..
+    2. Generate the build system using CMake :
+    ```sh cmake.
+            .
     ```
 
-3. Compile the project:
-    ```sh
-    make
+    3. Compile the project :
+    ```sh make
     ```
 
-4. Run the executable:
-    ```sh
-    ./MyExecutable
+    4. Run the executable :
+    ```sh./
+    MyExecutable
     ```
-

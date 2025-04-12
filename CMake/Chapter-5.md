@@ -24,14 +24,18 @@ set(big "${${myVar}r}ef") # big = "abcdef"
 
 The `$` is used for variable substitution. It replaces the variable with its value. In your example:
 
-- `${foo}` is replaced with the value of `foo` (`"ab"`), so `bar` becomes `"abcd"`.
-- `${myVar}` is replaced with `"abc"`, making `big = "abcdef"`.
+- `${
+  foo
+}
+` is replaced with the value of `foo` (`"ab"`), so `bar` becomes `"abcd"`.- `$ {
+  myVar
+}` is replaced with `"abc"`, making `big = "abcdef"`.
 
 - **Multi-line Strings and Bracket Syntax:** CMake allows multi-line strings using bracket syntax `[[ ]]`. This is especially helpful when defining scripts or avoiding quote escaping.
 
 ```cmake
 set(shellScript [=[
-#!/bin/bash
+#!/ bin / bash
 [[ -n "${USER}" ]] && echo "Have USER"
 ]=])
 ```
@@ -47,15 +51,26 @@ unset(myVar)
 ```
 
 ### 5.2 Environment Variables
-You can retrieve and set environment variables using the form `$ENV{varName}`.
+You can retrieve and set environment variables using the form `$ENV{
+  varName
+}
+`.
 
-This line means that you can access and modify environment variables in a specific syntax:
+    This line means that you can access and modify environment variables in a
+        specific syntax :
 
-- **`$ENV{varName}`**: This is a way to retrieve the value of an environment variable named `varName`. The `$ENV` prefix indicates that it is an environment variable.
-- You can also set an environment variable using the same syntax, typically in programming languages like Perl.
+    -**`$ENV {
+  varName
+}
+`** : This is a way to retrieve the value of an environment variable
+          named `varName`
+              .The `$ENV` prefix indicates that it is an environment variable.-
+    You can also set an environment variable using the same syntax,
+    typically in programming languages like Perl.
 
-For example:
-- To retrieve the value: `value = $ENV{HOME}` gets the home directory.
+    For example : -To retrieve the value : `value = $ENV {
+  HOME
+}` gets the home directory.
 - To set a value: `$ENV{MY_VAR} = "some_value"` assigns "some_value" to the environment variable `MY_VAR`.
 
 
@@ -176,33 +191,33 @@ Create a `CMakeLists.txt` file in the `CMakeProject` directory.
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 
-# Project name and version
+#Project name and version
 project(MyCMakeProject VERSION 1.0)
 
-# Define variables
+#Define variables
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(MY_MESSAGE "Hello, CMake!")
 set(CPP_STANDARD 11)
 
-# Set C++ standard
+#Set C++ standard
 set(CMAKE_CXX_STANDARD ${CPP_STANDARD})
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add executable
+#Add executable
 add_executable(MyApp ${SRC_DIR}/main.cpp)
 
-# Debugging message
+#Debugging message
 message(STATUS "Source directory: ${SRC_DIR}")
 message(STATUS "C++ Standard: ${CPP_STANDARD}")
 message(STATUS "Custom message: ${MY_MESSAGE}")
 
-# Environment variable
+#Environment variable
 if(NOT DEFINED ENV{MY_ENV_VAR})
     set(ENV{MY_ENV_VAR} "default_value")
 endif()
 message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")
 
-# Cache variable
+#Cache variable
 set(MY_CACHE_VAR "DefaultCacheValue" CACHE STRING "A cache variable example")
 message(STATUS "Cache variable MY_CACHE_VAR: ${MY_CACHE_VAR}")
 ```
@@ -215,8 +230,8 @@ Create a `main.cpp` file in the `src` directory.
 #include <iostream>
 
 int main() {
-    std::cout << "Welcome to My CMake Project!" << std::endl;
-    return 0;
+  std::cout << "Welcome to My CMake Project!" << std::endl;
+  return 0;
 }
 ```
 
@@ -272,7 +287,8 @@ Welcome to My CMake Project!
 
 5. **Environment Variables:**
     - `if(NOT DEFINED ENV{MY_ENV_VAR})` checks if the environment variable is not defined.
-    - `set(ENV{MY_ENV_VAR} "default_value")` sets a default value for the environment variable.
+    - `set(ENV{
+  MY_ENV_VAR} "default_value")` sets a default value for the environment variable.
     - `message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")` prints the environment variable.
 
 6. **Cache Variables:**

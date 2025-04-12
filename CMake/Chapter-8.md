@@ -20,7 +20,7 @@ Functions in CMake allow you to encapsulate repetitive logic and create reusable
 
 ```cmake
 function(function_name [arg1 arg2 ...])
-  # Function body
+#Function body
 endfunction()
 ```
 
@@ -38,7 +38,7 @@ Macros in CMake are similar to functions but without local scoping. Variables mo
 
 ```cmake
 macro(macro_name [arg1 arg2 ...])
-  # Macro body
+#Macro body
 endmacro()
 ```
 
@@ -76,12 +76,12 @@ print_message_macro()
 #### Function Example
 ```cpp
 int add(int a, int b) {
-    return a + b;
+  return a + b;
 }
 
 int main() {
-    int result = add(5, 3);
-    return 0;
+  int result = add(5, 3);
+  return 0;
 }
 ```
 
@@ -92,8 +92,8 @@ In this example, the function `add` provides a local scope for its parameters `a
 #define ADD(a, b) ((a) + (b))
 
 int main() {
-    int result = ADD(5, 3);
-    return 0;
+  int result = ADD(5, 3);
+  return 0;
 }
 ```
 
@@ -156,7 +156,8 @@ function(my_function)
   set(singleValues TARGET)
   set(multiValues SOURCES)
 
-  cmake_parse_arguments(${prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
+  cmake_parse_arguments(${
+  prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
 endfunction()
 ```
 
@@ -198,10 +199,14 @@ function(my_function)
 ```
 - This line calls the `cmake_parse_arguments` function to parse the arguments passed to `my_function`. Here's a breakdown:
   - `${prefix}`: The prefix for the parsed arguments. In this case, it's `ARG`.
-  - `"${noValues}"`: The list of arguments that do not have associated values (flags).
-  - `"${singleValues}"`: The list of arguments that have a single associated value.
-  - `"${multiValues}"`: The list of arguments that have multiple associated values.
-  - `${ARGN}`: This special variable contains all the arguments passed to `my_function` that were not explicitly specified as parameters.
+  - `"${noValues}"`:
+The list of arguments that do not have associated values(flags)
+        .- `"${singleValues}"`: The list of arguments that have a single
+                                    associated value.- `"${multiValues}"`
+    : The list of arguments that have multiple associated values.- `$ {
+  ARGN
+}
+`: This special variable contains all the arguments passed to `my_function` that were not explicitly specified as parameters.
 
 The `cmake_parse_arguments` function will parse the arguments passed to `my_function` and populate the variables `ARG_ENABLE_FEATURE`, `ARG_TARGET`, and `ARG_SOURCES` (and their respective `UNPARSED_ARGUMENTS` counterparts, if any) with the corresponding values.
 
@@ -241,7 +246,8 @@ my_function(TARGET myApp SOURCES main.cpp utils.cpp ENABLE_FEATURE)
   Example:
   ```cmake
   function(set_value var_name)
-    set(${var_name} "local_value" PARENT_SCOPE)
+    set(${
+  var_name} "local_value" PARENT_SCOPE)
   endfunction()
 
   set_value(my_var)
@@ -253,7 +259,8 @@ my_function(TARGET myApp SOURCES main.cpp utils.cpp ENABLE_FEATURE)
   Example:
   ```cmake
   macro(set_value_macro var_name)
-    set(${var_name} "macro_value")
+    set(${
+  var_name} "macro_value")
   endmacro()
 
   set_value_macro(my_var)
@@ -329,19 +336,19 @@ In contrast, a **shared library** (also known as a dynamic library) is a collect
 Here's an example of how you might define and link `mylib` as either a static or shared library in your `CMakeLists.txt`:
 
 ```cmake
-# Define a static library
+#Define a static library
 add_library(mylib STATIC mylib.cpp)
 
-# Or define a shared library
+#Or define a shared library
 add_library(mylib SHARED mylib.cpp)
 
-# Set the properties for the shared library (optional)
+#Set the properties for the shared library(optional)
 set_target_properties(mylib PROPERTIES VERSION 1.0 SOVERSION 1)
 
-# Add an executable that links to the library
+#Add an executable that links to the library
 add_executable(myapp main.cpp)
 
-# Link the executable to the library
+#Link the executable to the library
 target_link_libraries(myapp PRIVATE mylib)
 ```
 
@@ -363,25 +370,25 @@ cmake_minimum_required(VERSION 3.10)
 
 project(funmac)
 
-# Enable testing
+#Enable testing
 enable_testing()
 
-# Define the library mylib
+#Define the library mylib
 add_library(mylib STATIC /Users/sankarsanbisoyi/Desktop/Cmake/funmac/mylib/mylib.cpp)
 
-# Define the function myFunction
+#Define the function myFunction
 function(myFunction targetName)
-    # Create an executable for the given target name with the provided sources (ARGN)
+#Create an executable for the given target name with the provided sources(ARGN)
     add_executable(${targetName} ${ARGN})
-    
-    # Link the mylib library to the target executable
+
+#Link the mylib library to the target executable
     target_link_libraries(${targetName} PRIVATE mylib)
-    
-    # Add a test for the target executable
+
+#Add a test for the target executable
     add_test(NAME ${targetName} COMMAND ${targetName})
 endfunction(myFunction)
 
-# Call the myFunction function for test1 and test2
+#Call the myFunction function for test1 and test2
 myFunction(test1 /Users/sankarsanbisoyi/Desktop/Cmake/funmac/test1/test1.cpp)
 myFunction(test2 /Users/sankarsanbisoyi/Desktop/Cmake/funmac/test2/test2.cpp)
 ```
@@ -409,28 +416,32 @@ void mylib_function();
 #endif
 ```
 
-#### **Step 3: Update `test1.cpp` and `test2.cpp`**
+    ####**Step 3
+    : Update `test1.cpp` and `test2
+          .cpp`**
 
-Update your test source files to use the `mylib` function:
+              Update your test source files to use the `mylib` function :
 
-**test1.cpp**:
+    **test1.cpp ** :
 ```cpp
-#include <iostream>
 #include "mylib.h"
+#include <iostream>
 
-int main() {
+    int
+    main() {
   std::cout << "Test 1 running\n";
   mylib_function();
   return 0;
 }
 ```
 
-**test2.cpp**:
+    **test2.cpp ** :
 ```cpp
-#include <iostream>
 #include "mylib.h"
+#include <iostream>
 
-int main() {
+    int
+    main() {
   std::cout << "Test 2 running\n";
   mylib_function();
   return 0;
