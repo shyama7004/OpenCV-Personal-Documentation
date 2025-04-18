@@ -14,9 +14,11 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
 
 1. **Xcode License Agreement**:
    Ensure you have agreed to the Xcode license by running:
+
    ```bash
    sudo xcodebuild -license
    ```
+
    This step is essential as Xcode tools require this agreement.
 
 2. **Install Xcode Command Line Tools**:
@@ -29,18 +31,22 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
 ### Installing CMake
 
 1. **Download CMake**:
+
    - Go to the [CMake download page](https://cmake.org/download/).
    - Download and install the `.dmg` package for macOS.
 
 2. **Set Up CMake for Command Line Use**:
+
    - Open the CMake application from your Applications folder.
    - In the CMake app, navigate to `Tools` > `How to Install For Command Line Use`.
    - Follow the instructions to create command line links.
 
 3. **Verify Installation**:
+
    - Run `cmake --version` to ensure CMake is installed correctly.
 
    Alternatively, you can install CMake using Homebrew:
+
    ```bash
    brew install cmake
    ```
@@ -48,6 +54,7 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
 ### Getting OpenCV Source Code
 
 1. **Stable Version**:
+
    - Visit the OpenCV downloads page and download the source archive.
    - Unpack the archive.
 
@@ -62,6 +69,7 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
 ### Building OpenCV from Source Using CMake
 
 1. **Create a Build Directory**:
+
    - Create a temporary directory to store the build files:
      ```bash
      mkdir build_opencv
@@ -69,6 +77,7 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
      ```
 
 2. **Configuring the Build**:
+
    - Run CMake with optional parameters:
      ```bash
      cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=ON ../opencv
@@ -79,12 +88,14 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
      - Configure and generate the build files.
 
 3. **Common CMake Parameters**:
+
    - `CMAKE_BUILD_TYPE=Release` or `Debug` (specify build type).
    - `OPENCV_EXTRA_MODULES_PATH` (set path to extra modules from `opencv_contrib`).
    - `BUILD_DOCS=ON` (build documentation if Doxygen is installed).
    - `BUILD_EXAMPLES=ON` (build example programs).
 
 4. **Optional: Building Python Bindings**:
+
    - Set Python parameters for Python 3:
      ```bash
      PYTHON3_EXECUTABLE=<path to python>
@@ -94,6 +105,7 @@ This guide helps you install and build OpenCV on macOS, specifically version 4.1
    - For Python 2, replace `PYTHON3_` with `PYTHON2_`.
 
 5. **Compile the Code**:
+
    - Run the `make` command from the build directory, optionally specifying the number of parallel jobs:
      ```bash
      make -j7

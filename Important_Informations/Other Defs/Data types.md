@@ -124,32 +124,33 @@ NumPy provides both bit-sized type names and names based on the names of C types
 
 To ease integration with C code, where it is more natural to refer to platform-dependent C types, NumPy also provides type aliases that correspond to the C types for the platform. Some dtypes have a trailing underscore to avoid confusion with built-in Python type names, such as `numpy.bool_`.
 
-| Canonical Python API name | Python API “C-like” name | Actual C type                | Description                                              |
-|---------------------------|--------------------------|------------------------------|----------------------------------------------------------|
-| `numpy.bool` or `numpy.bool_` | N/A                      | `bool` (defined in stdbool.h) | Boolean (True or False) stored as a byte.                |
-| `numpy.int8`              | `numpy.byte`             | `signed char`                | Platform-defined integer type with 8 bits.               |
-| `numpy.uint8`             | `numpy.ubyte`            | `unsigned char`              | Platform-defined integer type with 8 bits without sign.  |
-| `numpy.int16`             | `numpy.short`            | `short`                      | Platform-defined integer type with 16 bits.              |
-| `numpy.uint16`            | `numpy.ushort`           | `unsigned short`             | Platform-defined integer type with 16 bits without sign. |
-| `numpy.int32`             | `numpy.intc`             | `int`                        | Platform-defined integer type with 32 bits.              |
-| `numpy.uint32`            | `numpy.uintc`            | `unsigned int`               | Platform-defined integer type with 32 bits without sign. |
-| `numpy.intp`              | N/A                      | `ssize_t/Py_ssize_t`         | Platform-defined integer of size `size_t`; used e.g., for sizes. |
-| `numpy.uintp`             | N/A                      | `size_t`                     | Platform-defined integer type capable of storing the maximum allocation size. |
-| N/A                       | `'p'`                    | `intptr_t`                   | Guaranteed to hold pointers. Character code only (Python and C). |
-| N/A                       | `'P'`                    | `uintptr_t`                  | Guaranteed to hold pointers. Character code only (Python and C). |
-| `numpy.int32` or `numpy.int64` | `numpy.long`            | `long`                       | Platform-defined integer type with at least 32 bits.     |
-| `numpy.uint32` or `numpy.uint64` | `numpy.ulong`           | `unsigned long`              | Platform-defined integer type with at least 32 bits without sign. |
-| N/A                       | `numpy.longlong`         | `long long`                  | Platform-defined integer type with at least 64 bits.     |
-| N/A                       | `numpy.ulonglong`        | `unsigned long long`         | Platform-defined integer type with at least 64 bits without sign. |
-| `numpy.float16`           | `numpy.half`             | N/A                          | Half precision float: sign bit, 5 bits exponent, 10 bits mantissa. |
+| Canonical Python API name        | Python API “C-like” name | Actual C type                 | Description                                                                   |
+| -------------------------------- | ------------------------ | ----------------------------- | ----------------------------------------------------------------------------- |
+| `numpy.bool` or `numpy.bool_`    | N/A                      | `bool` (defined in stdbool.h) | Boolean (True or False) stored as a byte.                                     |
+| `numpy.int8`                     | `numpy.byte`             | `signed char`                 | Platform-defined integer type with 8 bits.                                    |
+| `numpy.uint8`                    | `numpy.ubyte`            | `unsigned char`               | Platform-defined integer type with 8 bits without sign.                       |
+| `numpy.int16`                    | `numpy.short`            | `short`                       | Platform-defined integer type with 16 bits.                                   |
+| `numpy.uint16`                   | `numpy.ushort`           | `unsigned short`              | Platform-defined integer type with 16 bits without sign.                      |
+| `numpy.int32`                    | `numpy.intc`             | `int`                         | Platform-defined integer type with 32 bits.                                   |
+| `numpy.uint32`                   | `numpy.uintc`            | `unsigned int`                | Platform-defined integer type with 32 bits without sign.                      |
+| `numpy.intp`                     | N/A                      | `ssize_t/Py_ssize_t`          | Platform-defined integer of size `size_t`; used e.g., for sizes.              |
+| `numpy.uintp`                    | N/A                      | `size_t`                      | Platform-defined integer type capable of storing the maximum allocation size. |
+| N/A                              | `'p'`                    | `intptr_t`                    | Guaranteed to hold pointers. Character code only (Python and C).              |
+| N/A                              | `'P'`                    | `uintptr_t`                   | Guaranteed to hold pointers. Character code only (Python and C).              |
+| `numpy.int32` or `numpy.int64`   | `numpy.long`             | `long`                        | Platform-defined integer type with at least 32 bits.                          |
+| `numpy.uint32` or `numpy.uint64` | `numpy.ulong`            | `unsigned long`               | Platform-defined integer type with at least 32 bits without sign.             |
+| N/A                              | `numpy.longlong`         | `long long`                   | Platform-defined integer type with at least 64 bits.                          |
+| N/A                              | `numpy.ulonglong`        | `unsigned long long`          | Platform-defined integer type with at least 64 bits without sign.             |
+| `numpy.float16`                  | `numpy.half`             | N/A                           | Half precision float: sign bit, 5 bits exponent, 10 bits mantissa.            |
+
 | `numpy.float
 
-32`           | `numpy.single`           | `float`                      | Platform-defined single precision float: typically sign bit, 8 bits exponent, 23 bits mantissa. |
-| `numpy.float64`           | `numpy.double`           | `double`                     | Platform-defined double precision float: typically sign bit, 11 bits exponent, 52 bits mantissa. |
-| `numpy.float96` or `numpy.float128` | `numpy.longdouble`      | `long double`                | Platform-defined extended-precision float.               |
-| `numpy.complex64`         | `numpy.csingle`          | `float complex`              | Complex number, represented by two single-precision floats (real and imaginary components). |
-| `numpy.complex128`        | `numpy.cdouble`          | `double complex`             | Complex number, represented by two double-precision floats (real and imaginary components). |
-| `numpy.complex192` or `numpy.complex256` | `numpy.clongdouble`     | `long double complex`        | Complex number, represented by two extended-precision floats (real and imaginary components). |
+32`          |`numpy.single`          |`float`                     | Platform-defined single precision float: typically sign bit, 8 bits exponent, 23 bits mantissa. |
+|`numpy.float64`          |`numpy.double`          |`double`                    | Platform-defined double precision float: typically sign bit, 11 bits exponent, 52 bits mantissa. |
+|`numpy.float96`or`numpy.float128`|`numpy.longdouble`     |`long double`               | Platform-defined extended-precision float.               |
+|`numpy.complex64`        |`numpy.csingle`         |`float complex`             | Complex number, represented by two single-precision floats (real and imaginary components). |
+|`numpy.complex128`       |`numpy.cdouble`         |`double complex`            | Complex number, represented by two double-precision floats (real and imaginary components). |
+|`numpy.complex192`or`numpy.complex256`|`numpy.clongdouble`    |`long double complex` | Complex number, represented by two extended-precision floats (real and imaginary components). |
 
 Since many of these have platform-dependent definitions, a set of fixed-size aliases are provided (See [Sized aliases](https://numpy.org/doc/stable/reference/arrays.scalars.html#built-in-scalar-types)).
 
@@ -206,10 +207,10 @@ For efficient memory alignment, `numpy.longdouble` is usually stored padded with
 
 Be warned that even if `numpy.longdouble` offers more precision than Python `float`, it is easy to lose that extra precision, since Python often forces values to pass through `float`. For example, the `%` formatting operator requires its arguments to be converted to standard Python types, and it is therefore impossible to preserve extended precision even if many decimal places are requested. It can be useful to test your code with the value `1 + np.finfo(np.longdouble).eps`.
 
-```markdown
+````markdown
 Here is the continuation of the documentation on NumPy data types:
 
-```markdown
+````markdown
 ## Structured Arrays
 
 NumPy’s `ndarray` allows one to specify structured data types. Structured data types are meant for interpreting arrays of bytes as numbers with specific sizes and interpretation. Structured data types are a sub-class of `numpy.void`, which can contain fields, analogous to C structures.
@@ -225,6 +226,8 @@ print(x['field1'])
 print(x['field2'])
 # Output: [2. 4.]
 ```
+````
+````
 
 The `dtype` can also be specified using a string. For example, the above dtype can be written as:
 

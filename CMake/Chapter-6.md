@@ -5,6 +5,7 @@ The `if()` command in CMake allows conditional execution of commands, similar to
 #### 6.1.1 Basic Expressions
 
 **Syntax**:
+
 ```cmake
 if(expression1)
 #commands...
@@ -16,12 +17,14 @@ endif()
 ```
 
 - **True and False Constants**:
+
   - **True**: `1`, `ON`, `YES`, `TRUE`, `Y`, any non-zero number.
   - **False**: `0`, `OFF`, `NO`, `FALSE`, `N`, `IGNORE`, `NOTFOUND`, empty string, or a string ending with `-NOTFOUND`.
 
 - **Variables and Strings**: If the expression does not match any of the true/false constants, it is treated as a variable name or string.
 
 **Example**:
+
 ```cmake
 set(VAR "ON")
 if(${VAR})
@@ -40,6 +43,7 @@ CMake provides standard logic operators to combine expressions:
 - **NOT**: Inverts the condition.
 
 **Example**:
+
 ```cmake
 set(VALUE 5)
 if(VALUE GREATER 3 AND VALUE LESS 10)
@@ -52,10 +56,12 @@ endif()
 #### 6.1.3 Comparison Tests
 
 CMake supports numerical and string comparison tests:
+
 - **Numerical Comparisons**: `EQUAL`, `LESS`, `GREATER`, `LESS_EQUAL`, `GREATER_EQUAL`.
 - **String Comparisons**: `STREQUAL`, `STRLESS`, `STRGREATER`.
 
 **Example**:
+
 ```cmake
 set(NUM 8)
 if(NUM EQUAL 8)
@@ -76,6 +82,7 @@ endif()
 Check the existence of files or directories:
 
 **Example**:
+
 ```cmake
 if(EXISTS "CMakeLists.txt")
     message("CMakeLists.txt exists")
@@ -93,6 +100,7 @@ endif()
 These tests check if a variable or command exists in the current context.
 
 - **Variable Existence**:
+
   ```cmake
   if(DEFINED MY_VAR)
       message("MY_VAR is defined")
@@ -117,6 +125,7 @@ CMake provides two looping mechanisms: `foreach()` and `while()`.
 Used to iterate over a list of items or a numerical range.
 
 **Syntax**:
+
 ```cmake
 foreach(var RANGE start stop [step])
 #commands...
@@ -126,6 +135,7 @@ endforeach()
 - The `foreach()` command can iterate over ranges or explicit lists.
 
 **Range Example**:
+
 ```cmake
 foreach(i RANGE 1 5)
     message("i is ${i}")
@@ -133,6 +143,7 @@ endforeach()
 ```
 
 **List Example**:
+
 ```cmake
 foreach(item IN LISTS listVar)
     message("Item: ${item}")
@@ -146,6 +157,7 @@ endforeach()
 Executes a block of code repeatedly as long as the condition is true.
 
 **Syntax**:
+
 ```cmake
 while(condition)
 #commands...
@@ -153,6 +165,7 @@ endwhile()
 ```
 
 **Example**:
+
 ```cmake
 set(counter 0)
 while(counter LESS 3)
@@ -169,6 +182,7 @@ endwhile()
 - **continue()**: Skip to the next iteration.
 
 **Example**:
+
 ```cmake
 foreach(letter IN ITEMS a b c d)
     if(letter STREQUAL "c")
@@ -181,6 +195,7 @@ endforeach()
 - This loop will skip the item `"c"` and process the others.
 
 **Nested Loops with Break**:
+
 ```cmake
 foreach(x IN ITEMS 1 2 3)
     foreach(y IN ITEMS a b c)
@@ -199,9 +214,10 @@ endforeach()
 Here are some recommended practices for using flow control in CMake:
 
 - **Use Readable Constructs**: Avoid repeating conditions or expressions in control structures:
+
   ```cmake
   if(CONDITION)
-#some code
+  #some code
   endif() # Don't repeat the condition
   ```
 
@@ -210,6 +226,7 @@ Here are some recommended practices for using flow control in CMake:
 - **Avoid Complex Nesting**: Keep your loops and conditionals simple to enhance readability. For complex conditions, consider breaking logic into separate helper functions.
 
 **Example**:
+
 ```cmake
 #Bad Practice
 if(VAR1 EQUAL 1 AND VAR2 EQUAL 2 AND VAR3 EQUAL 3)
@@ -237,6 +254,7 @@ check_conditions(${VAR1} ${VAR2} ${VAR3})
 #### Step 1: Create Project Structure
 
 Create the following directory structure for your project:
+
 ```
 ConditionalCompilation/
 │
@@ -253,25 +271,27 @@ Create the source files with the following content:
 
 - `main.cpp`:
   ```cpp
-#include <iostream>
-#ifdef USE_FEATURE_A
+  #include <iostream>
+  #ifdef USE_FEATURE_A
   void featureA();
-#endif
-#ifdef USE_FEATURE_B
-void featureB();
-#endif
+  #endif
+  #ifdef USE_FEATURE_B
+  void featureB();
+  #endif
+  ```
 
 int main() {
-  std::cout << "Main Function" << std::endl;
+std::cout << "Main Function" << std::endl;
 #ifdef USE_FEATURE_A
-  featureA();
+featureA();
 #endif
 #ifdef USE_FEATURE_B
-  featureB();
+featureB();
 #endif
-  return 0;
+return 0;
 }
-```
+
+````
 
     - `featureA.cpp`:
   ```cpp
@@ -280,16 +300,17 @@ int main() {
     featureA() {
   std::cout << "Feature A" << std::endl;
 }
-```
+````
 
     - `featureB.cpp`:
-  ```cpp
+
+```cpp
 #include <iostream>
-    void
-    featureB() {
-  std::cout << "Feature B" << std::endl;
+  void
+  featureB() {
+std::cout << "Feature B" << std::endl;
 }
-  ```
+```
 
 #### Step 3: Write CMakeLists.txt
 
@@ -318,7 +339,6 @@ if(USE_FEATURE_B)
     target_sources(main PRIVATE src/featureB.cpp)
 endif()
 ```
-
 
 ### Step 4: Build and Run the Project
 
@@ -382,12 +402,14 @@ make
 Based on your configuration and the contents of `featureA.cpp` and `featureB.cpp`, you should see the following output:
 
 1. If only `USE_FEATURE_A` is enabled:
+
    ```
    Main Function
    Feature A
    ```
 
 2. If only `USE_FEATURE_B` is enabled:
+
    ```
    Main Function
    Feature B
@@ -403,10 +425,12 @@ Based on your configuration and the contents of `featureA.cpp` and `featureB.cpp
 ### Detailed Explanation
 
 1. **Project Structure**:
+
    - `CMakeLists.txt` is the main configuration file for CMake, which controls how the project is built.
    - `src/` directory contains the source files for the project.
 
 2. **Source Files**:
+
    - `main.cpp` contains the main entry point of the application. It conditionally calls `featureA()` and `featureB()` based on whether the respective feature macros are defined.
    - `featureA.cpp` and `featureB.cpp` define simple functions that print messages to the console.
 

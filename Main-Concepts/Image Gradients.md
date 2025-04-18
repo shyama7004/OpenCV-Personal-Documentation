@@ -94,10 +94,10 @@ plt.title('Sobel abs(CV_64F)'), plt.xticks([]), plt.yticks([])
 
 plt.show()
 ```
+
 Check the result below:
 
 ![Image-4](https://docs.opencv.org/4.x/double_edge.jpg)
-
 
 ### Additional Resources
 
@@ -108,4 +108,3 @@ Generated on Sat Aug 3, 2024 23:25:58 for OpenCV by doxygen 1.9.8
 [OpenCV Documentation](https://docs.opencv.org/5.x/d5/d0f/tutorial_py_gradients.html)
 
 [Image Processing in OpenCV](https://docs.opencv.org/5.x/d4/d86/group__imgproc__filter.html#gacea54f142e81b6758cb6f375ce782c8d)
-

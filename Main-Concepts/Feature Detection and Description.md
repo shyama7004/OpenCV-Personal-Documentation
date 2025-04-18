@@ -3,9 +3,11 @@
 ### Feature Matching
 
 ### Goal
+
 In this chapter, we will see how to match features in one image with others. We will use the Brute-Force matcher and FLANN Matcher in OpenCV.
 
 ### Basics of Brute-Force Matcher
+
 Brute-Force matcher is simple. It takes the descriptor of one feature in the first set and matches it with all other features in the second set using some distance calculation. The closest one is returned.
 
 For BF matcher, first, we have to create the `BFMatcher` object using `cv.BFMatcher()`. It takes two optional parameters. The first one is `normType`, which specifies the distance measurement to be used. By default, it is `cv.NORM_L2`, which is good for SIFT, SURF, etc. (`cv.NORM_L1` is also available). For binary string-based descriptors like ORB, BRIEF, BRISK, etc., `cv.NORM_HAMMING` should be used, which uses Hamming distance as measurement. If ORB is using `WTA_K == 3` or `4`, `cv.NORM_HAMMING2` should be used.
@@ -19,6 +21,7 @@ Like we used `cv.drawKeypoints()` to draw keypoints, `cv.drawMatches()` helps us
 Let's see an example for both SIFT and ORB (Both use different distance measurements).
 
 ### Brute-Force Matching with ORB Descriptors
+
 Here, we will see a simple example of how to match features between two images. In this case, we have a `queryImage` and a `trainImage`. We will try to find the `queryImage` in `trainImage` using feature matching. (The images are `/samples/data/box.png` and `/samples/data/box_in_scene.png`).
 
 We are using ORB descriptors to match features. Let's start with loading images, finding descriptors, etc.
@@ -62,6 +65,7 @@ Below is the result:
 ![Brute-Force Matching with ORB Descriptors](https://docs.opencv.org/5.x/matcher_result1.jpg)
 
 #### What is this Matcher Object?
+
 The result of `matches = bf.match(des1, des2)` line is a list of `DMatch` objects. This `DMatch` object has the following attributes:
 
 - `DMatch.distance` - Distance between descriptors. The lower, the better it is.
@@ -70,6 +74,7 @@ The result of `matches = bf.match(des1, des2)` line is a list of `DMatch` object
 - `DMatch.imgIdx` - Index of the train image.
 
 ### Brute-Force Matching with SIFT Descriptors and Ratio Test
+
 This time, we will use `BFMatcher.knnMatch()` to get `k` best matches. In this example, we will take `k=2` so that we can apply the ratio test explained by D. Lowe in his paper.
 
 ```python
@@ -108,6 +113,7 @@ See the result below:
 ![Brute-Force Matching with SIFT Descriptors](https://docs.opencv.org/5.x/matcher_result2.jpg)
 
 ### FLANN based Matcher
+
 FLANN stands for Fast Library for Approximate Nearest Neighbors. It contains a collection of algorithms optimized for fast nearest neighbor search in large datasets and for high dimensional features. It works faster than `BFMatcher` for large datasets. We will see the second example with FLANN based matcher.
 
 For FLANN based matcher, we need to pass two dictionaries which specify the algorithm to be used, its related parameters, etc. The first one is `IndexParams`. For various algorithms, the information to be passed is explained in FLANN docs. As a summary, for algorithms like SIFT, SURF, etc., you can pass the following:
@@ -180,8 +186,9 @@ See the result below:
 ![FLANN based Matcher](https://docs.opencv.org/5.x/matcher_flann.jpg)
 
 ### Note
+
 To use `cv.ORB()` and `cv.SIFT()`, make sure you have installed OpenCV with extra modules. Otherwise, it won't work.
 
 ```markdown
-
 Created by shyama7004 with help of Opencv Docs :)
+```

@@ -1,13 +1,16 @@
 # OpenCV Color Space Conversion and Object Tracking
 
 ## Goal
+
 In this tutorial, you will learn how to:
+
 - Convert images from one color-space to another, like BGR to Gray, BGR to HSV, etc.
 - Create an application to extract a colored object in a video.
 
 You will learn the following functions: `cv.cvtColor()`, `cv.inRange()`, etc.
 
 ## Changing Color-space
+
 There are more than 150 color-space conversion methods available in OpenCV. We will look into only two, which are most widely used: BGR to Gray and BGR to HSV.
 
 For color conversion, we use the function `cv.cvtColor(input_image, flag)` where `flag` determines the type of conversion.
@@ -19,12 +22,14 @@ For BGR to Gray conversion, we use the flag `cv.COLOR_BGR2GRAY`. Similarly, for 
 >>> flags = [i for i in dir(cv) if i.startswith('COLOR_')]
 >>> print(flags)
 ```
+
 ### Example Code :
+
 ```py
 import numpy as np
 import cv2 as cv
 
-img1 = cv.imread("messi.webp") 
+img1 = cv.imread("messi.webp")
 assert img1 is not None,"file couldn't be read ,check with os.path.exists()"
 
 conversion = cv.cvtColor(img1 ,cv.COLOR_BGR2GRAY)
@@ -37,9 +42,11 @@ cv.waitKey(0)
 <div align="cener"><img src="https://private-user-images.githubusercontent.com/85214856/354307888-7ccd4839-838a-4371-83f5-c6f392061cd6.jpeg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjI1MzA3NDYsIm5iZiI6MTcyMjUzMDQ0NiwicGF0aCI6Ii84NTIxNDg1Ni8zNTQzMDc4ODgtN2NjZDQ4MzktODM4YS00MzcxLTgzZjUtYzZmMzkyMDYxY2Q2LmpwZWc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgwMVQxNjQwNDZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01NzQwZjEwNjMzMjY1OGU1Mjk3Zjk2OTRhNWRiOTAzZDZiZDRlOWNkY2I5Njg2ZmQ2Y2E0M2NkZWI0YWU1M2Y5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.k52-VV-AZ86FtwUx7m9nZMSX3o4cB0DIx_-RSPqWI8o" ></div>
 
 ### Note
+
 For HSV, hue range is `[0,179]`, saturation range is `[0,255]`, and value range is `[0,255]`. `Different software uses different scales. So if you are comparing OpenCV values with them, you need to normalize these ranges`.
 
 ## Object Tracking
+
 Now that we know how to convert a BGR image to HSV, we can use this to extract a colored object. In HSV, it is easier to represent a color than in BGR color-space. In our application, we will try to extract a blue-colored object. Here is the method:
 
 1. Take each frame of the video.
@@ -82,6 +89,7 @@ while(1):
 
 cv.destroyAllWindows()
 ```
+
 <details>
     <summary>Click here to see the C++ code</summary>
 
@@ -100,7 +108,7 @@ int main() {
 
     while (true) {
         cv::Mat frame;
-        
+
         // Capture frame-by-frame
         cap >> frame;
 
@@ -139,11 +147,13 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 Below image shows tracking of the blue object:
 
 ![Tracking Blue Object](https://docs.opencv.org/4.x/frame.jpg)<br>
+
 <details>
 <summary>Python Code explanation</summary>
     
@@ -152,49 +162,62 @@ Below image shows tracking of the blue object:
 This code captures video from your webcam and processes each frame to detect blue objects. Here’s a step-by-step explanation of the code:
 
 1. **Import Libraries:**
+
    ```python
    import cv2 as cv
    import numpy as np
    ```
+
    - `cv2`: OpenCV library for computer vision tasks.
    - `numpy`: Library for numerical operations in Python.
 
 2. **Capture Video:**
+
    ```python
    cap = cv.VideoCapture(0)
    ```
+
    - `cv.VideoCapture(0)`: Initializes video capture with the default camera (usually the webcam).
 
 3. **Process Each Frame in a Loop:**
+
    ```python
    while(1):
    ```
 
 4. **Capture Frame:**
+
    ```python
    _, frame = cap.read()
    ```
+
    - `cap.read()`: Reads a frame from the video capture.
    - `_` (underscore): Ignored value, since `cap.read()` returns two values (ret, frame) but we only need the frame.
 
 5. **Convert Frame from BGR to HSV:**
+
    ```python
    hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
    ```
+
    - `cv.cvtColor(frame, cv.COLOR_BGR2HSV)`: Converts the frame from BGR color space to HSV color space. HSV (Hue, Saturation, Value) is better for color detection.
 
 6. **Define Range for Blue Color in HSV:**
+
    ```python
    lower_blue = np.array([110, 50, 50])
    upper_blue = np.array([130, 255, 255])
    ```
+
    - `np.array([110, 50, 50])`: Lower bound of blue color in HSV.
    - `np.array([130, 255, 255])`: Upper bound of blue color in HSV.
 
 7. **Threshold the HSV Image to Get Only Blue Colors:**
+
    ```python
    mask = cv.inRange(hsv, lower_blue, upper_blue)
    ```
+
    - `cv.inRange(hsv, lower_blue, upper_blue)`: Creates a mask where blue colors are white (255) and other colors are black (0).
 
 8. **Bitwise-AND Mask and Original Image:**
@@ -206,11 +229,13 @@ This code captures video from your webcam and processes each frame to detect blu
 For more details click on : [Argument explanation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/21.1.md)
 
 9. **Display Frames:**
+
    ```python
    cv.imshow('frame', frame)
    cv.imshow('mask', mask)
    cv.imshow('res', res)
    ```
+
    - `cv.imshow('frame', frame)`: Displays the original frame.
    - `cv.imshow('mask', mask)`: Displays the mask.
    - `cv.imshow('res', res)`: Displays the result of bitwise AND operation.
@@ -234,16 +259,21 @@ For more details click on : [Argument explanation](https://github.com/shyama7004
     - `cv.destroyAllWindows()`: Closes all OpenCV windows.
 
 In summary, this code captures video from the webcam, processes each frame to detect blue objects using HSV color space, and displays the original frame, the mask, and the result where only blue regions are visible. The loop continues until the 'Esc' key is pressed.
+
 </details>
 
 > Warning :If your webcam is not working checkout the following things :<br>
+>
 > 1. A camera is present on the first hand.<br>
 > 2. Permission is granted.<br>
 > 3. cv.VideoCapture(0),change the value to 1 or 2.<br>
+
 ### Note
+
 There is some noise in the image. We will see how to remove it in later chapters. This is the simplest method in object tracking. Once you learn functions of contours, you can do plenty of things like find the centroid of an object and use it to track the object, draw diagrams just by moving your hand in front of a camera, and other fun stuff.
 
 ## How to Find HSV Values to Track?
+
 This is a common question found in stackoverflow.com. It is very simple, and you can use the same function, `cv.cvtColor()`. Instead of passing an image, you just pass the BGR values you want. For example, to find the HSV value of Green, try the following commands in a Python terminal:
 
 ```python
@@ -256,7 +286,9 @@ This is a common question found in stackoverflow.com. It is very simple, and you
 Now you take `[H-10, 100, 100]` and `[H+10, 255, 255]` as the lower bound and upper bound respectively. Apart from this method, you can use any image editing tools like GIMP or any online converters to find these values, but don't forget to adjust the HSV ranges.
 
 ## Additional Resources
+
 ### Exercises
+
 Try to find a way to extract more than one colored object, for example, extract red, blue, and green objects simultaneously.
 
 Answer by `chat gpt`
@@ -322,6 +354,7 @@ while True:
 cap.release()
 cv.destroyAllWindows()
 ```
+
 <details>
 <summary>Click here to see the C++ code</summary>
 
@@ -397,8 +430,11 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 ---
+
 ```
 Made by shyama7004 with the help of OpenCV Docs
+```

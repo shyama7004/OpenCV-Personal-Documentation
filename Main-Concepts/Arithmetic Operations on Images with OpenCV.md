@@ -1,13 +1,16 @@
 # Arithmetic Operations on Images with OpenCV
 
 ## Goal
+
 - Learn several arithmetic operations on images, like addition, subtraction, bitwise operations, and more.
 - Learn the following functions: `cv.add()`, `cv.addWeighted()`, etc.
 
 ## Image Addition
+
 You can add two images with the OpenCV function, `cv.add()`, or simply by the numpy operation `res = img1 + img2`. Both images should be of the same depth and type, or the second image can just be a scalar value.
 
 ### Note
+
 There is a difference between OpenCV addition and Numpy addition. OpenCV addition is a saturated operation while Numpy addition is a modulo operation.
 
 For example, consider the below sample:
@@ -26,6 +29,7 @@ For example, consider the below sample:
 This will be more visible when you add two images. Stick with OpenCV functions, because they will provide a better result.
 
 ## Image Blending
+
 This is also image addition, but different weights are given to images in order to give a feeling of blending or transparency. Images are added as per the equation below:
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
@@ -107,11 +111,12 @@ Check the result below:
 ![Blended Image](https://docs.opencv.org/4.x/blending.jpg)
 
 ## Bitwise Operations
+
 This includes the bitwise AND, OR, NOT, and XOR operations. They are highly useful while extracting any part of the image, defining and working with non-rectangular ROI's, and more. Below we will see an example of how to change a particular region of an image.
 
 I want to put the OpenCV logo above an image. If I add two images, it will change the color. If I blend them, I get a transparent effect. But I want it to be opaque. If it was a rectangular region, I could use ROI as we did in the last chapter. But the OpenCV logo is not a rectangular shape. So you can do it with bitwise operations as shown below:
 
-```python
+````python
 # Load two images
 img1 = cv.imread('messi5.jpg')
 img2 = cv.imread('opencv-logo-white.png')
@@ -140,67 +145,81 @@ img1[0:rows, 0:cols] = dst
 cv.imshow('res', img1)
 cv.waitKey(0)
 cv.destroyAllWindows()
-```
+````
 
 ### Explanation
 
 1. **Load two images**:
-    ```python
-    img1 = cv.imread('messi5.jpg')
-    img2 = cv.imread('opencv-logo-white.png')
-    assert img1 is not None, "file could not be read, check with os.path.exists()"
-    assert img2 is not None, "file could not be read, check with os.path.exists()"
-    ```
-    We load two images: one is the main image (`img1`) and the other is the logo (`img2`). We ensure both images are loaded correctly.
+
+   ```python
+   img1 = cv.imread('messi5.jpg')
+   img2 = cv.imread('opencv-logo-white.png')
+   assert img1 is not None, "file could not be read, check with os.path.exists()"
+   assert img2 is not None, "file could not be read, check with os.path.exists()"
+   ```
+
+   We load two images: one is the main image (`img1`) and the other is the logo (`img2`). We ensure both images are loaded correctly.
 
 2. **Define a region of interest (ROI)**:
-    ```python
-    rows, cols, channels = img2.shape
-    roi = img1[0:rows, 0:cols]
-    ```
-    We create a region of interest in `img1` that is the same size as `img2`.
+
+   ```python
+   rows, cols, channels = img2.shape
+   roi = img1[0:rows, 0:cols]
+   ```
+
+   We create a region of interest in `img1` that is the same size as `img2`.
 
 3. **Create a mask of the logo and its inverse**:
-    ```python
-    img2gray = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
-    ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
-    mask_inv = cv.bitwise_not(mask)
-    ```
-    We convert `img2` to grayscale, then create a binary mask where the logo is white and the background is black. We also create an inverse mask.
+
+   ```python
+   img2gray = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+   ret, mask = cv.threshold(img2gray, 10, 255, cv.THRESH_BINARY)
+   mask_inv = cv.bitwise_not(mask)
+   ```
+
+   We convert `img2` to grayscale, then create a binary mask where the logo is white and the background is black. We also create an inverse mask.
 
 4. **Black out the area of the logo in the ROI**:
-    ```python
-    img1_bg = cv.bitwise_and(roi, roi, mask=mask_inv)
-    ```
-    Using the inverse mask, we black out the area of the logo in the ROI.
+
+   ```python
+   img1_bg = cv.bitwise_and(roi, roi, mask=mask_inv)
+   ```
+
+   Using the inverse mask, we black out the area of the logo in the ROI.
 
 5. **Extract the logo region from the logo image**:
-    ```python
-    img2_fg = cv.bitwise_and(img2, img2, mask=mask)
-    ```
-    Using the mask, we extract the logo region from `img2`.
+
+   ```python
+   img2_fg = cv.bitwise_and(img2, img2, mask=mask)
+   ```
+
+   Using the mask, we extract the logo region from `img2`.
 
 6. **Combine the background and the logo**:
-    ```python
-    dst = cv.add(img1_bg, img2_fg)
-    img1[0:rows, 0:cols] = dst
-    ```
-    We add the background and the logo, and then place the result back into the original image.
+
+   ```python
+   dst = cv.add(img1_bg, img2_fg)
+   img1[0:rows, 0:cols] = dst
+   ```
+
+   We add the background and the logo, and then place the result back into the original image.
 
 7. **Display the result**:
-    ```python
-    cv.imshow('res', img1)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
-    ```
-    We display the final image.
+   ```python
+   cv.imshow('res', img1)
+   cv.waitKey(0)
+   cv.destroyAllWindows()
+   ```
+   We display the final image.
 
 Check the result below. The left image shows the mask we created. The right image shows the final result. For better understanding, display all the intermediate images in the above code, especially `img1_bg` and `img2_fg`.
 
 ![Mask and Result](https://docs.opencv.org/4.x/overlay.jpg)
 
 ## Additional Resources
+
 ### Exercises
+
 - Create a slideshow of images in a folder with smooth transition between images using the `cv.addWeighted` function.
 
 ---

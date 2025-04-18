@@ -34,6 +34,7 @@
   - Sequence of integers for varying column widths.
 
 **Examples**:
+
 ```python
 data = "1, 2, 3\n4, 5, 6"
 np.genfromtxt(StringIO(data), delimiter=",")
@@ -48,6 +49,7 @@ np.genfromtxt(StringIO(data), delimiter=3)
 
 - **Purpose**: Strips leading/trailing whitespace from entries when set to `True`.
 - **Example**:
+
 ```python
 data = "1, abc , 2\n 3, xxx, 4"
 np.genfromtxt(StringIO(data), delimiter=",", dtype="|U5", autostrip=True)
@@ -60,6 +62,7 @@ np.genfromtxt(StringIO(data), delimiter=",", dtype="|U5", autostrip=True)
 - **Default**: `#`
 - **Behavior**: Ignores characters after the comment marker.
 - **Example**:
+
 ```python
 data = """#
 # Skip me !
@@ -81,6 +84,7 @@ np.genfromtxt(StringIO(data), comments="#", delimiter=",")
 
 - **Purpose**: Skip lines at the beginning (`skip_header`) and end (`skip_footer`) of the file.
 - **Example**:
+
 ```python
 data = "\n".join(str(i) for i in range(10))
 np.genfromtxt(StringIO(data), skip_header=3, skip_footer=5)
@@ -92,6 +96,7 @@ np.genfromtxt(StringIO(data), skip_header=3, skip_footer=5)
 - **Purpose**: Select specific columns to import.
 - **Accepts**: Single integer, sequence of integers, or sequence of column names.
 - **Example**:
+
 ```python
 data = "1 2 3\n4 5 6"
 np.genfromtxt(StringIO(data), usecols=(0, -1))
@@ -122,6 +127,7 @@ np.genfromtxt(StringIO(data), usecols=(0, -1))
   - Sequence of strings or comma-separated string.
   - `True` to read names from the first line after `skip_header`.
 - **Examples**:
+
 ```python
 data = StringIO("1 2 3\n 4 5 6")
 np.genfromtxt(data, names="A, B, C")
@@ -136,6 +142,7 @@ np.genfromtxt(data, skip_header=1, names=True)
 
 - **Purpose**: Define default names if not enough names are provided.
 - **Example**:
+
 ```python
 data = StringIO("1 2 3\n 4 5 6")
 np.genfromtxt(data, dtype=(int, float, int), defaultfmt="var_%02i")
@@ -156,6 +163,7 @@ np.genfromtxt(data, dtype=(int, float, int), defaultfmt="var_%02i")
 - **Purpose**: Provide custom conversion functions.
 - **Usage**: Dictionary with column indices/names as keys and conversion functions as values.
 - **Examples**:
+
 ```python
 convertfunc = lambda x: float(x.strip("%"))/100.
 data = "1, 2.3%, 45.\n6, 78.9%, 0"
@@ -189,6 +197,7 @@ np.genfromtxt(StringIO(data), delimiter=",", names=names, converters={1: convert
   - Dictionary with column indices/names or `None` for all columns.
 
 **Example**:
+
 ```python
 data = "N/A, 2, 3\n4, ,???"
 kwargs = dict(delimiter=",", dtype=int, names="a,b,c", missing_values={0:"N/A", 'b':" ", 2:"???"}, filling_values={0:0, 'b':0, 2:-999})
@@ -201,6 +210,7 @@ np.genfromtxt(StringIO(data), **kwargs)
 - **Purpose**: Create a boolean mask to track missing data.
 - **Default**: `False`
 - **Example**:
+
 ```python
 data = "1, 2\n3, "
 np.genfromtxt(StringIO(data), delimiter=",", usemask=True)
@@ -215,6 +225,7 @@ np.genfromtxt(StringIO(data), delimiter=",", usemask=True)
 
 - **Purpose**: Split output array into separate variables (columns).
 - **Example**:
+
 ```python
 data = "1 2 3\n4 5 6"
 x, y, z = np.genfromtxt(StringIO(data), unpack=True)
@@ -227,6 +238,7 @@ x, y, z = np.genfromtxt(StringIO(data), unpack=True)
 
 - **Purpose**: Limit the number of lines read.
 - **Example**:
+
 ```python
 data = "1 2\n3 4\n5 6"
 np.genfromtxt(StringIO(data), max_rows=2)

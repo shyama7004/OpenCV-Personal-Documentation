@@ -1,6 +1,7 @@
 ### Steps to Fix Bazel Workspace Issue for Future Reference:
 
 1. **Navigate to the Project Folder**:
+
    - Go to the folder that contains your project, in this case, `CPP-TEMPLATE`.
 
    ```bash
@@ -8,6 +9,7 @@
    ```
 
 2. **Create a WORKSPACE File**:
+
    - In the project root, create a `WORKSPACE` file if it doesn't already exist.
 
    ```bash
@@ -15,6 +17,7 @@
    ```
 
 3. **Run Bazel Command**:
+
    - After ensuring the `WORKSPACE` file is in place, run the Bazel command to test your code.
 
    ```bash

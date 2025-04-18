@@ -1,4 +1,4 @@
-Here we have broke  down the code snippet `I.at<uchar>(y, x) = saturate_cast<uchar>(r);` and explained  what each part does, particularly in the context of OpenCV.
+Here we have broke down the code snippet `I.at<uchar>(y, x) = saturate_cast<uchar>(r);` and explained what each part does, particularly in the context of OpenCV.
 
 ### Context
 
@@ -7,13 +7,14 @@ This code is typically `found within a loop` where `image processing operations`
 ### Breakdown
 
 1. **I.at<uchar>(y, x)**:
+
    - `I` is an `cv::Mat` object, which represents an image in OpenCV.
    - `at<uchar>(y, x)` is a method of the `cv::Mat` class used to access the pixel value at the `(y, x)` coordinate.
    - `uchar` stands for "unsigned char", which is an 8-bit unsigned integer. It is a common data type for grayscale images where each pixel value ranges from 0 to 255.
    - `I.at<uchar>(y, x)` accesses the pixel value at row `y` and column `x` in the image `I`.
 
 2. **saturate_cast<uchar>(r)**:
-   - `saturate_cast<uchar>(r)` is a function template in OpenCV used to convert and clamp a value to a specific data type. 
+   - `saturate_cast<uchar>(r)` is a function template in OpenCV used to convert and clamp a value to a specific data type.
    - `uchar` again stands for "unsigned char".
    - `r` is a variable (usually an integer or a float) that represents some calculated value that needs to be assigned to the pixel.
    - `saturate_cast` ensures that the value `r` is clamped within the range of the target data type (`uchar`, which is 0 to 255). If `r` is less than 0, it will be clamped to 0. If `r` is greater than 255, it will be clamped to 255.

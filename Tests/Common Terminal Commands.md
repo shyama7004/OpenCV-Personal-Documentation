@@ -1,4 +1,5 @@
 ## Why Learn To Use The Command Line / Terminal?
+
 © Greater Control<br>
 • Speed & Efficiency<br>
 • Access Remote Servers<br>
@@ -328,6 +329,7 @@ We can remove all of the files that we created with this command:
 There is so much more that you can do with the `find` command, but it goes beyond the scope of this tutorial.
 
 ## Piping
+
 Piping is very powerful. It is a way of redirecting standard output to another destination, such as another file. Let's actually use the find command to find a list of files and then pipe them to a new file.
 
 First, we'll create 10 files:
@@ -380,17 +382,17 @@ If you're on Windows and you are not using something like Git Bash, you can use 
 | tar tzvf [dirname]                  | See what is in the tarball |
 | tar xzvf [dirname].tar.gz           | Extract tarball            |
 
-- -c : Creates Archive 
-- -x : Extract the archive 
-- -f : creates archive with given filename 
-- -t : displays or lists files in archived file 
-- -u : archives and adds to an existing archive file 
-- -v : Displays Verbose Information 
-- -A : Concatenates the archive files 
-- -z : zip, tells tar command that creates tar file using gzip 
-- -j : filter archive tar file using tbzip 
-- -W : Verify a archive file 
-- -r : update or add file or directory in already existed .tar file 
+- -c : Creates Archive
+- -x : Extract the archive
+- -f : creates archive with given filename
+- -t : displays or lists files in archived file
+- -u : archives and adds to an existing archive file
+- -v : Displays Verbose Information
+- -A : Concatenates the archive files
+- -z : zip, tells tar command that creates tar file using gzip
+- -j : filter archive tar file using tbzip
+- -W : Verify a archive file
+- -r : update or add file or directory in already existed .tar file
 
 ## The `history` Command
 

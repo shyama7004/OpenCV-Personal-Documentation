@@ -3,6 +3,7 @@
 ## Goal
 
 In this chapter:
+
 - We will learn about Image Pyramids.
 - We will use Image pyramids to create a new fruit, "Orapple".
 - We will see these functions: `cv.pyrUp()`, `cv.pyrDown()`.
@@ -12,6 +13,7 @@ In this chapter:
 Normally, we work with an image of constant size. But on some occasions, we need to work with the same images in different resolutions. For example, while searching for something in an image, like a face, we are not sure at what size the object will be present in the said image. In that case, we need to create a set of the same image with different resolutions and search for the object in all of them. These sets of images with different resolutions are called Image Pyramids (because when they are kept in a stack with the highest resolution image at the bottom and the lowest resolution image at the top, it looks like a pyramid).
 
 There are two kinds of Image Pyramids:
+
 1. Gaussian Pyramid
 2. Laplacian Pyramid
 
@@ -22,7 +24,6 @@ img = cv.imread('messi5.jpg')
 assert img is not None, "file could not be read, check with os.path.exists()"
 lower_reso = cv.pyrDown(higher_reso)
 ```
-
 
 Below are the 4 levels in an image pyramid.
 
@@ -114,29 +115,35 @@ real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
 cv.imwrite('Pyramid_blending2.jpg', ls_)
 cv.imwrite('Direct_blending.jpg', real)
 ```
+
 <details>
     <summary>Explanation</summary>
 ## Explanation:
 
 ### 1. Importing Required Libraries
+
 ```python
 import cv2 as cv
 import numpy as np
 ```
+
 - **`cv2`**: OpenCV library for image processing.
 - **`numpy`**: Library for numerical operations, particularly with arrays (used here for image manipulation).
 
 ### 2. Reading the Images
+
 ```python
 A = cv.imread('apple.jpg')
 B = cv.imread('orange.jpg')
 assert A is not None, "file could not be read, check with os.path.exists()"
 assert B is not None, "file could not be read, check with os.path.exists()"
 ```
+
 - **`cv.imread('apple.jpg')` and `cv.imread('orange.jpg')`**: Load the images `apple.jpg` and `orange.jpg` into variables `A` and `B`.
 - **`assert A is not None`**: Ensures the image was successfully loaded; if not, an error message is shown.
 
 ### 3. Generating Gaussian Pyramid for Image A
+
 ```python
 G = A.copy()
 gpA = [G]
@@ -144,12 +151,14 @@ for i in range(6):
     G = cv.pyrDown(G)
     gpA.append(G)
 ```
+
 - **`G = A.copy()`**: Create a copy of image `A` to start the pyramid.
 - **`gpA = [G]`**: Initialize a list `gpA` to store the Gaussian pyramid of image `A`. It starts with the original image.
 - **`cv.pyrDown(G)`**: Applies Gaussian blurring followed by downsampling (reducing the image size by half). This is done iteratively to create a pyramid.
 - **`gpA.append(G)`**: Add each downsampled image to the pyramid list `gpA`.
 
 ### 4. Generating Gaussian Pyramid for Image B
+
 ```python
 G = B.copy()
 gpB = [G]
@@ -157,9 +166,11 @@ for i in range(6):
     G = cv.pyrDown(G)
     gpB.append(G)
 ```
+
 - This process is identical to the one used for `A`, but it generates the Gaussian pyramid for image `B`, storing it in `gpB`.
 
 ### 5. Generating Laplacian Pyramid for Image A
+
 ```python
 lpA = [gpA[5]]
 for i in range(5, 0, -1):
@@ -167,12 +178,14 @@ for i in range(5, 0, -1):
     L = cv.subtract(gpA[i-1], GE)
     lpA.append(L)
 ```
+
 - **`lpA = [gpA[5]]`**: Initialize the Laplacian pyramid `lpA` with the smallest image in the Gaussian pyramid (the last one in `gpA`).
 - **`cv.pyrUp(gpA[i])`**: Upsample the image (increases the size by 2x) to match the size of the next level up in the pyramid.
 - **`cv.subtract(gpA[i-1], GE)`**: Subtract the upsampled image from the corresponding level in the Gaussian pyramid to get the Laplacian image.
 - **`lpA.append(L)`**: Add the Laplacian image to the `lpA` list.
 
 ### 6. Generating Laplacian Pyramid for Image B
+
 ```python
 lpB = [gpB[5]]
 for i in range(5, 0, -1):
@@ -180,9 +193,11 @@ for i in range(5, 0, -1):
     L = cv.subtract(gpB[i-1], GE)
     lpB.append(L)
 ```
+
 - This step is identical to the one used for `A`, but it generates the Laplacian pyramid for image `B`, storing it in `lpB`.
 
 ### 7. Combining the Two Images at Each Level of the Pyramid
+
 ```python
 LS = []
 for la, lb in zip(lpA, lpB):
@@ -190,32 +205,39 @@ for la, lb in zip(lpA, lpB):
     ls = np.hstack((la[:, 0:cols//2], lb[:, cols//2:]))
     LS.append(ls)
 ```
+
 - **`zip(lpA, lpB)`**: Pairs the corresponding levels of the Laplacian pyramids of `A` and `B`.More about code snippet, [for la, lb in zip(lpA, lpB)](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/More%20Explanation/2.4.md)
 - **`np.hstack((la[:, 0:cols//2], lb[:, cols//2:]))`**: Horizontally stacks the left half of `la` (Laplacian of `A`) with the right half of `lb` (Laplacian of `B`).
 - **`LS.append(ls)`**: Adds the combined image at each level to the `LS` list.
 
 ### 8. Reconstructing the Final Blended Image
+
 ```python
 ls_ = LS[0]
 for i in range(1, 6):
     ls_ = cv.pyrUp(ls_)
     ls_ = cv.add(ls_, LS[i])
 ```
+
 - **`ls_ = LS[0]`**: Start with the smallest combined image.
 - **`cv.pyrUp(ls_)`**: Upsamples the image to the next level.
 - **`cv.add(ls_, LS[i])`**: Add the current upsampled image to the corresponding level in `LS` to reconstruct the final blended image.
 
 ### 9. Direct Blending of the Two Images (Without Pyramids)
+
 ```python
 real = np.hstack((A[:, :cols//2], B[:, cols//2:]))
 ```
+
 - **`np.hstack((A[:, :cols//2], B[:, cols//2:]))`**: Directly stack the left half of image `A` with the right half of image `B`.
 
 ### 10. Saving the Blended Images
+
 ```python
 cv.imwrite('Pyramid_blending2.jpg', ls_)
 cv.imwrite('Direct_blending.jpg', real)
 ```
+
 - **`cv.imwrite('Pyramid_blending2.jpg', ls_)`**: Save the pyramid-blended image as `Pyramid_blending2.jpg`.
 - **`cv.imwrite('Direct_blending.jpg', real)`**: Save the directly blended image as `Direct_blending.jpg`.
 </details>
@@ -292,13 +314,16 @@ if cv.waitKey(0) & 0xFF == 27:
 ```
 
 ### Key Fixes:
+
 1. **Resizing Arrays Before Concatenation**:
+
    - Before horizontally stacking (`np.hstack`) the two arrays `la` and `lb`, they are resized to have matching dimensions. This ensures that they can be concatenated without any dimension mismatch errors.
 
 2. **General Resize Handling**:
    - Throughout the pyramid construction and reconstruction, ensure that any image being processed is resized to match the target dimensions to avoid similar errors.
 
 This should solve the `ValueError` related to mismatched dimensions during the concatenation process.
+
 </details>
 ## Additional Resources
 

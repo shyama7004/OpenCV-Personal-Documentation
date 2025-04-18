@@ -1,4 +1,4 @@
-### CMake Chapter 8: Functions and Macros 
+### CMake Chapter 8: Functions and Macros
 
 ---
 
@@ -16,6 +16,7 @@ Using functions and macros allows developers to write cleaner, more maintainable
 ### **2. Syntax and Usage**
 
 #### **Defining Functions**
+
 Functions in CMake allow you to encapsulate repetitive logic and create reusable blocks of code. Variables inside functions are scoped locally.
 
 ```cmake
@@ -25,6 +26,7 @@ endfunction()
 ```
 
 Example:
+
 ```cmake
 function(print_message)
   message("This is a function")
@@ -34,6 +36,7 @@ print_message()
 ```
 
 #### **Defining Macros**
+
 Macros in CMake are similar to functions but without local scoping. Variables modified inside a macro affect the calling scope.
 
 ```cmake
@@ -43,6 +46,7 @@ endmacro()
 ```
 
 Example:
+
 ```cmake
 macro(print_message_macro)
   message("This is a macro")
@@ -56,15 +60,17 @@ print_message_macro()
 <details>
   <summary>More about function v/s macros </summary>
 
-  Yes, you can think of functions and macros in these terms, but it's important to understand the differences and nuances more precisely.
+Yes, you can think of functions and macros in these terms, but it's important to understand the differences and nuances more precisely.
 
 ### Functions
+
 - **Local Scope:** Functions indeed provide local scope. Variables declared within a function are local to that function and cannot be accessed outside of it.
 - **Runtime:** Functions are evaluated at runtime. When a function is called, control transfers to the function code, which executes and then returns control back to the calling location.
 - **Type Safety:** Functions provide type checking at compile time (for statically typed languages like C++), which helps catch errors.
 - **Reusability:** Functions promote code reusability and modularity, making the code easier to understand and maintain.
 
 ### Macros
+
 - **No Local Scope:** Macros, on the other hand, do not provide a local scope in the traditional sense. Macros are essentially text replacements performed by the preprocessor before compilation.
 - **Preprocessing:** Macros are expanded by the preprocessor before the actual compilation begins. This means they are substituted directly into the code wherever they are used, which can lead to potential issues if not used carefully.
 - **No Type Checking:** Since macros are just textual replacements, they do not offer type checking, which can lead to subtle bugs.
@@ -74,6 +80,7 @@ print_message_macro()
 ### Example
 
 #### Function Example
+
 ```cpp
 int add(int a, int b) {
   return a + b;
@@ -88,6 +95,7 @@ int main() {
 In this example, the function `add` provides a local scope for its parameters `a` and `b`. The function is called from `main`, and the result is returned.
 
 #### Macro Example
+
 ```cpp
 #define ADD(a, b) ((a) + (b))
 
@@ -100,13 +108,13 @@ int main() {
 In this example, `ADD` is a macro. Before the code is compiled, the preprocessor replaces `ADD(5, 3)` with `((5) + (3))`.
 
 ### Summary
+
 - **Functions** provide local scope and type safety, are evaluated at runtime, and are better for maintainable and reusable code.
 - **Macros** do not provide local scope, are expanded at preprocessing time, do not provide type safety, and can lead to code bloat and harder-to-debug code.
 
 Understanding these differences can help you decide when to use functions and when to use macros, though modern practice often favors functions for their safety and clarity.
 
 </details>
-
 
 ---
 
@@ -117,6 +125,7 @@ Both functions and macros accept arguments. However, they differ in how argument
 - **Functions**: Treat arguments as variables. These arguments are scoped within the function and behave like normal CMake variables.
 
   Example:
+
   ```cmake
   function(greet name)
     message("Hello, ${name}!")
@@ -130,6 +139,7 @@ Both functions and macros accept arguments. However, they differ in how argument
 - **Macros**: Arguments are treated as simple text substitutions.
 
   Example:
+
   ```cmake
   macro(shout message)
     message(STATUS "${message}!!!")
@@ -140,9 +150,8 @@ Both functions and macros accept arguments. However, they differ in how argument
 
   Output: `-- Hello!!!`
 
-
-  
 #### **Keyword-Based Argument Handling**
+
 To handle arguments more flexibly, CMake provides `cmake_parse_arguments()`, allowing you to define keyword arguments and named lists.
 
 Example:
@@ -172,37 +181,43 @@ include(CMakeParseArguments)
 ```cmake
 function(my_function)
 ```
+
 - This defines a custom function in CMake named `my_function`. The function will contain the commands between `function` and `endfunction`.
 
 ```cmake
   set(prefix ARG)
 ```
+
 - This line sets the variable `prefix` to the string `ARG`. This `prefix` will be used as a prefix for the parsed arguments when using `cmake_parse_arguments`.
 
 ```cmake
   set(noValues ENABLE_FEATURE)
 ```
+
 - This line defines a list of arguments that do not have values associated with them (boolean flags). In this case, `ENABLE_FEATURE` is such an argument. When `cmake_parse_arguments` encounters `ENABLE_FEATURE` in the argument list, it will be treated as a flag.
 
 ```cmake
   set(singleValues TARGET)
 ```
+
 - This line defines a list of arguments that have a single value associated with them. In this case, `TARGET` is such an argument. When `cmake_parse_arguments` encounters `TARGET` in the argument list, it expects it to be followed by a single value.
 
 ```cmake
   set(multiValues SOURCES)
 ```
+
 - This line defines a list of arguments that can have multiple values associated with them. In this case, `SOURCES` is such an argument. When `cmake_parse_arguments` encounters `SOURCES` in the argument list, it will collect all subsequent values until it encounters another recognized argument or the end of the argument list.
 
 ```cmake
   cmake_parse_arguments(${prefix} "${noValues}" "${singleValues}" "${multiValues}" ${ARGN})
 ```
+
 - This line calls the `cmake_parse_arguments` function to parse the arguments passed to `my_function`. Here's a breakdown:
   - `${prefix}`: The prefix for the parsed arguments. In this case, it's `ARG`.
   - `"${noValues}"`:
-The list of arguments that do not have associated values(flags)
-        .- `"${singleValues}"`: The list of arguments that have a single
-                                    associated value.- `"${multiValues}"`
+    The list of arguments that do not have associated values(flags)
+    .- `"${singleValues}"`: The list of arguments that have a single
+    associated value.- `"${multiValues}"`
     : The list of arguments that have multiple associated values.- `$ {
   ARGN
 }
@@ -213,6 +228,7 @@ The `cmake_parse_arguments` function will parse the arguments passed to `my_func
 ```cmake
 endfunction()
 ```
+
 - This ends the definition of the `my_function`.
 
 ### Example Usage
@@ -242,8 +258,9 @@ my_function(TARGET myApp SOURCES main.cpp utils.cpp ENABLE_FEATURE)
 ### **4. Scope Handling**
 
 - **Functions**: Variables defined inside functions are local to that function unless explicitly passed outside using `PARENT_SCOPE`. This prevents unintended changes to variables outside the function scope.
-  
+
   Example:
+
   ```cmake
   function(set_value var_name)
     set(${
@@ -257,6 +274,7 @@ my_function(TARGET myApp SOURCES main.cpp utils.cpp ENABLE_FEATURE)
 - **Macros**: Since macros do not introduce a new scope, variables inside macros will affect the caller's scope.
 
   Example:
+
   ```cmake
   macro(set_value_macro var_name)
     set(${
@@ -274,6 +292,7 @@ my_function(TARGET myApp SOURCES main.cpp utils.cpp ENABLE_FEATURE)
 Both functions and macros can be used to override existing CMake commands, though caution is advised. Overriding can lead to confusion and difficult-to-debug issues.
 
 Example:
+
 ```cmake
 function(message)
   _message("[Overridden] ${ARGV}")
@@ -287,7 +306,6 @@ message("This is a test")  # Outputs: "[Overridden] This is a test"
 ### **6. Best Practices**
 
 - **Use Functions Over Macros**: Functions should be preferred over macros because they avoid scope-related issues, making the CMake script more predictable and easier to maintain.
-  
 - **Handle Arguments with `cmake_parse_arguments()`**: When defining complex functions, use `cmake_parse_arguments()` to handle keyword-based arguments, improving clarity.
 
 - **Avoid Overriding Built-in Commands**: Overriding commands can lead to unintended behavior, especially in large projects. Always document and use such overrides carefully.
@@ -314,6 +332,7 @@ Assuming `mylib` is a static or shared library you've created, here is an exampl
 In the context of the sentence "Assuming mylib is a static or shared library you've created," the word "static" refers to a type of library in CMake and more broadly in software development.
 
 ### Static Library
+
 A **static library** is a collection of object files that are linked into the program during the linking phase of compilation. It is a compiled library that is included directly into the executable file. Here are some key points about static libraries:
 
 - **File Extension:** Typically, static libraries have the file extension `.lib` on Windows and `.a` on Unix-like systems (including Linux and macOS).
@@ -323,6 +342,7 @@ A **static library** is a collection of object files that are linked into the pr
 - **Size:** The executable can be larger because it includes all the necessary code from the static libraries.
 
 ### Shared Library
+
 In contrast, a **shared library** (also known as a dynamic library) is a collection of object files that are not included in the executable but are loaded at runtime. Key points about shared libraries:
 
 - **File Extension:** Shared libraries typically have the file extension `.dll` on Windows and `.so` on Unix-like systems (including Linux and macOS).
@@ -353,6 +373,7 @@ target_link_libraries(myapp PRIVATE mylib)
 ```
 
 In this example:
+
 - `add_library(mylib STATIC mylib.cpp)` creates a static library from `mylib.cpp`.
 - `add_library(mylib SHARED mylib.cpp)` creates a shared library from `mylib.cpp`.
 - `target_link_libraries(myapp PRIVATE mylib)` links the `mylib` library to the `myapp` executable.
@@ -398,6 +419,7 @@ myFunction(test2 /Users/sankarsanbisoyi/Desktop/Cmake/funmac/test2/test2.cpp)
 Create a simple source file for `mylib`:
 
 **mylib.cpp**:
+
 ```cpp
 #include <iostream>
 
@@ -407,6 +429,7 @@ void mylib_function() {
 ```
 
 **mylib.h** (optional, if you need a header file for the library):
+
 ```cpp
 #ifndef MYLIB_H
 #define MYLIB_H
@@ -423,6 +446,7 @@ void mylib_function();
               Update your test source files to use the `mylib` function :
 
     **test1.cpp ** :
+
 ```cpp
 #include "mylib.h"
 #include <iostream>
@@ -436,6 +460,7 @@ void mylib_function();
 ```
 
     **test2.cpp ** :
+
 ```cpp
 #include "mylib.h"
 #include <iostream>
@@ -451,17 +476,20 @@ void mylib_function();
 ### **3. Build and Run**
 
 1. **Create a build directory**:
+
    ```bash
    mkdir build
    cd build
    ```
 
 2. **Configure the project**:
+
    ```bash
    cmake ..
    ```
 
 3. **Build the project**:
+
    ```bash
    make
    ```

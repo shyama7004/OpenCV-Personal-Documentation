@@ -8,7 +8,8 @@ In this chapter,
 - We will see the following functions: `cv.cornerHarris()`, `cv.cornerSubPix()`
 
 ## Theory
-In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by Chris Harris & Mike Stephens in their paper *A Combined Corner and Edge Detector* in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. This is expressed as below:
+
+In the last chapter, we saw that corners are regions in the image with large variation in intensity in all the directions. One early attempt to find these corners was done by Chris Harris & Mike Stephens in their paper _A Combined Corner and Edge Detector_ in 1988, so now it is called the Harris Corner Detector. He took this simple idea to a mathematical form. It basically finds the difference in intensity for a displacement of (u,v) in all directions. This is expressed as below:
 
 <div align = center><img src = https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/22.png width =600 height =100></div>
 
@@ -19,7 +20,6 @@ If you don't remember Gaussian window looks something like below
 <div align ="center"><img src = "https://i.sstatic.net/aXMJ3.png" width =600 ></div>
 
 We have to maximize this function <em>E(u,v)</em> for corner detection. That means we have to maximize the second term. Applying Taylor Expansion to the above equation and using some mathematical steps (please refer to any standard textbooks you like for full derivation), we get the final equation as:
-
 
 <div align = center><img src = https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/23.png width =600 height =200></div>
 
@@ -55,12 +55,14 @@ cv.imshow("Gradient Magnitude", gradient)
 cv.waitKey(0)
 cv.destroyAllWindows()
 ```
+
 </details>
 Then comes the main part. After this, they created a score, basically an equation, which determines if a window can contain a corner or not.
 
 <div align = center><img src = https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/24.png width =600 height =100></div>
 
-where 
+where
+
 - det(M) = &lambda;<sub>1</sub>.&lambda;<sub>2</sub>
 - trace(M) = &lambda;<sub>1</sub> + &lambda;<sub>2</sub>
 - &lambda;<sub>1</sub> and &lambda;<sub>2</sub> are the eigenvalues of M
@@ -78,6 +80,7 @@ It can be represented in a nice picture as follows:
 So the result of Harris Corner Detection is a grayscale image with these scores. Thresholding for a suitable score gives you the corners in the image. We will do it with a simple image.
 
 ## Harris Corner Detector in OpenCV
+
 OpenCV has the function `cv.cornerHarris()` for this purpose. Its arguments are:
 
 - `img` - Input image. It should be grayscale and float32 type.
@@ -116,6 +119,7 @@ Below are the three results:
 ![Harris Corner Detector Results](https://docs.opencv.org/4.x/harris_result.jpg)
 
 ## Corner with SubPixel Accuracy
+
 Sometimes, you may need to find the corners with maximum accuracy. OpenCV comes with a function `cv.cornerSubPix()` which further refines the corners detected with sub-pixel accuracy. Below is an example. As usual, we need to find the Harris corners first. Then we pass the centroids of these corners (There may be a bunch of pixels at a corner, we take their centroid) to refine them. Harris corners are marked in red pixels and refined corners are marked in green pixels. For this function, we have to define the criteria when to stop the iteration. We stop it after a specified number of iterations or a certain accuracy is achieved, whichever occurs first. We also need to define the size of the neighbourhood it searches for corners.
 
 ```python
@@ -160,6 +164,7 @@ cv.imshow('Corners & Centroids', img)
 cv.waitKey(0)
 cv.destroyAllWindows()
 ```
+
 <details>
 <summary>Code Explanation</summary>
 
@@ -170,6 +175,7 @@ cv.destroyAllWindows()
 corner = cv.cornerHarris(gray, 2, 3, 0.04)
 corner = cv.dilate(corner, None)
 ```
+
 - **`corner = cv.cornerHarris(gray, 2, 3, 0.04)`**: Applies the Harris Corner Detection algorithm to detect corners in the grayscale image. The parameters are:
   - `gray`: Input grayscale image.
   - `2`: Block size, which is the neighborhood size considered for corner detection.
@@ -182,6 +188,7 @@ corner = cv.dilate(corner, None)
 ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)
 corner = np.uint8(corner)
 ```
+
 - **`ret, corner = cv.threshold(corner, 0.01 * corner.max(), 255, 0)`**: Applies a binary threshold to the corner detection result to mark the corners. The threshold value is set to 1% of the maximum corner response value. If a pixel value is greater than the threshold, it is set to 255 (white); otherwise, it is set to 0 (black).
 - **`corner = np.uint8(corner)`**: Converts the result of the thresholding to an unsigned 8-bit integer type, which is the standard format for image data.
 
@@ -189,6 +196,7 @@ corner = np.uint8(corner)
 # Find connected components
 ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)
 ```
+
 - **`ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)`**: Finds connected components in the binary image (`corner`). It returns:
   - `ret`: The number of connected components.
   - `labels`: An array where each element has a label indicating which connected component it belongs to.
@@ -199,6 +207,7 @@ ret, labels, stats, centroids = cv.connectedComponentsWithStats(corner)
 # Define criteria for sub-pixel accuracy
 stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
 ```
+
 - **`stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)`**: Defines the termination criteria for the sub-pixel corner refinement. It stops the algorithm when:
   - `cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER`: Either the specified accuracy (`EPS`) or the maximum number of iterations (`MAX_ITER`) is reached.
   - `100`: The maximum number of iterations.
@@ -208,6 +217,7 @@ stop = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 100, 0.001)
 # Refine corner locations to sub-pixel accuracy
 corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)
 ```
+
 - **`corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)`**: Refines the corner positions to sub-pixel accuracy based on the centroids found earlier. It uses the grayscale image as input, and the centroids as initial estimates. The parameters `(5, 5)` define the half-size of the search window, and `(-1, -1)` specifies the region of interest (full image in this case).
 
 ```python
@@ -215,6 +225,7 @@ corners = cv.cornerSubPix(gray, np.float32(centroids), (5, 5), (-1, -1), stop)
 result = np.hstack((centroids, corners))
 result = np.int0(result)
 ```
+
 - **`result = np.hstack((centroids, corners))`**: Horizontally stacks the centroids and their corresponding refined corners into a single array for easier processing.
 - **`result = np.int0(result)`**: Converts the resulting array to integer format, ensuring that the coordinates are in pixel format (integer values).
 
@@ -223,6 +234,7 @@ result = np.int0(result)
 img[result[:, 1], result[:, 0]] = [0, 0, 255]  # Centroids marked in red
 img[result[:, 3], result[:, 2]] = [0, 255, 0]  # Refined corners marked in green
 ```
+
 - **`img[result[:, 1], result[:, 0]] = [0, 0, 255]`**: Marks the original centroids on the image with red color (`[0, 0, 255]` in BGR format).
 - **`img[result[:, 3], result[:, 2]] = [0, 255, 0]`**: Marks the refined corners on the image with green color (`[0, 255, 0]` in BGR format).
 
@@ -232,6 +244,7 @@ cv.imshow('Corners & Centroids', img)
 cv.waitKey(0)
 cv.destroyAllWindows()
 ```
+
 - **`cv.imshow('Corners & Centroids', img)`**: Displays the image with the marked centroids and corners in a window titled "Corners & Centroids".
 - **`cv.waitKey(0)`**: Waits indefinitely for a key press. This is necessary to keep the image window open.
 - **`cv.destroyAllWindows()`**: Closes all OpenCV windows that were opened during the program.
@@ -242,12 +255,14 @@ Below is the result, where some important locations are shown in the zoomed wind
 ![Subpixel Accuracy](https://docs.opencv.org/4.x/subpixel3.png)
 
 ## Additional Resources
+
 - Exercises
 <details>
     <summary>Harris Corner Detection code for video detection,</summary>
 To adapt the Harris Corner Detection code for video detection, you can follow a similar approach as before, processing each frame of the video stream individually. Here’s the modified code and explanation:
 
 **Steps for Video Detection:**
+
 1. Open a video stream using OpenCV.
 2. Convert each frame to grayscale.
 3. Apply the Harris Corner Detection on each frame.
@@ -301,6 +316,7 @@ cv.destroyAllWindows()
 ```
 
 **Explanation:**
+
 - **Video Capture:** The video stream is opened using `cap = cv.VideoCapture(0)`. This code uses the webcam, but you can replace `0` with a file path for a saved video.
 - **Grayscale Conversion:** Each frame is converted to grayscale using `cv.cvtColor` for processing.
 - **Harris Corner Detection:** The `cv.cornerHarris` function is applied to detect corners in the frame.
@@ -309,6 +325,7 @@ cv.destroyAllWindows()
 
 **To Run the Code:**
 Ensure you have OpenCV installed (`opencv-python`). This approach allows you to apply Harris Corner Detection on live video feeds or any video file.
+
 </details>
 
 <details>
@@ -379,6 +396,7 @@ cv.destroyAllWindows()
 ```
 
 ### Explanation:
+
 - **Video Capture:** The video stream is opened using `cap = cv.VideoCapture(0)`. This uses the webcam by default, but you can replace `0` with a file path for saved video.
 - **Processing:** For each frame:
   - The frame is converted to grayscale.
@@ -388,6 +406,7 @@ cv.destroyAllWindows()
 - **Display and Exit:** The processed frames are displayed continuously in real-time. Pressing 'q' stops the video.
 
 ### Additional Notes:
+
 - The code uses sub-pixel refinement, which improves the accuracy of corner localization.
 - Make sure OpenCV is installed with `pip install opencv-python`.
 - This code works for both live webcam feeds and pre-recorded videos.
@@ -398,3 +417,4 @@ This setup allows real-time corner detection with enhanced accuracy, making it s
 
 ```
 Crafted by shyama7004 with help of OpenCV Docs:)
+```

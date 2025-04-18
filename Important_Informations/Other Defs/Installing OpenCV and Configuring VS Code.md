@@ -7,6 +7,7 @@ This guide covers the installation of OpenCV and configuring Visual Studio Code 
 #### Step 1: Install OpenCV
 
 1. **Install Homebrew** (if you don't have it already):
+
    ```sh
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
@@ -32,25 +33,22 @@ This guide covers the installation of OpenCV and configuring Visual Studio Code 
 
    ```json
    {
-       "configurations": [
-           {
-               "name": "Mac",
-               "includePath": [
-                   "${workspaceFolder}/**",
-                   "<path_to_opencv_include>"
-               ],
-               "defines": [],
-               "macFrameworkPath": [
-                   "/System/Library/Frameworks",
-                   "/Library/Frameworks"
-               ],
-               "compilerPath": "/usr/bin/clang",
-               "cStandard": "c11",
-               "cppStandard": "c++11",
-               "intelliSenseMode": "macos-clang-x64"
-           }
-       ],
-       "version": 4
+     "configurations": [
+       {
+         "name": "Mac",
+         "includePath": ["${workspaceFolder}/**", "<path_to_opencv_include>"],
+         "defines": [],
+         "macFrameworkPath": [
+           "/System/Library/Frameworks",
+           "/Library/Frameworks"
+         ],
+         "compilerPath": "/usr/bin/clang",
+         "cStandard": "c11",
+         "cppStandard": "c++11",
+         "intelliSenseMode": "macos-clang-x64"
+       }
+     ],
+     "version": 4
    }
    ```
 

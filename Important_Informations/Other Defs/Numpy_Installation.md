@@ -2,7 +2,7 @@
 
 #### Prerequisites
 
-- **Python:** Ensure you have Python installed on your system. 
+- **Python:** Ensure you have Python installed on your system.
 - **Anaconda Distribution:** For a simplified setup, especially for beginners, using the Anaconda Distribution is recommended as it includes Python, NumPy, and many other packages for scientific computing and data science.
 
 #### Installation Methods
@@ -10,27 +10,30 @@
 ##### Using Conda
 
 1. **Create and Activate Environment:**
-    ```sh
-    conda create -n my-env
-    conda activate my-env
-    ```
+
+   ```sh
+   conda create -n my-env
+   conda activate my-env
+   ```
 
 2. **Install from Conda-Forge (Optional):**
-    ```sh
-    conda config --env --add channels conda-forge
-    ```
+
+   ```sh
+   conda config --env --add channels conda-forge
+   ```
 
 3. **Install NumPy:**
-    ```sh
-    conda install numpy
-    ```
+   ```sh
+   conda install numpy
+   ```
 
 ##### Using Pip
 
 1. **Install NumPy:**
-    ```sh
-    pip install numpy
-    ```
+
+   ```sh
+   pip install numpy
+   ```
 
 2. **Virtual Environments:** It is good practice to use virtual environments to ensure reproducible installs. Refer to guides on virtual environments for detailed instructions.
 
@@ -41,6 +44,7 @@ Installing and managing packages in Python can be complex due to the variety of 
 ##### Recommendations
 
 **Beginning Users (Windows, macOS, Linux):**
+
 1. **Install Anaconda:** This includes all necessary packages and tools.
 2. **Code Writing and Execution:** Use JupyterLab for exploratory and interactive computing, and Spyder or Visual Studio Code for scripting.
 3. **Package Management:** Use Anaconda Navigator to manage packages and launch tools like JupyterLab, Spyder, or Visual Studio Code.
@@ -48,22 +52,25 @@ Installing and managing packages in Python can be complex due to the variety of 
 **Advanced Users:**
 
 - **Conda Users:**
-    1. **Install Miniforge:** A minimal installer for conda.
-    2. **Environment Management:** Keep the base conda environment minimal and create separate environments for different projects.
+
+  1. **Install Miniforge:** A minimal installer for conda.
+  2. **Environment Management:** Keep the base conda environment minimal and create separate environments for different projects.
 
 - **Pip/PyPI Users:**
-    1. **Install Python:** Use python.org, Homebrew, or your Linux package manager.
-    2. **Dependency Management:** Use Poetry for managing dependencies and environments.
+  1. **Install Python:** Use python.org, Homebrew, or your Linux package manager.
+  2. **Dependency Management:** Use Poetry for managing dependencies and environments.
 
 ##### Python Package Management
 
 **Conda vs Pip:**
 
 1. **Language Support:**
+
    - **Conda:** Cross-language package manager, can install Python itself.
    - **Pip:** Specific to Python, installs packages for a particular Python installation.
 
 2. **Package Repositories:**
+
    - **Conda:** Uses its own channels (e.g., defaults, conda-forge).
    - **Pip:** Uses the Python Packaging Index (PyPI).
 
@@ -101,10 +108,12 @@ NumPy depends on accelerated linear algebra libraries (typically Intel MKL or Op
 #### Troubleshooting
 
 If you encounter the following error:
+
 ```
 IMPORTANT: PLEASE READ THIS FOR ADVICE ON HOW TO SOLVE THIS ISSUE!
 
 Importing the numpy c-extensions failed. This error can happen for
 different reasons, often due to issues with your setup.
 ```
+
 Consult the troubleshooting guide for solutions to common setup issues.

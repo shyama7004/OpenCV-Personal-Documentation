@@ -1,7 +1,8 @@
 ## EXTENSION_MAPPING
-Extension Mapping refers to the process of extending or 
-modifying the mapping capabilities of a software or application. 
-This can include adding new features, tools, or functionality to enhance 
+
+Extension Mapping refers to the process of extending or
+modifying the mapping capabilities of a software or application.
+This can include adding new features, tools, or functionality to enhance
 the mapping experience.
 
 ### Types of Extension Mapping
@@ -24,21 +25,20 @@ Extension mapping can provide several benefits, including:
 
 - Enhanced productivity: Extension mapping can help users work more efficiently and effectively by providing tools and features that streamline their workflow.
 
-Doxygen selects the parser to use depending on the extension of the files it parses. With this tag you can assign which parser to use for a given extension. 
-`Doxygen has a built-in mapping`, but `you can override or extend it using this tag`. The format is `ext=language`, 
-where `ext is a file extension`, and language is one of the parsers supported by 
+Doxygen selects the parser to use depending on the extension of the files it parses. With this tag you can assign which parser to use for a given extension.
+`Doxygen has a built-in mapping`, but `you can override or extend it using this tag`. The format is `ext=language`,
+where `ext is a file extension`, and language is one of the parsers supported by
 Doxygen: `IDL`, `Java`, `JavaScript`, `Csharp (C#)`, `C`, `C++`, `Lex`, `D`, `PHP`,
-`md (Markdown)`, `Objective-C`, `Python`, `Slice`, `VHDL`, `Fortran 
+`md (Markdown)`, `Objective-C`, `Python`, `Slice`, `VHDL`, `Fortran
 
 `Fortran is an imperative programming language that has been used for over 60 years to create powerful, efficient, and accurate applications, particularly in scientific fields.`
 
 (fixed format Fortran: FortranFixed, free formatted Fortran: FortranFree, unknown formatted Fortran: Fortran. In the later case the parser tries to guess whether the code is fixed or free formatted code, this is the default for Fortran type files).
 
-For instance to make Doxygen treat .inc files as Fortran files (default is PHP), 
+For instance to make Doxygen treat .inc files as Fortran files (default is PHP),
 and .f files as C (default is Fortran), use: `inc=Fortran f=C`.
-
 
 `Note:` For files without extension you can use no_extension as a placeholder.
 
 `Note that for custom extensions you also need to set FILE_PATTERNS otherwise the files are not
-read by Doxygen`. When specifying no_extension you should add * to the FILE_PATTERNS.
+read by Doxygen`. When specifying no_extension you should add \* to the FILE_PATTERNS.

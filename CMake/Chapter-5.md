@@ -1,10 +1,10 @@
 ## Chapter 5. Variables
 
 ### 5.1 Variable Basics
+
 Variables are a central aspect of CMake's scripting. CMake treats all variables as strings, but they can represent different types based on context (e.g., boolean values or lists).
 
 - **Variable Scope:** Variables have a scope in CMake, which can either be global (applying throughout a CMakeLists.txt) or local, restricted to functions, macros, or subdirectories. The `PARENT_SCOPE` keyword can promote a variable’s scope to its enclosing context.
-  
 - **Multiple Values:** When setting multiple values, they are separated by semicolons by default. Use quotes to handle spaces properly.
 
 Example:
@@ -17,7 +17,7 @@ set(myVar "a b c")  # myVar = "a b c"
 - **Recursive Variables:** CMake allows recursive variable evaluation. You can define a variable using another variable’s value, enabling complex dependencies.
 
 ```cmake
-set(foo ab)               
+set(foo ab)
 set(bar ${foo}cd)         # bar = "abcd"
 set(big "${${myVar}r}ef") # big = "abcdef"
 ```
@@ -51,6 +51,7 @@ unset(myVar)
 ```
 
 ### 5.2 Environment Variables
+
 You can retrieve and set environment variables using the form `$ENV{
   varName
 }
@@ -60,35 +61,41 @@ You can retrieve and set environment variables using the form `$ENV{
         specific syntax :
 
     -**`$ENV {
-  varName
+
+varName
 }
 `** : This is a way to retrieve the value of an environment variable
-          named `varName`
-              .The `$ENV` prefix indicates that it is an environment variable.-
-    You can also set an environment variable using the same syntax,
-    typically in programming languages like Perl.
+          named `varName`              .The`$ENV` prefix indicates that it is an environment variable.-
+You can also set an environment variable using the same syntax,
+typically in programming languages like Perl.
 
     For example : -To retrieve the value : `value = $ENV {
-  HOME
+
+HOME
 }` gets the home directory.
+
 - To set a value: `$ENV{MY_VAR} = "some_value"` assigns "some_value" to the environment variable `MY_VAR`.
 
-
 Example:
+
 ```cmake
 set(ENV{PATH} "$ENV{PATH}:/opt/myDir")
 ```
+
 Note that setting an environment variable this way only affects the current CMake instance and does not persist beyond the configuration phase.
 
 ### 5.3 Cache Variables
+
 Cache variables are persistent across CMake runs and stored in `CMakeCache.txt`. These variables are typically used to store user or system settings that do not change often.
 
 Example:
+
 ```cmake
 set(myVar foo CACHE STRING "A cache variable")
 ```
 
 Cache variables can be of the following types:
+
 - **BOOL:** Boolean values, often displayed as checkboxes in GUI tools.
 - **FILEPATH/PATH:** A file or directory path.
 - **STRING:** A generic string.
@@ -104,6 +111,7 @@ In CMake, cache variables are used to store the values of variables across multi
 2. **User-Editable**: These variables can be modified by the user through the CMake GUI or by editing the `CMakeCache.txt` file directly.
 
 3. **Definition**: Cache variables are typically defined using the `set` command with the `CACHE` option, like this:
+
    ```cmake
    set(MY_VAR "default_value" CACHE STRING "Description of MY_VAR")
    ```
@@ -112,29 +120,33 @@ In CMake, cache variables are used to store the values of variables across multi
 
 5. **Usage**: Cache variables are often used for configuration options, such as specifying library paths or enabling/disabling features in the build process.
 
-
 Cache variables can be manipulated directly from the command line using the `-D` option or through GUI tools like `cmake-gui` and `ccmake`.
 
 Command-line example:
+
 ```sh
 cmake -Dfoo:BOOL=ON -Dbar:STRING="Some value"
 ```
 
 To remove variables:
+
 ```sh
 cmake -U 'foo*'
 ```
 
 ### 5.5 Debugging Variables and Diagnostics
+
 Use the `message()` command to print the value of variables for debugging purposes. The `message()` command accepts different modes for logging, such as STATUS, WARNING, SEND_ERROR, and FATAL_ERROR.
 
 Example:
+
 ```cmake
 set(myVar "Hello, CMake!")
 message(STATUS "The value of myVar is: ${myVar}")
 ```
 
 ### 5.6 String Handling
+
 CMake provides the `string()` command for common string operations such as finding, replacing, or comparing substrings. For example, to find a substring within a string:
 
 ```cmake
@@ -143,18 +155,22 @@ message(STATUS "Index of 'world' is: ${index}")
 ```
 
 ### 5.7 Lists
+
 Lists in CMake are simply strings separated by semicolons. You can manipulate lists using the `list()` command, which allows appending, removing, or reversing elements.
 
 Example:
+
 ```cmake
 list(APPEND myList a b c)
 message(STATUS "myList: ${myList}")
 ```
 
 ### 5.8 Math
+
 The `math(EXPR)` command allows you to perform basic arithmetic operations on variables.
 
 Example:
+
 ```cmake
 set(x 5)
 set(y 3)
@@ -163,6 +179,7 @@ message(STATUS "Result: ${result}")
 ```
 
 ### 5.9 Recommended Practices
+
 - **Use Cache Variables for Optional Features:** Instead of relying on environment variables, prefer cache variables for optional build components. This makes them more accessible and manageable in CMake GUI tools.
 - **Naming Conventions:** Establish a clear naming convention, especially for cache variables. Group related variables using a common prefix, which helps in tools like `cmake-gui` that group variables automatically.
 - **Use `message()` with Modes:** Always use appropriate modes when logging messages with `message()`. For logs intended to remain part of the project, prefer `STATUS` mode for clarity.
@@ -268,29 +285,34 @@ Welcome to My CMake Project!
 #### Explanation
 
 1. **Project Setup:**
-    - `cmake_minimum_required(VERSION 3.10)` specifies the minimum CMake version required.
-    - `project(MyCMakeProject VERSION 1.0)` sets the project name and version.
+
+   - `cmake_minimum_required(VERSION 3.10)` specifies the minimum CMake version required.
+   - `project(MyCMakeProject VERSION 1.0)` sets the project name and version.
 
 2. **Defining Variables:**
-    - `set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")` defines the source directory.
-    - `set(MY_MESSAGE "Hello, CMake!")` sets a custom message.
-    - `set(CPP_STANDARD 11)` defines the C++ standard.
+
+   - `set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")` defines the source directory.
+   - `set(MY_MESSAGE "Hello, CMake!")` sets a custom message.
+   - `set(CPP_STANDARD 11)` defines the C++ standard.
 
 3. **Using Variables:**
-    - `set(CMAKE_CXX_STANDARD ${CPP_STANDARD})` sets the C++ standard for the project.
-    - `add_executable(MyApp ${SRC_DIR}/main.cpp)` adds an executable target.
+
+   - `set(CMAKE_CXX_STANDARD ${CPP_STANDARD})` sets the C++ standard for the project.
+   - `add_executable(MyApp ${SRC_DIR}/main.cpp)` adds an executable target.
 
 4. **Debugging Variables:**
-    - `message(STATUS "Source directory: ${SRC_DIR}")` prints the source directory.
-    - `message(STATUS "C++ Standard: ${CPP_STANDARD}")` prints the C++ standard.
-    - `message(STATUS "Custom message: ${MY_MESSAGE}")` prints the custom message.
+
+   - `message(STATUS "Source directory: ${SRC_DIR}")` prints the source directory.
+   - `message(STATUS "C++ Standard: ${CPP_STANDARD}")` prints the C++ standard.
+   - `message(STATUS "Custom message: ${MY_MESSAGE}")` prints the custom message.
 
 5. **Environment Variables:**
-    - `if(NOT DEFINED ENV{MY_ENV_VAR})` checks if the environment variable is not defined.
-    - `set(ENV{
-  MY_ENV_VAR} "default_value")` sets a default value for the environment variable.
-    - `message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")` prints the environment variable.
+
+   - `if(NOT DEFINED ENV{MY_ENV_VAR})` checks if the environment variable is not defined.
+   - `set(ENV{
+MY_ENV_VAR} "default_value")` sets a default value for the environment variable.
+   - `message(STATUS "Environment variable MY_ENV_VAR: $ENV{MY_ENV_VAR}")` prints the environment variable.
 
 6. **Cache Variables:**
-    - `set(MY_CACHE_VAR "DefaultCacheValue" CACHE STRING "A cache variable example")` sets a cache variable.
-    - `message(STATUS "Cache variable MY_CACHE_VAR: ${MY_CACHE_VAR}")` prints the cache variable.
+   - `set(MY_CACHE_VAR "DefaultCacheValue" CACHE STRING "A cache variable example")` sets a cache variable.
+   - `message(STATUS "Cache variable MY_CACHE_VAR: ${MY_CACHE_VAR}")` prints the cache variable.

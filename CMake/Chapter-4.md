@@ -9,22 +9,24 @@
 2. **Create `CMakeLists.txt`**: Inside your project directory, create a file named `CMakeLists.txt`.
 
 3. **Minimum Required Version and Project Name**:
-    ```cmake
-    cmake_minimum_required(VERSION 3.10)
-    project(MyFirstProject)
-    ```
+
+   ```cmake
+   cmake_minimum_required(VERSION 3.10)
+   project(MyFirstProject)
+   ```
 
 4. **Add an Executable**:
-    - To define an executable target, use the `add_executable` command.
-    - Example: Create a `main.cpp` file in your project directory and add the following line to your `CMakeLists.txt`:
-    ```cmake
-    add_executable(MyFirstExecutable main.cpp)
-    ```
-    - This tells CMake to compile `main.cpp` and create an executable named `MyFirstExecutable`.
+   - To define an executable target, use the `add_executable` command.
+   - Example: Create a `main.cpp` file in your project directory and add the following line to your `CMakeLists.txt`:
+   ```cmake
+   add_executable(MyFirstExecutable main.cpp)
+   ```
+   - This tells CMake to compile `main.cpp` and create an executable named `MyFirstExecutable`.
 
 **Example Project**
 
 **Directory Structure**:
+
 ```
 MyFirstProject/
 ├── CMakeLists.txt
@@ -32,6 +34,7 @@ MyFirstProject/
 ```
 
 **main.cpp**:
+
 ```cpp
 #include <iostream>
 
@@ -43,12 +46,14 @@ int main() {
 
             **CMakeLists
                 .txt ** :
+
 ```cmake cmake_minimum_required(VERSION 3.10) project(MyFirstProject)
 
                     add_executable(MyFirstExecutable main.cpp)
 ```
 
                         **Build Instructions ** :
+
 ```sh mkdir build cd build cmake..make./
         MyFirstExecutable
 ```
@@ -76,7 +81,8 @@ int main() {
                                    **Example Project **
 
                                        **Directory Structure ** :
-``` MyFirstProject
+
+```MyFirstProject
               /
 ├── CMakeLists.txt
 ├── main.cpp
@@ -88,6 +94,7 @@ int main() {
                   **mylib
               /
               mylib.cpp ** :
+
 ```cpp
 #include "mylib.h"
 
@@ -98,6 +105,7 @@ int main() {
 
         **mylib /
     mylib.h ** :
+
 ```cpp
 #ifndef MYLIB_H
 #define MYLIB_H
@@ -109,6 +117,7 @@ int main() {
 ```
 
     **main.cpp ** :
+
 ```cpp
 #include "mylib.h"
 #include <iostream>
@@ -122,6 +131,7 @@ int main() {
 
             **CMakeLists
                 .txt ** :
+
 ```cmake cmake_minimum_required(VERSION 3.10) project(MyFirstProject)
 
                     add_library(MyLibrary mylib / mylib.cpp)
@@ -131,6 +141,7 @@ int main() {
 ```
 
                                 **Build Instructions ** :
+
 ```sh mkdir build cd build cmake..make./
         MyFirstExecutable
 ```
@@ -158,7 +169,8 @@ int main() {
                 **Example Project **
 
                     **Directory Structure ** :
-``` MyFirstProject
+
+```MyFirstProject
         /
 ├── CMakeLists.txt
 ├── main.cpp
@@ -173,6 +185,7 @@ int main() {
             **libone
         /
         libone.cpp ** :
+
 ```cpp
 #include "libone.h"
 
@@ -183,6 +196,7 @@ int main() {
 
         **libone /
     libone.h ** :
+
 ```cpp
 #ifndef LIBONE_H
 #define LIBONE_H
@@ -195,6 +209,7 @@ int main() {
 
         **libtwo /
     libtwo.cpp ** :
+
 ```cpp
 #include "libtwo.h"
 
@@ -206,6 +221,7 @@ int main() {
 
         **libtwo /
     libtwo.h ** :
+
 ```cpp
 #ifndef LIBTWO_H
 #define LIBTWO_H
@@ -217,6 +233,7 @@ int main() {
 ```
 
     **main.cpp ** :
+
 ```cpp
 #include "libone/libone.h"
 #include "libtwo/libtwo.h"
@@ -231,6 +248,7 @@ int main() {
 ```
 
 **CMakeLists.txt**:
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyFirstProject)
@@ -243,6 +261,7 @@ target_link_libraries(MyExecutable PRIVATE LibraryOne LibraryTwo)
 ```
 
 **Build Instructions**:
+
 ```sh
 mkdir build
 cd build
@@ -254,14 +273,17 @@ make
 ### Detailed Explanation of Section 4.4: Linking Non-targets
 
 #### Overview
+
 In CMake, `target_link_libraries()` is a versatile command that can link more than just CMake targets. It can also link to non-targets such as system libraries, library files, and even specific linker flags. Understanding how to link these non-targets is essential for managing dependencies effectively in a project.
 
 #### Linking Full Path to a Library File
+
 When specifying a full path to a library file, CMake will directly include this library in the linker command. This ensures that any changes to the library file will trigger a re-link of the target.
 
 **Example:**
 
 **CMakeLists.txt:**
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
@@ -275,11 +297,13 @@ target_link_libraries(MyExecutable PRIVATE /usr/local/lib/libmylib.a)
 In this example, `MyExecutable` links to `libmylib.a` located in `/usr/local/lib`.
 
 #### Linking by Plain Library Name
+
 If only the library name is specified, CMake will ask the linker to search for the library in the standard system paths.
 
 **Example:**
 
 **CMakeLists.txt:**
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
@@ -293,11 +317,13 @@ target_link_libraries(MyExecutable PRIVATE m)
 Here, `MyExecutable` links to the math library `libm.so` on Unix systems or `libm.lib` on Windows.
 
 #### Adding Linker Flags
+
 Linker flags can be added directly using `target_link_libraries()` if they start with a hyphen (other than `-l` or `-framework`).
 
 **Example:**
 
 **CMakeLists.txt:**
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
@@ -311,11 +337,13 @@ target_link_libraries(MyExecutable PRIVATE -Wl,--no-as-needed)
 This adds the `--no-as-needed` flag to the linker command.
 
 #### Using Keywords: `debug`, `optimized`, and `general`
+
 CMake supports keywords to control when specific libraries or flags should be included based on the build type.
 
 **Example:**
 
 **CMakeLists.txt:**
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
@@ -329,12 +357,14 @@ target_link_libraries(MyExecutable PRIVATE
 ```
 
 In this example:
+
 - `libmylib_debug.a` is linked during debug builds.
 - `libmylib.a` is linked during optimized (non-debug) builds.
 
 ### Complete Example Project
 
 **Directory Structure:**
+
 ```
 MyProject/
 ├── CMakeLists.txt
@@ -342,6 +372,7 @@ MyProject/
 ```
 
 **main.cpp:**
+
 ```cpp
 #include <cmath>
 #include <iostream>
@@ -356,6 +387,7 @@ int main() {
         **CMakeLists
             .txt
     : **
+
 ```cmake
       cmake_minimum_required(VERSION 3.10) project(MyProject)
 

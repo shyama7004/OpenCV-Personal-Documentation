@@ -25,10 +25,12 @@ To generate the OpenCV documentation using Doxygen, follow these detailed steps:
 ### Step-by-Step Instructions
 
 1. **Get the OpenCV Sources:**
+
    - Download the OpenCV source code (version 3.0 or later). This is the foundational codebase you will be documenting.
    - Optionally, download the `opencv_contrib` sources, which include additional modules that extend the functionality of OpenCV.
 
 2. **Create a Build Directory:**
+
    - Navigate to the directory containing the OpenCV sources. It's good practice to create a separate build directory to keep the build files separate from the source files.
      ```bash
      mkdir build
@@ -36,6 +38,7 @@ To generate the OpenCV documentation using Doxygen, follow these detailed steps:
      ```
 
 3. **Run CMake:**
+
    - Use CMake to configure the build system and generate the necessary makefiles. This step also prepares the project to build the documentation.
    - If you're only using the OpenCV sources, run:
      ```bash
@@ -50,17 +53,18 @@ To generate the OpenCV documentation using Doxygen, follow these detailed steps:
    ```
       brew install doxygen
    ```
-   
-6. **Run Make to Generate Documentation:**
+5. **Run Make to Generate Documentation:**
+
    - Use the `make` command to build the Doxygen documentation.
      ```bash
      make doxygen
      ```
 
-7. **Open the Generated Documentation:**
+6. **Open the Generated Documentation:**
+
    - The documentation will be generated in HTML format and can be found in the `doc/doxygen/html` directory. Open the `index.html` file in your web browser to view the documentation.
 
-8. **Test Your Python Code with Pylint:**
+7. **Test Your Python Code with Pylint:**
    - Run the following command to check your Python code:
      ```bash
      make check_pylint
@@ -69,6 +73,7 @@ To generate the OpenCV documentation using Doxygen, follow these detailed steps:
 ### Installing Pylint
 
 If Pylint is not already installed, you can install it using pip:
+
 ```bash
 pip install pylint
 ```
@@ -105,6 +110,7 @@ pip install pylint
 ## Quick Start
 
 ### Note (C++):
+
 These instructions are tailored for documenting the OpenCV library. Different projects might have different layouts and documentation conventions.
 
 ### Documentation Locations
@@ -205,67 +211,69 @@ enum LineTypes {
 - **Comment Syntax:** Various forms include:
   - C-style: `/** ... */` or `/*! ... */`
   - C++-style: `//! ...` or `/// ...`
-  - Lines starting with `*`: 
+  - Lines starting with `*`:
     ```cpp
     /**
      * ...
      * ...
      */
     ```
-  - After documented entity: 
+  - After documented entity:
     - `//!< ...`
     - `/**< ... */`
 - **Paragraph End:** Insert an empty line or a new paragraph command:
+
   ```cpp
 
 
-  @brief This is the first paragraph. 
+  @brief This is the first paragraph.
   @brief This is the second paragraph.
   ```
+
 - **TeX Support:** Math formulas should be between `\f[ ... \f]` or `\f$ ... \f$` commands, with more control provided by the built-in MathJax support.
 
 ### Doxygen Tag Reference:
 
 #### List of Main Tags:
 
-| Command                | Description                                                                            |
-|------------------------|----------------------------------------------------------------------------------------|
-| `@addtogroup`          | Adds documentation to a group                                                          |
-| `@anchor`              | Defines an anchor that can be referenced                                               |
-| `@brief`               | Brief description of an item                                                           |
-| `@bug`                 | Describes a bug related to the documented item                                         |
-| `@code`                | Starts a code block                                                                    |
-| `@endcode`             | Ends a code block                                                                      |
-| `@details`             | Detailed description of an item                                                        |
-| `@deprecated`          | Marks the item as deprecated                                                           |
-| `@example`             | Includes an example source code file                                                   |
-| `@exception`           | Describes exceptions thrown by a function                                              |
-| `@file`                | Documents a file                                                                       |
-| `@ingroup`             | Adds the item to a group                                                               |
-| `@link`                | Creates a link to another item                                                         |
-| `@note`                | Adds a note                                                                            |
-| `@param`               | Documents a parameter                                                                  |
-| `@return`              | Describes the return value of a function                                               |
-| `@see`                 | Links to another item for further reference                                            |
-| `@since`               | Documents when the item was added                                                      |
-| `@throw`               | Describes exceptions thrown by a function                                              |
-| `@todo`                | Adds a to-do item                                                                      |
-| `@warning`             | Adds a warning message                                                                 |
-| `@author`              | Author of the item                                                                     |
-| `@date`                | Date when the item was documented                                                      |
-| `@version`             | Version of the item                                                                    |
-| `@defgroup`            | Defines a group                                                                        |
-| `@section`             | Starts a new section                                                                   |
-| `@subsection`          | Starts a new subsection                                                                |
-| `@param[in]`           | Describes an input parameter                                                           |
-| `@param[out]`          | Describes an output parameter                                                          |
-| `@param[in,out]`       | Describes a parameter used for both input and output                                   |
-| `@f$ ... \f$`          | Inline formula                                                                         |
-| `@f[ ... \f]`          | Display formula                                                                        |
-| `@image`               | Embeds an image                                                                        |
-| `@include`             | Includes a file                                                                        |
-| `@internal`            | Marks the item as internal, not for public use                                         |
-| `@interface`           | Documents an interface                                                                 |
-| `@var`                 | Documents a variable                                                                   |
+| Command          | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| `@addtogroup`    | Adds documentation to a group                        |
+| `@anchor`        | Defines an anchor that can be referenced             |
+| `@brief`         | Brief description of an item                         |
+| `@bug`           | Describes a bug related to the documented item       |
+| `@code`          | Starts a code block                                  |
+| `@endcode`       | Ends a code block                                    |
+| `@details`       | Detailed description of an item                      |
+| `@deprecated`    | Marks the item as deprecated                         |
+| `@example`       | Includes an example source code file                 |
+| `@exception`     | Describes exceptions thrown by a function            |
+| `@file`          | Documents a file                                     |
+| `@ingroup`       | Adds the item to a group                             |
+| `@link`          | Creates a link to another item                       |
+| `@note`          | Adds a note                                          |
+| `@param`         | Documents a parameter                                |
+| `@return`        | Describes the return value of a function             |
+| `@see`           | Links to another item for further reference          |
+| `@since`         | Documents when the item was added                    |
+| `@throw`         | Describes exceptions thrown by a function            |
+| `@todo`          | Adds a to-do item                                    |
+| `@warning`       | Adds a warning message                               |
+| `@author`        | Author of the item                                   |
+| `@date`          | Date when the item was documented                    |
+| `@version`       | Version of the item                                  |
+| `@defgroup`      | Defines a group                                      |
+| `@section`       | Starts a new section                                 |
+| `@subsection`    | Starts a new subsection                              |
+| `@param[in]`     | Describes an input parameter                         |
+| `@param[out]`    | Describes an output parameter                        |
+| `@param[in,out]` | Describes a parameter used for both input and output |
+| `@f$ ... \f$`    | Inline formula                                       |
+| `@f[ ... \f]`    | Display formula                                      |
+| `@image`         | Embeds an image                                      |
+| `@include`       | Includes a file                                      |
+| `@internal`      | Marks the item as internal, not for public use       |
+| `@interface`     | Documents an interface                               |
+| `@var`           | Documents a variable                                 |
 
 For comprehensive details on all available Doxygen commands, please refer to the official [Doxygen documentation](https://www.doxygen.nl/manual/commands.html).

@@ -1,9 +1,11 @@
 # BRIEF (Binary Robust Independent Elementary Features)
 
 ## Goal
+
 In this chapter, we will see the basics of the BRIEF algorithm.
 
 ## Theory
+
 We know SIFT uses a 128-dimensional vector for descriptors. Since it uses floating point numbers, it requires approximately 512 bytes. Similarly, SURF also takes a minimum of 256 bytes (for 64 dimensions). Creating such vectors for thousands of features consumes a lot of memory, which is not feasible for resource-constrained applications, especially for embedded systems. Larger memory usage also results in longer matching times.
 
 However, not all these dimensions are necessary for actual matching. We can compress them using several methods like PCA, LDA, etc. Other methods, such as hashing using LSH (Locality Sensitive Hashing), are also used to convert these SIFT descriptors from floating point numbers to binary strings. These binary strings are used to match features using Hamming distance, which provides better speed because finding the Hamming distance involves just applying XOR and bit counting, which are very fast in modern CPUs with SSE instructions. However, we still need to find the descriptors first before applying hashing, which doesn't solve our initial memory problem.
@@ -17,9 +19,11 @@ An important point to note is that BRIEF is a feature descriptor; it doesn't pro
 In short, BRIEF is a faster method for feature descriptor calculation and matching. It also provides a high recognition rate unless there is large in-plane rotation.
 
 ## STAR (CenSurE) in OpenCV
+
 STAR is a feature detector derived from CenSurE. Unlike CenSurE, which uses polygons like squares, hexagons, and octagons to approximate a circle, STAR emulates a circle with two overlapping squares: one upright and one rotated by 45 degrees. These polygons are bi-level, meaning they can be seen as polygons with thick borders. The borders and the enclosed area have weights of opposing signs. This has better computational characteristics than other scale-space detectors and is capable of real-time implementation. In contrast to SIFT and SURF, which find extrema at sub-sampled pixels (compromising accuracy at larger scales), CenSurE creates a feature vector using full spatial resolution at all scales in the pyramid.
 
 ## BRIEF in OpenCV
+
 The code below shows the computation of BRIEF descriptors with the help of the CenSurE detector.
 
 > **Note:** You need `opencv-contrib` to use this.
@@ -46,6 +50,7 @@ kp, des = brief.compute(img, kp)
 print(brief.descriptorSize())
 print(des.shape)
 ```
+
 ### Checkout the results below:
 
 <div align ="center"><img src ="https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/25.png"></div>
@@ -55,6 +60,7 @@ print(des.shape)
 To convert the given code from detecting keypoints and descriptors in an image to performing video detection using BRIEF, you need to modify the code to process video frames instead of a static image. Here’s a brief explanation and the updated code:
 
 **Steps for Video Detection:**
+
 1. Open a video stream using OpenCV.
 2. Loop through each frame in the video.
 3. Apply the keypoint detection and descriptor extraction on each frame.
@@ -111,6 +117,7 @@ cv.destroyAllWindows()
 ```
 
 **Explanation:**
+
 - **Video Capture:** `cap = cv.VideoCapture(0)` opens the default webcam. You can replace `0` with a video file path to process a saved video.
 - **Looping through frames:** Each frame is grabbed and processed in a loop until the video ends or the user exits.
 - **Processing:** The keypoint detection and descriptor computation happen for each frame.
@@ -118,4 +125,5 @@ cv.destroyAllWindows()
 
 **To Run the Code:**
 Ensure you have OpenCV with extra modules installed (`opencv-contrib-python`) for the BRIEF extractor.
+
 ---

@@ -9,6 +9,7 @@ Welcome to Anaconda! This guide will help you get started with Anaconda Distribu
 **Conda** is a command-line interface (CLI) program that processes text commands to perform various tasks. On Windows, Anaconda recommends using the Anaconda Prompt CLI to work with conda. macOS and Linux users can use their built-in command line applications.
 
 **Note:** If you installed Miniconda instead of Anaconda Distribution, Anaconda Navigator is not included. You can manually install Navigator by running the command:
+
 ```
 conda install anaconda-navigator
 ```
@@ -24,16 +25,20 @@ Navigator and the CLI interact with conda in similar but distinct ways, each wit
 ## What’s Next?
 
 ### Navigator Tutorials
+
 - **Getting Started with Navigator:** [Navigator user guide](https://docs.anaconda.com/anaconda/navigator/)
 - **Getting started with Navigator (10 minutes):** [Navigator tutorials](https://docs.anaconda.com/anaconda/navigator/getting-started/)
 
 ### Conda Resources
+
 - **Getting Started with Conda (20 minutes):** [Conda tutorial](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)
 - **Conda Cheatsheet:** [Conda cheatsheet](https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html)
 - **Conda User Guide:** [Conda user guide](https://docs.conda.io/projects/conda/en/latest/user-guide/)
 
 ### IDE Tutorials
+
 Learn the basics of using popular IDEs with Anaconda:
+
 - **Eclipse and PyDev**
 - **IDLE**
 - **Sublime Text**
@@ -46,12 +51,16 @@ Learn the basics of using popular IDEs with Anaconda:
 - **PyCharm**
 
 ### Jupyter Notebook External Resources
+
 Jupyter Notebook is a web-based development application you can launch from Navigator. These resources can help you get started:
+
 - **Jupyter Notebook Beginner’s Guide:** [Beginner’s Guide](https://jupyter-notebook.readthedocs.io/en/stable/notebook.html)
 - **Jupyter Project Homepage:** [Project Homepage](https://jupyter.org/)
 - **Jupyter Notebook Documentation:** [Documentation](https://jupyter-notebook.readthedocs.io/en/stable/)
 
 ### Spyder External Resources
+
 Spyder is a free development environment you can launch from Navigator. These resources provide more information:
+
 - **Spyder Project Homepage:** [Project Homepage](https://www.spyder-ide.org/)
 - **Spyder Documentation:** [Documentation](https://docs.spyder-ide.org/)

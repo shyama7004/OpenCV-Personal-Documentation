@@ -1,6 +1,7 @@
 ### Chapter 7: Using Subdirectories
 
 #### 7.1. `add_subdirectory()`
+
 The `add_subdirectory()` command allows you to include another directory in your build, provided it has its own `CMakeLists.txt` file. This command is typically used to structure complex projects. The syntax is:
 
 ```cmake
@@ -14,6 +15,7 @@ add_subdirectory(sourceDir [binaryDir] [EXCLUDE_FROM_ALL])
 If `binaryDir` is omitted, CMake automatically creates a corresponding directory in the build tree, named after `sourceDir`.
 
 #### 7.1.1. Source and Binary Directory Variables
+
 CMake defines several variables to handle directories:
 
 - **CMAKE_SOURCE_DIR**: The top-level source directory.
@@ -22,9 +24,11 @@ CMake defines several variables to handle directories:
 - **CMAKE_CURRENT_BINARY_DIR**: The corresponding binary directory for the current source directory.
 
 #### 7.1.2. Scope
+
 When using `add_subdirectory()`, a new scope is created for the included directory. This isolates variables defined in subdirectories unless explicitly returned to the parent scope using the `PARENT_SCOPE` option. This containment avoids unwanted interference between different parts of the project.
 
 #### 7.2. `include()`
+
 The `include()` command brings external CMake code into the current scope without creating a new one, unlike `add_subdirectory()`. Its syntax is:
 
 ```cmake
@@ -34,6 +38,7 @@ include(filename)
 This command is useful for including reusable CMake code (e.g., macros or functions) that may be shared across different parts of your project.
 
 #### 7.3. Ending Processing Early
+
 The `return()` command can be used to halt the processing of the current file and return control to the caller, especially in conditional inclusion scenarios. For example:
 
 ```cmake
@@ -54,6 +59,7 @@ include_guard()
 You can specify its scope with `DIRECTORY` or `GLOBAL` to control where previous inclusions are checked.
 
 #### 7.4. Recommended Practices
+
 Deciding between `add_subdirectory()` and `include()` depends on the structure and requirements of your project:
 
 - Use `add_subdirectory()` to maintain modular and isolated subdirectories with their own variable scopes.
@@ -64,6 +70,7 @@ Deciding between `add_subdirectory()` and `include()` depends on the structure a
 Let's demonstrate a simple multi-module project with a main application and two libraries.
 
 **Directory Structure:**
+
 ```
 MyProject/
 ├── CMakeLists.txt
@@ -81,6 +88,7 @@ MyProject/
 ```
 
 **Top-level `CMakeLists.txt`:**
+
 ```cmake
 cmake_minimum_required(VERSION 3.10)
 project(MyProject)
@@ -92,22 +100,26 @@ add_subdirectory(libB)
 ```
 
 **`app/CMakeLists.txt`:**
+
 ```cmake
 add_executable(MyApp main.cpp)
 target_link_libraries(MyApp PRIVATE libA libB)
 ```
 
 **`libA/CMakeLists.txt`:**
+
 ```cmake
 add_library(libA libA.cpp libA.h)
 ```
 
 **`libB/CMakeLists.txt`:**
+
 ```cmake
 add_library(libB libB.cpp libB.h)
 ```
 
 **`app/main.cpp`:**
+
 ```cpp
 #include "libA.h" //include the full path
 #include "libB.h" //include the full path
@@ -123,6 +135,7 @@ int main() {
 
         **`libA /
     libA.cpp`: **
+
 ```cpp
 #include "libA.h"
 #include <iostream>
@@ -135,6 +148,7 @@ int main() {
 
         **`libA /
     libA.h`: **
+
 ```cpp
 #pragma once
 
@@ -144,6 +158,7 @@ int main() {
 
         **`libB /
     libB.cpp`: **
+
 ```cpp
 #include "libB.h"
 #include <iostream>
@@ -156,13 +171,16 @@ int main() {
 
         **`libB /
     libB.h`: **
+
 ```cpp
 #pragma once
 
              void
              libBFunction();
 ```
+
 `Note` : Use this to print
+
 ```cpp
 ./app/MyApp
 ```

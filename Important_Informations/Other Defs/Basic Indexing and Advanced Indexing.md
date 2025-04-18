@@ -1,4 +1,5 @@
 ### Basic Indexing
+
 Basic indexing involves selecting elements using simple index notation. If you use a single integer or a tuple of integers, NumPy interprets this as basic indexing.
 
 For example:
@@ -16,6 +17,7 @@ print(result)  # Output: 60
 Here, `x[1, 2]` selects the element at row 1, column 2, which is 60.
 
 ### Advanced Indexing
+
 Advanced indexing occurs when the indexing array is a tuple of arrays, lists, or a mixture of integer arrays and slice objects. This type of indexing allows for more complex and flexible element selection.
 
 For example:
@@ -33,6 +35,7 @@ print(result)  # Output: [[10 20 30]
 In this example, `y[(0, 1, 2),]` is treated as advanced indexing. It selects rows 0, 1, and 2 entirely.
 
 ### Key Difference
+
 The main difference between `x[(1, 2, 3),]` and `x[(1, 2, 3)]` is the triggering of basic versus advanced indexing.
 
 - **`x[(1, 2, 3)]`**:

@@ -1,4 +1,5 @@
-## In mathematics 
+## In mathematics
+
 - In mathematics, specifically in `functional analysis`, convolution is described as a process that modifies the shape of one function by combining it with another function.
 - The resulting convolution function graphically expresses how the “shape” of one function is modified by the other (emphasis added).
 
@@ -7,7 +8,6 @@
 - However, it’s essential to note that the term “convolve” has broader meanings beyond mathematics, including the definition provided in dictionaries, which describe it as “to roll or wind together; coil; twist”. In these contexts, convolving does not explicitly refer to shape modification.
 
 - In summary, while convolution in mathematics can involve the modification of shapes, the term “convolve” has a broader range of meanings that do not necessarily imply shape manipulation.
-
 
 ### Convolution: A Brief Overview
 

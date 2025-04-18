@@ -1,6 +1,7 @@
 # Meanshift and Camshift
 
 ## Goal
+
 In this chapter,
 
 We will learn about the Meanshift and Camshift algorithms to track objects in videos.
@@ -13,7 +14,8 @@ We will learn about the Meanshift and Camshift algorithms to track objects in vi
 - You start with a small window (like a circle).
 - The goal is to move this window to the area with the highest pixel density or the most points.
 
-`Note`: Backprojection in histograms refers to a technique used in computer vision and image processing to highlight regions in an image that have a similar color distribution to a given target histogram. 
+`Note`: Backprojection in histograms refers to a technique used in computer vision and image processing to highlight regions in an image that have a similar color distribution to a given target histogram.
+
 <div align ="center'><img src = "https://docs.opencv.org/5.x/meanshift_basics.jpg"></div>
 
 - The initial window is shown as a blue circle labeled "C1".
@@ -32,11 +34,13 @@ This process is demonstrated on a static image below:
 - The meanshift algorithm then moves the window to the new location with the highest pixel density.
 
 ## Meanshift in OpenCV
+
 To use meanshift in OpenCV, first we need to setup the target, find its histogram so that we can backproject the target on each frame for calculation of meanshift. We also need to provide an initial location of window. For histogram, only Hue is considered here. Also, to avoid false values due to low light, low light values are discarded using `cv.inRange()` function.
 
 **Downloadable code:** [Click here](https://github.com/opencv/opencv/blob/5.x/samples/python/tutorial_code/video/meanshift/meanshift.py)
 
 **Code at a glance:**
+
 ```python
 import numpy as np
 import cv2 as cv
@@ -88,6 +92,7 @@ while True:
     else:
         break
 ```
+
 Three frames in a video I used is given below:
 
 <div align ="center"><img src ="https://docs.opencv.org/5.x/meanshift_result.jpg"></div>
@@ -101,11 +106,13 @@ It applies meanshift first. Once meanshift converges, it updates the size of the
 <div align ="center"><img src ="https://docs.opencv.org/5.x/camshift_face.gif"></div>
 
 ## Camshift in OpenCV
+
 It is similar to meanshift, but returns a rotated rectangle (that is our result) and box parameters (used to be passed as search window in next iteration). See the code below:
 
 **Downloadable code:** [Click here](https://github.com/opencv/opencv/blob/5.x/samples/python/tutorial_code/video/meanshift/camshift.py)
 
 **Code at a glance:**
+
 ```python
 import numpy as np
 import cv2 as cv
@@ -158,16 +165,21 @@ while True:
     else:
         break
 ```
+
 Three frames of the result are shown below:
 
 <div align ="center"><img src ="https://docs.opencv.org/5.x/camshift_result.jpg"></div>
 
 ## Additional Resources
+
 - [French Wikipedia page on Camshift](https://fr.wikipedia.org/wiki/CAMShift) (The two animations are taken from there)
 - Bradski, G.R., "Real-time face and object tracking as a component of a perceptual user interface," Applications of Computer Vision, 1998. WACV '98. Proceedings., Fourth IEEE Workshop on, vol., no., pp.214-219, 19-21 Oct 1998
 
 ## Exercises
+
 OpenCV comes with a Python sample for an interactive demo of camshift. Use it, hack it, understand it.
+
 ```
 
 Replace `"path-to-image"` and `"path-to-code"` with the actual paths or URLs to your images and code files.
+```

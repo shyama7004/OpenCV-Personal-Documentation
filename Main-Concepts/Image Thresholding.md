@@ -1,11 +1,13 @@
 # Image Thresholding
 
 ## Goal
+
 In this tutorial, you will learn simple thresholding, adaptive thresholding, and Otsu's thresholding. You will learn the functions `cv.threshold` and `cv.adaptiveThreshold`.
 
 In OpenCV, `thresholding` is a process used to convert a grayscale image to a binary image where the pixels are either 0 or 1. The threshold value is the level that separates the two states. Pixels with intensities above the threshold are set to one (or white), and those below are set to zero (or black). This is often used in image processing for tasks like object detection or segmentation.
 
 ## Simple Thresholding
+
 Here, the matter is straightforward. For every pixel, the same threshold value is applied. If the pixel value is smaller than the threshold, it is set to 0, otherwise, it is set to a maximum value. The function `cv.threshold` is used to apply the thresholding. The first argument is the source image, which should be a grayscale image. The second argument is the threshold value used to classify the pixel values. The third argument is the maximum value which is assigned to pixel values exceeding the threshold. OpenCV provides different types of thresholding, which is given by the fourth parameter of the function. Basic thresholding as described above is done by using the type `cv.THRESH_BINARY`. All simple thresholding types are:
 
 These are OpenCV thresholding types:
@@ -15,7 +17,6 @@ These are OpenCV thresholding types:
 - `cv.THRESH_TRUNC`: Pixels above the threshold are set to the threshold value, and those below remain unchanged.
 - `cv.THRESH_TOZERO`: Pixels below the threshold are set to 0, and those above remain unchanged.
 - `cv.THRESH_TOZERO_INV`: The inverse of `THRESH_TOZERO`, where pixels above the threshold are set to 0, and those below remain unchanged.
-
 
 The method returns two outputs. The first is the threshold that was used, and the second output is the thresholded image.
 
@@ -52,6 +53,7 @@ The code yields this result:
 ![Simple Thresholding](https://docs.opencv.org/5.x/threshold.jpg)
 
 ## Adaptive Thresholding
+
 In the previous section, we used one global value as a threshold. But this might not be good in all cases, e.g., if an image has different lighting conditions in different areas. In that case, adaptive thresholding can help. Here, the algorithm determines the threshold for a pixel based on a small region around it. So we get different thresholds for different regions of the same image, which gives better results for images with varying illumination.
 
 In addition to the parameters described above, the method `cv.adaptiveThreshold` takes three input parameters:
@@ -91,6 +93,7 @@ plt.show()
 ![Adaptive Thresholding](https://docs.opencv.org/5.x/ada_threshold.jpg)
 
 ## Otsu's Binarization
+
 In global thresholding, we used an arbitrarily chosen value as a threshold. In contrast, Otsu's method avoids having to choose a value and determines it automatically.
 
 Consider an image with only two distinct image values (bimodal image), where the histogram would only consist of two peaks. A good threshold would be in the middle of those two values. Similarly, Otsu's method determines an optimal global threshold value from the image histogram.
@@ -138,12 +141,12 @@ Result:
 ![Otsu's Binarization](https://docs.opencv.org/5.x/otsu.jpg)
 
 ## How does Otsu's Binarization work?
+
 This section demonstrates a Python implementation of Otsu's binarization to show how it actually works. If you are not interested, you can skip this.
 
 Since we are working with bimodal images, Otsu's algorithm tries to find a threshold value (t) which minimizes the weighted within-class variance given by the relation:
 
 ![Equation](https://github.com/shyama7004/OpenCV-Personal-Documentation/blob/main/Images/4.jpg)
-
 
 It actually finds a value of t which lies in between two peaks such that variances to both classes are minimal. It can be simply implemented in Python as follows:
 
@@ -187,7 +190,9 @@ print( "{} {}".format(thresh,ret) )
 ```
 
 ## Additional Resources
+
 - Digital Image Processing, Rafael C. Gonzalez
 
 ## Exercises
+
 There are some optimizations available for Otsu's binarization. You can search and implement them.
