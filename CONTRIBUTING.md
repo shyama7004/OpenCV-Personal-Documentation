@@ -41,6 +41,6 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 ## Getting Help
 
-If you need help or have any questions, feel free to open an issue or contact us at [sujatabisoyi@gmail.com](mailto:sujatabisoyi@gmail.com).
+If you need help or have any questions, feel free to open an issue or contact us at [bisoyi7004@gmail.com](mailto:bisoyi7004@gmail.com).
 
 Thank you for your contributions!
